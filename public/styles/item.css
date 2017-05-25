@@ -1,0 +1,43 @@
+#item-edit, #item-form {
+	display: flex;
+	flex-direction: column;
+}
+
+#item-edit > div,
+#item-form > * {
+	text-align: center;
+	background-color: hsla(120, 100%, 50%, 0.15);
+	border: 2px solid black;
+	box-sizing: border-box;
+	padding: 1em;
+	margin: .5em;
+}
+
+#item-edit > input{
+	margin-bottom: 0;
+}
+.wishlist > input:last-child{
+	margin-bottom: .5em;
+}
+
+#item-form > * {
+	font-size: 100%;
+	color: hsl(0, 0%, 90%);
+}
+#item-form > select > option {
+	background-color: hsl(120, 100%, 14%);
+}
+#item-edit > div
+,#item-form > button {
+	cursor: pointer;
+}
+
+#item-edit > div:active {
+	background-color: hsla(120, 100%, 70%, 0.15);
+}
+
+#item-edit > hr {
+	padding: 0;
+	margin: 0 auto;
+	width: 98%;
+}

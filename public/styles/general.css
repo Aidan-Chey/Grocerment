@@ -1,0 +1,209 @@
+html { height: 100%; }
+body {
+	font-family: Arial;
+	font-size: 18px;
+	color: hsl(0, 0%, 90%);;
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: hsl(120, 100%, 8%);
+}
+*[hidden] { display: none !important; }
+body > header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 0 auto;
+	position: relative;
+}
+body > header > * {
+	padding: 5px 0.5em;
+	margin: 0;
+}
+body > footer {
+	flex: 0 0 auto;
+}
+#header-title {
+	flex: 1 0 auto;
+	font-size: 1.5em;
+	line-height: .8em;
+	padding: 5px 5px;
+	color: hsl(0, 0%, 90%);
+	opacity: 0.54;
+}
+body > header
+,body > footer {
+	background-color: hsla(120, 100%, 50%, 0.1);
+}
+body > footer {
+	text-align: center;
+}
+
+.icon {
+	height: 30px;
+	opacity: 0.54;
+	cursor: pointer;
+}
+#header-menu {
+	overflow: visible;
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	z-index: 99;
+}
+#header-menu > * {
+	display: inline-block;
+	background-color: hsl(120, 100%, 17%);
+	line-height: 2em;
+	padding: 0.5em 1em;
+	color: hsl(0, 0%, 90%);
+	text-align: right;
+	border: 1px solid black;
+	cursor: pointer;
+}
+#header-menu > *:hover
+,#header-menu > *:active {
+	background-color: hsl(120, 100%, 22%);
+}
+.loader {
+	left: 50%;
+	top: 50%;
+	position: fixed;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.loader #spinner {
+	box-sizing: border-box;
+	stroke: hsl(120, 100%, 50%);
+	stroke-width: 3px;
+	-webkit-transform-origin: 50%;
+	transform-origin: 50%;
+	-webkit-animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+	animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+}
+@keyframes line {
+	0% {
+		stroke-dasharray: 2, 85.964;
+		-webkit-transform: rotate(0);
+		transform: rotate(0);
+	}
+	50% {
+		stroke-dasharray: 65.973, 21.9911;
+		stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dasharray: 2, 85.964;
+		stroke-dashoffset: -65.973;
+		-webkit-transform: rotate(90deg);
+		transform: rotate(90deg);
+	}
+}
+@keyframes rotate{
+	0% {
+		-webkit-transform: rotate(0);
+		transform: rotate(0);
+	}
+	100% {
+		-webkit-transform: rotate(450deg);
+		transform: rotate(450deg);
+	}
+}
+#main-wrapper {
+	flex: 1;
+	position: relative;
+	overflow-y: auto;
+}
+.overflow-indicator {
+	background-color: hsla(0, 0%, 0%, 0.6);
+	pointer-events: none;
+	padding: 5px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.overflow-indicator > div {
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 20px solid hsl(0,0%,0%);
+	width: 0;
+	margin: 0 auto;
+}
+
+.noselect {		/*http://stackoverflow.com/a/4407335*/
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;           /* Non-prefixed version, currently not supported by any browser */
+}
+
+#context-menu-background {
+	background-color: hsla(0,0%,0%,.4);
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 50;
+}
+
+#context-menu {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: hsl(120, 42%, 19%);
+}
+
+#context-menu > div {
+	width: 12em;
+	line-height: 220%;
+	border: 2px solid black;
+	border-bottom: 0;
+	text-align: center;
+	cursor: pointer;
+
+}
+#context-menu > div:last-child{
+	border-bottom: 2px solid black;
+}
+
+#main-footer > * {
+	padding: 5px 15px;
+}
+
+#cache-message {
+	text-align: center;
+	font-size: 150%;
+}
+#header-refresh[disabled] {
+	opacity: 0.04;
+	pointer-events: none;
+}
+#header-refresh[syncing]:not([disabled]) {
+	-webkit-animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, spin 1.6s linear infinite;
+	animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, spin 1.6s linear infinite;
+}
+@keyframes spin{
+	0% {
+		-webkit-transform: rotate(0);
+		transform: rotate(0);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
