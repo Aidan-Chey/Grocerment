@@ -1,15 +1,14 @@
 {
-  "name": "profile",
+  "name": "grocerment",
   "author": "Aidan Dunn",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.1.0",
+  "description": "Create items in lists to keep record of groceries",
+  "license": "ISC",
   "main": "server.js",
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
