@@ -311,7 +311,7 @@
 
 	//Checks if the app is online and alters the sync button depending on state
 	app.appOnline = () => {
-		let status = navigator.onLine;
+		let status = false; //navigator.onLine;
 		app.toggle_sync(status);
 		app.online = status;
 		return status;

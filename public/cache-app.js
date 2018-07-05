@@ -1,4 +1,4 @@
-let cacheVersion = 104;
+let cacheVersion = 105;
 let cacheName = 'app';
 let cacheLabel = cacheName + '::' + cacheVersion;
 let cacheFiles = [
