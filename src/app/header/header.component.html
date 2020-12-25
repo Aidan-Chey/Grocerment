@@ -1,0 +1,29 @@
+<mat-toolbar id="main-footer" role="heading">
+  <span id="header-title">{{activePage$ | async}}</span>
+  <span class="spacer"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Navigation menu">
+    <mat-icon svgIcon="menu"></mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu #menu="matMenu" yPosition="above">
+  <button mat-menu-item (click)="login()">
+    <mat-icon svgIcon="login"></mat-icon>
+    <span>Login</span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon svgIcon="logout"></mat-icon>
+    <span>logout</span>
+  </button>
+  <button mat-menu-item routerLink="new">
+    <mat-icon svgIcon="new"></mat-icon>
+    <span>New item</span>
+  </button>
+  <button mat-menu-item routerLink="have">
+    <mat-icon svgIcon="have"></mat-icon>
+    <span>I Have...</span>
+  </button>
+  <button mat-menu-item routerLink="need">
+    <mat-icon svgIcon="need"></mat-icon>
+    <span>I Need...</span>
+  </button>
+</mat-menu>
