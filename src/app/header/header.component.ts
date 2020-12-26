@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivationEnd, Router, Event } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
 import { map, shareReplay, filter } from 'rxjs/operators';
 
 @Component({
@@ -12,12 +13,19 @@ import { map, shareReplay, filter } from 'rxjs/operators';
 export class HeaderComponent implements OnInit {
 
   public readonly activePage$ = this.router.events.pipe(
-    filter( event => event instanceof NavigationEnd ),
-    map( (event: NavigationEnd) => {
-      console.log(event);
-      if( true ) return 'no page set';
-      // return data.title;
-    } ),
+
+  private readonly activeRouteSnapshot$ = this.router.events.pipe(
+    filter( (event: Event): event is ActivationEnd => (event instanceof ActivationEnd) ),
+    shareReplay(1),
+  );
+
+  public readonly pageTitle$ = this.activeRouteSnapshot$.pipe(
+    map( event => event.snapshot?.data?.title as string || 'No page title set' ),
+    shareReplay(1),
+  );
+
+  public readonly pagePath$ = this.activeRouteSnapshot$.pipe(
+    map( event => event.snapshot?.routeConfig?.path ),
     shareReplay(1),
   );
 
