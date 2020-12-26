@@ -26,12 +26,11 @@ export class HeaderComponent implements OnInit {
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
   ) {
-    this.iconRegistry.addSvgIcon( 'menu', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
-    this.iconRegistry.addSvgIcon( 'new', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/add.svg') );
-    this.iconRegistry.addSvgIcon( 'login', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
-    this.iconRegistry.addSvgIcon( 'logout', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
-    this.iconRegistry.addSvgIcon( 'need', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cart.svg') );
-    this.iconRegistry.addSvgIcon( 'have', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/refrigerator.svg') );
+    this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
+    this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/add.svg') );
+    this.iconRegistry.addSvgIcon( 'person', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/person.svg') );
+    this.iconRegistry.addSvgIcon( 'need', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cart.svg') );
+    this.iconRegistry.addSvgIcon( 'have', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/refrigerator.svg') );
   }
 
   ngOnInit(): void {
