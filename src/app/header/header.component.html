@@ -6,11 +6,11 @@
   </button>
 </mat-toolbar>
 <mat-menu #menu="matMenu" yPosition="above">
-  <button mat-menu-item (click)="login()">
+  <button mat-menu-item (click)="login()" *ngIf="!isLoggedIn">
     <mat-icon svgIcon="person"></mat-icon>
     <span>Login</span>
   </button>
-  <button mat-menu-item (click)="logout()">
+  <button mat-menu-item (click)="logout()" *ngIf="!!isLoggedIn">
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>

@@ -12,7 +12,7 @@ import { map, shareReplay, filter } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
 
-  public readonly activePage$ = this.router.events.pipe(
+  public isLoggedIn = false;
 
   private readonly activeRouteSnapshot$ = this.router.events.pipe(
     filter( (event: Event): event is ActivationEnd => (event instanceof ActivationEnd) ),
