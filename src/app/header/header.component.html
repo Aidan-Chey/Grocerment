@@ -14,16 +14,18 @@
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>
-  <button mat-menu-item routerLink="new">
-    <mat-icon svgIcon="new"></mat-icon>
-    <span>New item</span>
-  </button>
-  <button mat-menu-item routerLink="have">
-    <mat-icon svgIcon="have"></mat-icon>
-    <span>I Have...</span>
-  </button>
-  <button mat-menu-item routerLink="need">
-    <mat-icon svgIcon="need"></mat-icon>
-    <span>I Need...</span>
-  </button>
+  <ng-container *ngIf="(pagePath$ | async) as pagePath">
+    <button mat-menu-item routerLink="new" [ngClass]="{ 'active': pagePath === 'new' }">
+      <mat-icon svgIcon="new"></mat-icon>
+      <span>New item</span>
+    </button>
+    <button mat-menu-item routerLink="have" [ngClass]="{ 'active': pagePath === 'have' }">
+      <mat-icon svgIcon="have"></mat-icon>
+      <span>I Have...</span>
+    </button>
+    <button mat-menu-item routerLink="need" [ngClass]="{ 'active': pagePath === 'need' }">
+      <mat-icon svgIcon="need"></mat-icon>
+      <span>I Need...</span>
+    </button>
+  </ng-container>
 </mat-menu>
