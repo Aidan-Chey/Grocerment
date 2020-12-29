@@ -5,13 +5,16 @@ ul.items {
 
   li.item {
     padding: 0.5em 1em;
+    border-radius: 5px;
   }
 
   li.item:not(:last-child) {
     margin-bottom: 0.3em;
   }
 
-  li.item:hover {
+  li.item:hover,
+  li.item:focus {
     background-color: hsl(0 0% 100% / 0.05);
+    outline: none;
   }
 }
