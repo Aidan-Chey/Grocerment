@@ -1,7 +1,8 @@
 <mat-toolbar id="main-footer" role="heading">
   <span id="header-title">{{pageTitle$ | async}}</span>
   <span class="spacer"></span>
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Navigation menu">
+  <app-filter></app-filter>
+  <button mat-icon-button id="header-menu" [matMenuTriggerFor]="menu" aria-label="Navigation menu">
     <mat-icon svgIcon="menu"></mat-icon>
   </button>
 </mat-toolbar>

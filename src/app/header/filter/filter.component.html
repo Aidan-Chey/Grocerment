@@ -1,1 +1,8 @@
-<p>filter works!</p>
+
+<button mat-icon-button>
+  <mat-icon svgIcon="search"></mat-icon>
+</button>
+
+<mat-form-field appearance="legacy" *ngIf="!!filterOpen" floatLabel="never">
+  <input matInput [formControl]="filterControl" placeholder="Filtering Term">
+</mat-form-field>
