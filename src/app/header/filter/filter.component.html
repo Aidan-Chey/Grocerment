@@ -1,10 +1,10 @@
 
-<button mat-icon-button (click)="openFilter($event)">
+<button mat-icon-button color="accent" (click)="openFilter($event)">
   <mat-icon svgIcon="search"></mat-icon>
 </button>
 
-<mat-form-field #fieldField appearance="legacy" *ngIf="!!filterOpen" floatLabel="never">
-  <input matInput #filterInput type="search" [formControl]="filterControl" placeholder="Filtering Term" aria-label="Filter active list by a term" (blur)="onBlur()">
+<mat-form-field #fieldField appearance="legacy" *ngIf="!!filterOpen" floatLabel="never" color="accent">
+  <input matInput #filterInput type="text" [formControl]="filterControl" placeholder="Filtering Term" aria-label="Filter active list by a term" (blur)="onBlur()">
   <button mat-button *ngIf="filterControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="filterControl.setValue('')">
     <mat-icon style="transform: rotate(45deg);" svgIcon="close"></mat-icon>
   </button>
