@@ -1,0 +1,17 @@
+ul.items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li.item {
+    padding: 0.5em 1em;
+  }
+
+  li.item:not(:last-child) {
+    margin-bottom: 0.3em;
+  }
+
+  li.item:hover {
+    background-color: hsl(0 0% 100% / 0.05);
+  }
+}

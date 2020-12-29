@@ -1,1 +1,20 @@
-<p>list-have works!</p>
+<ng-container *ngIf="(categories$ | async) as categories">
+  <mat-accordion class="categories">
+    <mat-expansion-panel class="category" *ngFor="let category of categories">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{category}}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <ng-container *ngIf="(itemsCatagorizedFiltered$ | async) as items">
+          <ul class="items">
+            <li
+              class="item"
+              *ngFor="let item of items[category]"
+              tabindex="0"
+            >{{item.name}}</li>
+          </ul>
+        </ng-container>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+</ng-container>
