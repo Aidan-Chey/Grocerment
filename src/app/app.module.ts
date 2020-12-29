@@ -16,6 +16,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './header/header.component';
 import { FilterComponent } from './header/filter/filter.component';
@@ -46,6 +48,8 @@ import { NewItemComponent } from './new-item/new-item.component';
     MatInputModule,
     MatFormFieldModule,
     MatExpansionModule,
+    MatAutocompleteModule,
+    MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
   ],
