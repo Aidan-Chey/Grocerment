@@ -2,10 +2,25 @@
   position: relative;
 }
 
+#header-title {
+  flex: 0 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+app-filter {
+  flex: 0 0 auto;
+}
+
+#header-menu {
+  flex: 0 0 auto;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
 
-button.active {
+#header-menu.active {
   display: none;
 }
