@@ -29,10 +29,9 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     // Watches the filter control for changes, emitting the value
-    this.filterControl.valueChanges.subscribe(
+    this.filterControl.valueChanges.pipe(
       takeUntil(this.destruction$),
-      tap( (data: string) => this.filter.emit(data) ),
-    );
+    ).subscribe( (data: string) => this.filter.emit(data) );
 
   }
 
