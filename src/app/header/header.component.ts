@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
 import { map, shareReplay, filter } from 'rxjs/operators';
+import { FilterService } from '../filter.service';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
     private readonly iconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
+    public readonly filterService: FilterService,
   ) {
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
     this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/add.svg') );

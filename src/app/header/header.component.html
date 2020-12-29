@@ -1,7 +1,7 @@
 <mat-toolbar id="main-footer" role="heading">
   <span id="header-title">{{pageTitle$ | async}}</span>
   <span class="spacer"></span>
-  <app-filter></app-filter>
+  <app-filter *ngIf="!!(filterService.filterable$ | async)" (filter)="filterService.filterTerm = $event"></app-filter>
   <button mat-icon-button id="header-menu" [matMenuTriggerFor]="menu" aria-label="Navigation menu">
     <mat-icon svgIcon="menu"></mat-icon>
   </button>
