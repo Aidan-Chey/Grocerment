@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, tap } from 'rxjs/operators';
@@ -71,6 +72,7 @@ export class NewItemComponent implements OnInit {
   constructor(
     private readonly firestore: AngularFirestore,
     private readonly fb: FormBuilder,
+    private readonly snackbar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
@@ -79,7 +81,33 @@ export class NewItemComponent implements OnInit {
   private filterOptions(value: string, options: string[]) {
     const filterValue = value.toLowerCase();
 
-    return Array.isArray(options) ? options.filter( option => option.toLowerCase().includes(filterValue) ) : undefined;
+    return Array.isArray(options) ? options.filter( option => !!option && option.toLowerCase().includes(filterValue) ) : undefined;
+  }
+  /** handles submission of item group form */
+  public onSubmit() {
+    this.itemGroup.markAllAsTouched();
+
+    if ( !this.itemGroup.valid ) {
+      console.error('Could not submit item as it\'s invalid');
+      return;
+    }
+
+    this.createItem(this.itemGroup.getRawValue());
+
+    this.itemGroup.reset();
+
+  }
+  /** Attempts to create input item in DB */
+  private createItem(item: Item) {
+
+    this.firestore.collection<Item>('items').add(item).then( res => {
+      this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
+    }).catch( err => {
+      this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } ).onAction().subscribe(() => {
+        this.createItem(item);
+      });
+    });
+
   }
 
 }
