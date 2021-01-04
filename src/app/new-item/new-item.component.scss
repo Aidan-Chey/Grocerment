@@ -4,4 +4,8 @@ form {
   mat-list-item {
     margin-top: 1em;
   }
+
+  mat-list-item.item-obtained mat-slide-toggle {
+    margin: 0 0.5em;
+  }
 }

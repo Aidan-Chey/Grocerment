@@ -72,9 +72,15 @@
                formControlName="count">
       </mat-form-field>
     </mat-list-item>
-    <mat-list-item>
+    <!-- Obtained Toggle -->
+    <mat-list-item class="item-obtained">
+      <span>I Need</span>
+      <mat-slide-toggle formControlName="obtained" color="accent"></mat-slide-toggle>
+      <span>I Have</span>
+    </mat-list-item>
+    <mat-list-item class="item-submit">
       <button mat-raised-button
-        color="accent"
+        color="primary"
         type="submit"
       >Create</button>
     </mat-list-item>
