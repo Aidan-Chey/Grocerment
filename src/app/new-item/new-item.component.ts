@@ -20,6 +20,7 @@ export class NewItemComponent implements OnInit {
     measurement: null,
     quantity: null,
     count: 1,
+    estimated: false,
     obtained: false,
     need: true,
   });
