@@ -9,9 +9,7 @@
                formControlName="name"
                [matAutocomplete]="autoNames">
         <mat-autocomplete #autoNames="matAutocomplete">
-          <mat-option *ngFor="let option of (filteredNameOptions$ | async)"
-                      [value]="option"
-          >{{option}}</mat-option>
+          <mat-option *ngFor="let option of (filteredNameOptions$ | async)" [value]="option">{{option}}</mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </mat-list-item>
@@ -24,9 +22,7 @@
                formControlName="category"
                [matAutocomplete]="autoCategories">
         <mat-autocomplete #autoCategories="matAutocomplete">
-          <mat-option *ngFor="let option of (filteredCategoryOptions$ | async)"
-                      [value]="option"
-          >{{option}}</mat-option>
+          <mat-option *ngFor="let option of (filteredCategoryOptions$ | async)" [value]="option">{{option}}</mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </mat-list-item>
@@ -34,9 +30,7 @@
     <mat-list-item class="item-measurement">
       <mat-form-field color="accent" class="full-width">
         <mat-label>Measurement</mat-label>
-        <mat-select 
-               matInput
-               formControlName="measurement">
+        <mat-select matInput formControlName="measurement">
           <ng-container *ngFor="let measurement of (measurements$ | async)">
             <ng-container [ngSwitch]="!!measurement.id">
               <mat-option *ngSwitchCase="true" [value]="measurement.id">{{ measurement.name | titlecase }} ({{ measurement.unit }})</mat-option>
@@ -46,30 +40,30 @@
         </mat-select>
       </mat-form-field>
     </mat-list-item>
-    <!-- Quantity Field -->
-    <mat-list-item class="item-quantity">
+    <!-- Amount Field -->
+    <mat-list-item class="item-amount">
       <mat-form-field color="accent" class="full-width">
-        <mat-label>Quantity</mat-label>
+        <mat-label>Amount</mat-label>
         <input type="number"
                min="0"
                step="0.01"
                matInput
-               formControlName="quantity">
+               formControlName="amount">
       </mat-form-field>
     </mat-list-item>
     <!-- Estimated Toggle -->
     <mat-list-item>
       <mat-checkbox formControlName="estimated" color="accent">Estimated</mat-checkbox>
     </mat-list-item>
-    <!-- Count Field -->
-    <mat-list-item class="item-count">
+    <!-- Quanity Field -->
+    <mat-list-item class="item-quantity">
       <mat-form-field  color="accent" class="full-width">
-        <mat-label>Count</mat-label>
+        <mat-label>Quantity</mat-label>
         <input type="number"
                min="1"
                step="1"
                matInput
-               formControlName="count">
+               formControlName="quantity">
       </mat-form-field>
     </mat-list-item>
     <!-- Obtained Toggle -->
@@ -80,9 +74,9 @@
     </mat-list-item>
     <mat-list-item class="item-submit">
       <button mat-raised-button
-        class="full-width"
-        color="primary"
-        type="submit"
+              class="full-width"
+              color="primary"
+              type="submit"
       >Create</button>
     </mat-list-item>
   </mat-list>
