@@ -49,7 +49,6 @@ export class NewItemComponent implements OnInit {
     this.nameOptions$,
   ]).pipe(
     map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
-    tap( data => console.dir(data) ),
     shareReplay(1),
   );
   /** List of categories of existing items */
@@ -66,7 +65,6 @@ export class NewItemComponent implements OnInit {
     this.categoryOptions$,
   ]).pipe(
     map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
-    tap( data => console.dir(data) ),
     shareReplay(1),
   );
 
