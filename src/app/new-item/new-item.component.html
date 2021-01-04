@@ -1,8 +1,8 @@
 <form [formGroup]="itemGroup">
   <mat-list>
     <!-- Name Field -->
-    <mat-list-item>
-      <mat-form-field>
+    <mat-list-item class="item-name">
+      <mat-form-field color="accent">
         <mat-label>Name</mat-label>
         <input type="text"
                matInput
@@ -16,8 +16,8 @@
       </mat-form-field>
     </mat-list-item>
     <!-- Category Field -->
-    <mat-list-item>
-      <mat-form-field>
+    <mat-list-item class="item-category">
+      <mat-form-field color="accent">
         <mat-label>Category</mat-label>
         <input type="text"
                matInput
@@ -31,8 +31,8 @@
       </mat-form-field>
     </mat-list-item>
     <!-- Measurement Field -->
-    <mat-list-item>
-      <mat-form-field>
+    <mat-list-item class="item-measurement">
+      <mat-form-field color="accent">
         <mat-label>Measurement</mat-label>
         <mat-select 
                matInput
@@ -47,8 +47,8 @@
       </mat-form-field>
     </mat-list-item>
     <!-- Quantity Field -->
-    <mat-list-item>
-      <mat-form-field>
+    <mat-list-item class="item-quantity">
+      <mat-form-field color="accent">
         <mat-label>Quantity</mat-label>
         <input type="number"
                min="0"
@@ -62,8 +62,8 @@
       <mat-checkbox formControlName="estimated" color="accent">Estimated</mat-checkbox>
     </mat-list-item>
     <!-- Count Field -->
-    <mat-list-item>
-      <mat-form-field>
+    <mat-list-item class="item-count">
+      <mat-form-field  color="accent">
         <mat-label>Count</mat-label>
         <input type="number"
                min="1"
