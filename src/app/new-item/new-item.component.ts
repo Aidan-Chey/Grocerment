@@ -22,11 +22,18 @@ export class NewItemComponent implements OnInit {
     count: 1,
     need: true,
   });
-
+  /** List of items already created for reference */
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges();
-
-  public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'});
-
+  /** List of measurements for reference */
+  public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'}).pipe(
+    // Adds extra entry to list of measurements for clearing selection
+    map( measurements => {
+      measurements.unshift( { id: '', name: 'None', unit: '' } );
+      return measurements;
+    }),
+    shareReplay(1),
+  );
+  /** List of names of existing items */
   public readonly nameOptions$ = this.itemsStore$.pipe(
     map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
       if ( !acc.includes(cur.name) ) acc.push(cur.name);
@@ -34,7 +41,7 @@ export class NewItemComponent implements OnInit {
     }, [] as string[] ) : undefined ),
     shareReplay(1),
   );
-
+  /** filtered lit of names based on existing value of name field */
   public readonly filteredNameOptions$ = combineLatest([
     (this.itemGroup.get('name')?.valueChanges || of('')).pipe( startWith('') ),
     this.nameOptions$,
@@ -43,7 +50,7 @@ export class NewItemComponent implements OnInit {
     tap( data => console.dir(data) ),
     shareReplay(1),
   );
-
+  /** List of categories of existing items */
   public readonly categoryOptions$ = this.itemsStore$.pipe(
     map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
       if ( !acc.includes(cur.category) ) acc.push(cur.category);
@@ -51,7 +58,7 @@ export class NewItemComponent implements OnInit {
     }, [] as string[] ) : undefined ),
     shareReplay(1),
   );
-
+  /** filtered list of categories based on existing value of category field */
   public readonly filteredCategoryOptions$ = combineLatest([
     (this.itemGroup.get('category')?.valueChanges || of('')).pipe( startWith('') ),
     this.categoryOptions$,
@@ -68,7 +75,7 @@ export class NewItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  /** Function that filters list of options based on input field value */
   private filterOptions(value: string, options: string[]) {
     const filterValue = value.toLowerCase();
 

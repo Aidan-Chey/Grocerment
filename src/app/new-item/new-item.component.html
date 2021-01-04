@@ -37,9 +37,12 @@
         <mat-select 
                matInput
                formControlName="measurement">
-          <mat-option *ngFor="let measurement of (measurements$ | async)" 
-                  [value]="measurement.id"
-          >{{ measurement.name | titlecase }} ({{ measurement.unit }})</mat-option>
+          <ng-container *ngFor="let measurement of (measurements$ | async)">
+            <ng-container [ngSwitch]="!!measurement.id">
+              <mat-option *ngSwitchCase="true" [value]="measurement.id">{{ measurement.name | titlecase }} ({{ measurement.unit }})</mat-option>
+              <mat-option *ngSwitchCase="false" [value]="null">None</mat-option>
+            </ng-container>
+          </ng-container>
         </mat-select>
       </mat-form-field>
     </mat-list-item>
