@@ -17,7 +17,7 @@ export class NewItemComponent implements OnInit {
     name: null,
     category: null,
     measurement: null,
-    quantity: 1,
+    quantity: null,
     need: true,
   });
 

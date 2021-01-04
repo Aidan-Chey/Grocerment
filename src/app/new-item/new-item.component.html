@@ -1,5 +1,6 @@
 <form [formGroup]="itemGroup">
   <mat-list>
+    <!-- Name Field -->
     <mat-list-item>
       <mat-form-field>
         <mat-label>Name</mat-label>
@@ -14,6 +15,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </mat-list-item>
+    <!-- Category Field -->
     <mat-list-item>
       <mat-form-field>
         <mat-label>Category</mat-label>
@@ -28,6 +30,7 @@
         </mat-autocomplete>
       </mat-form-field>
     </mat-list-item>
+    <!-- Measurement Field -->
     <mat-list-item>
       <mat-form-field>
         <mat-label>Measurement</mat-label>
@@ -40,6 +43,17 @@
                       [value]="option"
           >{{option}}</mat-option>
         </mat-autocomplete>
+      </mat-form-field>
+    </mat-list-item>
+    <!-- Quantity Field -->
+    <mat-list-item>
+      <mat-form-field>
+        <mat-label>Quantity</mat-label>
+        <input type="number"
+               min="0"
+               step="0.01"
+               matInput
+               formControlName="quantity">
       </mat-form-field>
     </mat-list-item>
     <mat-list-item>
