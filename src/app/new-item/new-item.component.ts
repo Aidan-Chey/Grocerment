@@ -3,8 +3,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 import { combineLatest } from 'rxjs';
-import { map, startWith, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, tap } from 'rxjs/operators';
 import { Item } from '../item.model';
+import { Measurement } from '../measurement.model';
 
 @Component({
   selector: 'app-new-item',
@@ -24,11 +25,14 @@ export class NewItemComponent implements OnInit {
 
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges();
 
+  public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'});
+
   public readonly nameOptions$ = this.itemsStore$.pipe(
     map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
       if ( !acc.includes(cur.name) ) acc.push(cur.name);
       return acc;
     }, [] as string[] ) : undefined ),
+    shareReplay(1),
   );
 
   public readonly filteredNameOptions$ = combineLatest([
@@ -37,6 +41,7 @@ export class NewItemComponent implements OnInit {
   ]).pipe(
     map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
     tap( data => console.dir(data) ),
+    shareReplay(1),
   );
 
   public readonly categoryOptions$ = this.itemsStore$.pipe(
@@ -44,6 +49,7 @@ export class NewItemComponent implements OnInit {
       if ( !acc.includes(cur.category) ) acc.push(cur.category);
       return acc;
     }, [] as string[] ) : undefined ),
+    shareReplay(1),
   );
 
   public readonly filteredCategoryOptions$ = combineLatest([
@@ -52,6 +58,7 @@ export class NewItemComponent implements OnInit {
   ]).pipe(
     map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
     tap( data => console.dir(data) ),
+    shareReplay(1),
   );
 
   constructor(
