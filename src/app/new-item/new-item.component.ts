@@ -94,15 +94,16 @@ export class NewItemComponent implements OnInit {
 
     this.createItem(this.itemGroup.getRawValue());
 
-    this.itemGroup.reset();
-
   }
   /** Attempts to create input item in DB */
   private createItem(item: Item) {
 
     this.firestore.collection<Item>('items').add(item).then( res => {
+      // Item created successfully
+      this.itemGroup.reset();
       this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
     }).catch( err => {
+      // Failed to creeate item
       this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } ).onAction().subscribe(() => {
         this.createItem(item);
       });
