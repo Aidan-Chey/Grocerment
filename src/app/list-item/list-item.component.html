@@ -6,4 +6,9 @@
         [matTooltip]="(measurement.name | titlecase) || 'No measurement name'"
     >{{measurement?.unit || 'No measurement unit'}}</span>
 </div>
-<div>{{item?.count || 1}}</div>
+<div>
+    <span>{{item?.count || 1}}</span>
+    <button (click)="editItem(item)" mat-icon-button aria-label="Edit the item">
+        <mat-icon color="accent" svgIcon="edit"></mat-icon>
+    </button>
+</div>
