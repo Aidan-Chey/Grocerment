@@ -23,14 +23,14 @@ export const editItemConfig = {
 export class EditItemComponent implements OnInit {
   /** Controls for an item to edit */
   public readonly itemGroup = this.fb.group({
-    name: null,
-    category: null,
+    name: '',
+    category: '',
     measurement: null,
     amount: null,
     estimated: false,
     quantity: 1,
     obtained: false,
-  });
+  } as Item);
   /** List of items already created for reference */
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'});
   /** List of measurements for reference */

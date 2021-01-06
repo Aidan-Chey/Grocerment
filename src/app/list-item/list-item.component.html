@@ -1,14 +1,14 @@
 <div>{{item?.name || 'No item name'}}</div>
-<div *ngIf="!!item?.measurement && !!item?.quantity">
+<div *ngIf="!!item?.measurement && !!item?.amount">
     <span *ngIf="!!item?.estimated">~</span>
-    <span>{{item.quantity}}</span>
+    <span>{{item.amount}}</span>
     <span *ngIf="(item.measurement | getMeasurement | async) as measurement" 
         [matTooltip]="(measurement.name | titlecase) || 'No measurement name'"
     >{{measurement?.unit || 'No measurement unit'}}</span>
 </div>
 <div>
     <span>x</span>
-    <span>{{item?.count || 1}}</span>
+    <span>{{item?.quantity || 1}}</span>
     <button (click)="editItem(item)" mat-icon-button matTooltip="Edit Item" aria-label="Open a dialog for the item with editable fields">
         <mat-icon color="accent" svgIcon="edit"></mat-icon>
     </button>
