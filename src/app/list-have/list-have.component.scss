@@ -6,10 +6,6 @@ ul.items {
   li.item {
     padding: 0.5em 1em;
     border-radius: 5px;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
   }
 
   li.item:not(:last-child) {

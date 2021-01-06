@@ -30,6 +30,7 @@ import { ListHaveComponent } from './list-have/list-have.component';
 import { ListNeedComponent } from './list-need/list-need.component';
 import { NewItemComponent } from './new-item/new-item.component';
 import { GetMeasurementPipe } from './get-measurement.pipe';
+import { ListItemComponent } from './list-item/list-item.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { GetMeasurementPipe } from './get-measurement.pipe';
     ListNeedComponent,
     NewItemComponent,
     GetMeasurementPipe,
+    ListItemComponent,
   ],
   imports: [
     BrowserModule,

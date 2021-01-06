@@ -1,0 +1,9 @@
+<div>{{item?.name || 'No item name'}}</div>
+<div *ngIf="!!item?.measurement && !!item?.quantity">
+    <span *ngIf="!!item?.estimated">~</span>
+    <span>{{item.quantity}}</span>
+    <span *ngIf="(item.measurement | getMeasurement | async) as measurement" 
+        [matTooltip]="(measurement.name | titlecase) || 'No measurement name'"
+    >{{measurement?.unit || 'No measurement unit'}}</span>
+</div>
+<div>{{item?.count || 1}}</div>
