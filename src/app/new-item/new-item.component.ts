@@ -23,7 +23,6 @@ export class NewItemComponent implements OnInit {
     estimated: false,
     quantity: 1,
     obtained: false,
-    need: true,
   });
   /** List of items already created for reference */
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges();

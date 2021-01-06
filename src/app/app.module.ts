@@ -20,6 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
@@ -55,6 +56,7 @@ import { GetMeasurementPipe } from './get-measurement.pipe';
     MatFormFieldModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatTooltipModule,
     MatSnackBarModule,
     MatSelectModule,
     MatExpansionModule,

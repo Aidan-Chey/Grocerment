@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
+/** handles communication with the list filter component */
+
 @Injectable({
   providedIn: 'root'
 })

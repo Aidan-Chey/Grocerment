@@ -17,7 +17,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     map( items => Array.isArray(items) ? items.filter( item => !item.obtained ) : undefined ),
     shareReplay(1),
   );
-    /** Filtered list of items */
+  /** Filtered list of items */
   public readonly itemsCatagorizedFiltered$ = combineLatest([
     this.itemsStore$,
     this.filterService.filterTerm$,

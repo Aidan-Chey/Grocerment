@@ -10,7 +10,17 @@
             class="item"
             *ngFor="let item of items[category]"
             tabindex="0"
-          >{{item.name}}</li>
+          >
+            <div>{{item.name}}</div>
+            <div *ngIf="!!item.measurement && !!item.quantity">
+              <span *ngIf="!!item.estimated">~</span>
+              <span>{{item.quantity}}</span>
+              <span *ngIf="(item.measurement | getMeasurement | async) as measurement" 
+                    [matTooltip]="measurement.name | titlecase "
+              >{{measurement.unit}}</span>
+            </div>
+            <div>{{item.count || 1}}</div>
+          </li>
         </ul>
       </ng-container>
     </ng-template>
