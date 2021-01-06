@@ -28,6 +28,7 @@ import { FilterComponent } from './header/filter/filter.component';
 import { ListHaveComponent } from './list-have/list-have.component';
 import { ListNeedComponent } from './list-need/list-need.component';
 import { NewItemComponent } from './new-item/new-item.component';
+import { GetMeasurementPipe } from './get-measurement.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { NewItemComponent } from './new-item/new-item.component';
     ListHaveComponent,
     ListNeedComponent,
     NewItemComponent,
+    GetMeasurementPipe,
   ],
   imports: [
     BrowserModule,
