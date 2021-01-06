@@ -5,5 +5,6 @@ export interface Item {
   measurement: string | null
   quantity: string | null
   count: number
+  estimated: boolean
   obtained: boolean
 }
