@@ -25,7 +25,7 @@ export class NewItemComponent implements OnInit {
     obtained: false,
   });
   /** List of items already created for reference */
-  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges();
+  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'});
   /** List of measurements for reference */
   public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'}).pipe(
     // Adds extra entry to list of measurements for clearing selection

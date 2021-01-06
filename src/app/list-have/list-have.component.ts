@@ -12,7 +12,7 @@ import { Item } from '../item.model';
 })
 export class ListHaveComponent implements OnInit, OnDestroy {
   /** list of items from the store */
-  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges().pipe(
+  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'}).pipe(
     // Filter out items that have been obtained
     map( items => Array.isArray(items) ? items.filter( item => !!item.obtained ) : undefined ),
     shareReplay(1),
