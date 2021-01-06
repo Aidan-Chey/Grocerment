@@ -29,10 +29,10 @@ export class NewItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public openDialog() {
-    const dialogConfig = Object.assign({ data: { obtained: this.obtained } }, editItemConfig);
+  public openDialog( item = { obtained: this.obtained } ) {
+    const dialogConfig = Object.assign({ data: item }, editItemConfig);
     this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().subscribe( (item: Item) => {
-
+      if ( !!item ) this.createItem(item);
     });
 
   }
@@ -46,7 +46,7 @@ export class NewItemComponent implements OnInit {
     }).catch( err => {
       // Failed to creeate item
       this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } ).onAction().subscribe(() => {
-        this.createItem(item);
+        this.openDialog(item);
       });
     });
 
