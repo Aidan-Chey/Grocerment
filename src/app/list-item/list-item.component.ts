@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EditItemComponent } from '../edit-item/edit-item.component';
+import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../item.model';
 
 @Component({
@@ -28,6 +28,7 @@ export class ListItemComponent implements OnInit {
 
   /** Open item editing dialog */
   editItem( item: Item ) {
+    const dialogConfig = Object.assign({ data: item }, editItemConfig);
     this.matDialog.open( EditItemComponent, { data: item } ).afterClosed().subscribe( res => {
       if ( !!res ) {
         
