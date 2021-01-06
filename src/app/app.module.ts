@@ -20,7 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -32,6 +32,7 @@ import { ListNeedComponent } from './list-need/list-need.component';
 import { NewItemComponent } from './new-item/new-item.component';
 import { GetMeasurementPipe } from './get-measurement.pipe';
 import { ListItemComponent } from './list-item/list-item.component';
+import { EditItemComponent } from './edit-item/edit-item.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ListItemComponent } from './list-item/list-item.component';
     NewItemComponent,
     GetMeasurementPipe,
     ListItemComponent,
+    EditItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,10 @@ import { ListItemComponent } from './list-item/list-item.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of, combineLatest } from 'rxjs';
-import { map, shareReplay, startWith, tap } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
+import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../item.model';
-import { Measurement } from '../measurement.model';
 
 @Component({
   selector: 'app-new-item',
@@ -15,93 +14,34 @@ import { Measurement } from '../measurement.model';
 })
 export class NewItemComponent implements OnInit {
 
-  public readonly itemGroup = this.fb.group({
-    name: null,
-    category: null,
-    measurement: null,
-    amount: null,
-    estimated: false,
-    quantity: 1,
-    obtained: false,
-  });
-  /** List of items already created for reference */
-  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'});
-  /** List of measurements for reference */
-  public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'}).pipe(
-    // Adds extra entry to list of measurements for clearing selection
-    map( measurements => {
-      measurements.unshift( { id: '', name: 'None', unit: '' } );
-      return measurements;
-    }),
-    shareReplay(1),
-  );
-  /** List of names of existing items */
-  public readonly nameOptions$ = this.itemsStore$.pipe(
-    map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
-      if ( !acc.includes(cur.name) ) acc.push(cur.name);
-      return acc;
-    }, [] as string[] ) : undefined ),
-    shareReplay(1),
-  );
-  /** filtered lit of names based on existing value of name field */
-  public readonly filteredNameOptions$ = combineLatest([
-    (this.itemGroup.get('name')?.valueChanges || of('')).pipe( startWith('') ),
-    this.nameOptions$,
-  ]).pipe(
-    map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
-    shareReplay(1),
-  );
-  /** List of categories of existing items */
-  public readonly categoryOptions$ = this.itemsStore$.pipe(
-    map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
-      if ( !acc.includes(cur.category) ) acc.push(cur.category);
-      return acc;
-    }, [] as string[] ) : undefined ),
-    shareReplay(1),
-  );
-  /** filtered list of categories based on existing value of category field */
-  public readonly filteredCategoryOptions$ = combineLatest([
-    (this.itemGroup.get('category')?.valueChanges || of('')).pipe( startWith('') ),
-    this.categoryOptions$,
-  ]).pipe(
-    map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
-    shareReplay(1),
-  );
+  @Input() obtained = false;
 
-  constructor(
+  constructor( 
     private readonly firestore: AngularFirestore,
-    private readonly fb: FormBuilder,
     private readonly snackbar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: Item,
-  ) { }
+    private readonly matDialog: MatDialog,
+    private readonly iconRegistry: MatIconRegistry,
+    private readonly sanitizer: DomSanitizer,
+   ) {
+    this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
+  }
 
   ngOnInit(): void {
-    this.itemGroup.patchValue( this.data );
   }
-  /** Function that filters list of options based on input field value */
-  private filterOptions(value: string, options: string[]) {
-    const filterValue = value.toLowerCase();
 
-    return Array.isArray(options) ? options.filter( option => !!option && option.toLowerCase().includes(filterValue) ) : undefined;
-  }
-  /** handles submission of item group form */
-  public onSubmit() {
-    this.itemGroup.markAllAsTouched();
+  public openDialog() {
+    const dialogConfig = Object.assign({ data: { obtained: this.obtained } }, editItemConfig);
+    this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().subscribe( (item: Item) => {
 
-    if ( !this.itemGroup.valid ) {
-      console.error('Could not submit item as it\'s invalid');
-      return;
-    }
-
-    this.createItem(this.itemGroup.getRawValue());
+    });
 
   }
+
   /** Attempts to create input item in DB */
   private createItem(item: Item) {
 
     this.firestore.collection<Item>('items').add(item).then( res => {
       // Item created successfully
-      this.itemGroup.reset();
       this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
     }).catch( err => {
       // Failed to creeate item

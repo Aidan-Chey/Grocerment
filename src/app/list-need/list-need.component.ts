@@ -11,7 +11,7 @@ import { Item } from '../item.model';
   styleUrls: ['./list-need.component.scss']
 })
 export class ListNeedComponent implements OnInit, OnDestroy {
-  /** list of items from the store */
+  /** List of items from the store */
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'}).pipe(
     // Filter out items that have not been obtained
     map( items => Array.isArray(items) ? items.filter( item => !item.obtained ) : undefined ),
@@ -34,7 +34,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     }, {} as { [key: string]: Item[] } ) : undefined ),
     shareReplay(1),
   );
-
+  /** List of item categories retrieved from the list of items */
   public readonly categories$ = this.itemsCatagorizedFiltered$.pipe(
     map( items => !!items ? Object.keys(items) : undefined ),
     shareReplay(1),

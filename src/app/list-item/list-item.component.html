@@ -7,8 +7,9 @@
     >{{measurement?.unit || 'No measurement unit'}}</span>
 </div>
 <div>
+    <span>x</span>
     <span>{{item?.count || 1}}</span>
-    <button (click)="editItem(item)" mat-icon-button aria-label="Edit the item">
+    <button (click)="editItem(item)" mat-icon-button matTooltip="Edit Item" aria-label="Open a dialog for the item with editable fields">
         <mat-icon color="accent" svgIcon="edit"></mat-icon>
     </button>
 </div>

@@ -8,12 +8,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'new',
-  },
-  {
-    path: 'new',
-    component: NewItemComponent,
-    data: { title: 'New Item' },
+    redirectTo: 'need',
   },
   {
     path: 'need',

@@ -1,15 +1,6 @@
-form {
-  margin: 0;
-
-  mat-list-item {
-    margin-top: 1em;
-  }
-
-  mat-list-item.item-obtained mat-slide-toggle {
-    margin: 0 0.5em;
-  }
-}
-
-.full-width {  
-  width: 100%;
+button {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  transform: scale(0.8);
 }
