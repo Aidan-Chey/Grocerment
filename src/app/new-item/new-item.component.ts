@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of } from 'rxjs';
-import { combineLatest } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, tap } from 'rxjs/operators';
 import { Item } from '../item.model';
 import { Measurement } from '../measurement.model';
@@ -72,9 +72,11 @@ export class NewItemComponent implements OnInit {
     private readonly firestore: AngularFirestore,
     private readonly fb: FormBuilder,
     private readonly snackbar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: Item,
   ) { }
 
   ngOnInit(): void {
+    this.itemGroup.patchValue( this.data );
   }
   /** Function that filters list of options based on input field value */
   private filterOptions(value: string, options: string[]) {

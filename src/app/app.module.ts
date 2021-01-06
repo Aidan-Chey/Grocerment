@@ -20,6 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -58,6 +59,7 @@ import { ListItemComponent } from './list-item/list-item.component';
     MatFormFieldModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatDialogModule,
     MatTooltipModule,
     MatSnackBarModule,
     MatSelectModule,
