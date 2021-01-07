@@ -21,6 +21,6 @@ app-filter {
   flex: 1 1 auto;
 }
 
-#header-menu.active {
+button[mat-menu-item].active {
   display: none;
 }
