@@ -1,19 +1,21 @@
-<ng-container *ngIf="(categories$ | async) as categories">
-  <mat-expansion-panel class="category" *ngFor="let category of categories" expanded #matExpansionPanel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{category}}</mat-panel-title>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <ng-container *ngIf="(itemsCatagorizedFiltered$ | async) as items">
-        <ul class="items">
-          <li
-            class="item"
-            *ngFor="let item of items[category]"
-            tabindex="0"
-          ><app-list-item [item]="item"></app-list-item></li>
-        </ul>
-      </ng-container>
-    </ng-template>
-  </mat-expansion-panel>
-</ng-container>
+<div>
+  <ng-container *ngIf="(categories$ | async) as categories">
+    <mat-expansion-panel class="category" *ngFor="let category of categories" expanded #matExpansionPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{category}}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <ng-container *ngIf="(itemsCatagorizedFiltered$ | async) as items">
+          <ul class="items">
+            <li
+              class="item"
+              *ngFor="let item of items[category]"
+              tabindex="0"
+            ><app-list-item [item]="item"></app-list-item></li>
+          </ul>
+        </ng-container>
+      </ng-template>
+    </mat-expansion-panel>
+  </ng-container>
+</div>
 <app-new-item [obtained]="true"></app-new-item>

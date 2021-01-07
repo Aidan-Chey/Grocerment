@@ -9,4 +9,6 @@ main {
 	flex: 1 1 auto;
 	position: relative;
 	overflow-y: auto;
+	display: flex;
+	flex-flow: column nowrap;
 }
