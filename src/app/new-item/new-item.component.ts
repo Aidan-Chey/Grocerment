@@ -45,7 +45,8 @@ export class NewItemComponent implements OnInit {
       this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
     }).catch( err => {
       // Failed to creeate item
-      this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } ).onAction().subscribe(() => {
+      const errorSnackbarRef = this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } );
+      errorSnackbarRef.onAction().subscribe(() => {
         this.openDialog(item);
       });
     });

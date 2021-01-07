@@ -9,7 +9,7 @@
 <div>
     <span>x</span>
     <span>{{item?.quantity || 1}}</span>
-    <button (click)="editItem(item)" mat-icon-button matTooltip="Edit Item" aria-label="Open a dialog for the item with editable fields">
+    <button (click)="openEditDialog(item)" mat-icon-button matTooltip="Edit Item" aria-label="Open a dialog for the item with editable fields">
         <mat-icon color="accent" svgIcon="edit"></mat-icon>
     </button>
 </div>

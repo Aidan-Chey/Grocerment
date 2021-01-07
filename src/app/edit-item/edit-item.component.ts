@@ -104,7 +104,7 @@ export class EditItemComponent implements OnInit {
       return;
     }
 
-    const item = this.itemGroup.getRawValue();
+    const item = Object.assign(this.data, this.itemGroup.getRawValue());
 
     this.dialogRef.close(item);
 
