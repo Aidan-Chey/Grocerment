@@ -3,10 +3,10 @@
 	width: 100vw;
 	display: flex;
 	flex-direction: column-reverse;
-	overflow: hidden;
 }
 
 main {
-	flex: 1 0 auto;
+	flex: 1 1 auto;
 	position: relative;
+	overflow-y: auto;
 }
