@@ -30,7 +30,7 @@ import { FilterComponent } from './header/filter/filter.component';
 import { ListHaveComponent } from './list-have/list-have.component';
 import { ListNeedComponent } from './list-need/list-need.component';
 import { NewItemComponent } from './new-item/new-item.component';
-import { GetMeasurementPipe } from './get-measurement.pipe';
+import { GetMeasurementPipe } from './pipes/get-measurement.pipe';
 import { ListItemComponent } from './list-item/list-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Measurement } from './measurement.model';
+import { Measurement } from '../models/measurement.model';
 
 @Pipe({
   name: 'getMeasurement'
