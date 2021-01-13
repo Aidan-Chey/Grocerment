@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { FilterService } from '../filter.service';
+import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 
 @Component({

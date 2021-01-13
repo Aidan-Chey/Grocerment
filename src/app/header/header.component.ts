@@ -3,7 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { map, shareReplay, filter } from 'rxjs/operators';
-import { FilterService } from '../filter.service';
+import { FilterService } from '../services/filter.service';
 
 @Component({
   selector: 'app-header',
