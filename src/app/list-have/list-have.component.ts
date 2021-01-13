@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { FilterService } from '../filter.service';
-import { Item } from '../item.model';
+import { Item } from '../models/item.model';
 
 @Component({
   selector: 'app-list-have',

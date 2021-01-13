@@ -6,8 +6,8 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, tap } from 'rxjs/operators';
-import { Item } from '../item.model';
-import { Measurement } from '../measurement.model';
+import { Item } from '../models/item.model';
+import { Measurement } from '../models/measurement.model';
 
 export const editItemConfig = {
 	minWidth: '5em',

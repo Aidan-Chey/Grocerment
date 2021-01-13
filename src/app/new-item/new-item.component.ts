@@ -5,7 +5,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
-import { Item } from '../item.model';
+import { Item } from '../models/item.model';
 
 @Component({
   selector: 'app-new-item',
