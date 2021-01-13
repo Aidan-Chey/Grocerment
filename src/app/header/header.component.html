@@ -1,17 +1,15 @@
 <mat-toolbar id="main-footer" role="heading">
-  <span id="header-title">{{pageTitle$ | async}}</span>
-  <span class="spacer"></span>
-  <app-filter *ngIf="!!(filterService.filterable$ | async)" (filter)="filterService.filterTerm = $event"></app-filter>
-  <button mat-mini-fab color="primary" id="header-menu" [matMenuTriggerFor]="menu" aria-label="Navigation menu">
-    <mat-icon svgIcon="menu"></mat-icon>
-  </button>
+  <ng-container *ngIf="(authService.user$ | async); else noLoggedIn">
+    <span id="header-title">{{pageTitle$ | async}}</span>
+    <span class="spacer"></span>
+    <app-filter *ngIf="!!(filterService.filterable$ | async)" (filter)="filterService.filterTerm = $event"></app-filter>
+    <button mat-mini-fab color="primary" id="header-menu" [matMenuTriggerFor]="menu" aria-label="Navigation menu">
+      <mat-icon svgIcon="menu"></mat-icon>
+    </button>
+  </ng-container>
 </mat-toolbar>
 <mat-menu #menu="matMenu" yPosition="above">
-  <button mat-menu-item (click)="login()" *ngIf="!isLoggedIn">
-    <mat-icon svgIcon="person"></mat-icon>
-    <span>Login</span>
-  </button>
-  <button mat-menu-item (click)="logout()" *ngIf="!!isLoggedIn">
+  <button mat-menu-item (click)="authService.signOut()">
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>
@@ -26,3 +24,6 @@
     </button>
   </ng-container>
 </mat-menu>
+<ng-template #noLoggedIn>
+  <span id="header-title">Please login to continue</span>
+</ng-template>

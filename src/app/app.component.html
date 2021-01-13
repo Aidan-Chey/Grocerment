@@ -1,4 +1,8 @@
 <app-header></app-header>
-<main>
+<div #authContainer class="firebase-auth-ui"></div>
+<div *ngIf="authService.loadingAuth$ | async">
+  <mat-spinner matTooltip="Loading the login UI" aria-label="Loading symbol represening an indeterminate amount of time will need to be waited for until the loading UI is ready"></mat-spinner>
+</div>
+<main *ngIf="authService.user$ | async">
   <router-outlet></router-outlet>
 </main>

@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { map, shareReplay, filter } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 import { FilterService } from '../services/filter.service';
 
 @Component({
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
     public readonly filterService: FilterService,
+    public readonly authService: AuthService,
   ) {
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
     this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/add.svg') );
@@ -44,8 +46,5 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  login() {}
-  logout() {}
 
 }

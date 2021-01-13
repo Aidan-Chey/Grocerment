@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { auditTime, debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
+import { AuthService } from '../services/auth.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-list-have',
@@ -12,7 +14,13 @@ import { Item } from '../models/item.model';
 })
 export class ListHaveComponent implements OnInit, OnDestroy {
   /** list of items from the store */
-  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'}).pipe(
+  private readonly itemsStore$ = this.authService.user$.pipe( // Get logged in user UID
+    auditTime(50),
+    // Use UID to get their items
+    switchMap( user => !!user.uid ? this.firestore
+      .collection<Item>('items', ref => ref.where('user','==',user.uid))
+      .valueChanges({idField: 'id'}) : of(undefined)
+    ),
     // Filter out items that have been obtained
     map( items => Array.isArray(items) ? items.filter( item => !!item.obtained ) : undefined ),
     shareReplay(1),
@@ -22,6 +30,7 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     this.itemsStore$,
     this.filterService.filterTerm$,
   ]).pipe(
+    debounceTime(50),
     map( ([store,term]) => Array.isArray(store) ? store.reduce( (acc,cur) => {
       // Filter out items with non-matching names
       if ( !!cur.name.toLowerCase().includes(term.toLowerCase()) ) {
@@ -41,6 +50,7 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   );
 
   constructor(
+    private readonly authService: AuthService,
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
   ) { }

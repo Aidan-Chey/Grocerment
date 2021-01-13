@@ -5,9 +5,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of, combineLatest } from 'rxjs';
-import { map, shareReplay, startWith, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
 import { Measurement } from '../models/measurement.model';
+import { AuthService } from '../services/auth.service';
 
 export const editItemConfig = {
 	minWidth: '5em',
@@ -82,6 +83,7 @@ export class EditItemComponent implements OnInit {
     private readonly fb: FormBuilder,
     public readonly dialogRef: MatDialogRef<EditItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Item,
+    private readonly auth: AuthService,
   ) {
     this.iconRegistry.addSvgIcon( 'cancel', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
   }
@@ -104,9 +106,15 @@ export class EditItemComponent implements OnInit {
       return;
     }
 
-    const item = Object.assign(this.data, this.itemGroup.getRawValue());
+    this.auth.user$.pipe(
+      take(1),
+    ).subscribe( user => {
 
-    this.dialogRef.close(item);
+      const item = Object.assign(this.data, this.itemGroup.getRawValue(), { user: user.uid });
+  
+      this.dialogRef.close(item);
+
+    } );
 
   }
 

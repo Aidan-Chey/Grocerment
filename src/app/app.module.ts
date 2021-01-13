@@ -24,6 +24,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './header/header.component';
 import { FilterComponent } from './header/filter/filter.component';
@@ -67,6 +68,7 @@ import { EditItemComponent } from './edit-item/edit-item.component';
     MatSelectModule,
     MatExpansionModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     MatListModule,
     ReactiveFormsModule,
     HttpClientModule,

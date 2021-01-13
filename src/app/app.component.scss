@@ -5,6 +5,14 @@
 	flex-direction: column-reverse;
 }
 
+div.firebase-auth-ui {
+	position: absolute;
+	left: 0;
+	bottom: 8vh;
+	right: 0;
+	z-index: 2;
+}
+
 main {
 	flex: 1 1 auto;
 	position: relative;
