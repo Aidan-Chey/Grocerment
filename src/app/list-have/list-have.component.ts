@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { auditTime, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -17,11 +18,12 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     auditTime(50),
     // Use UID to get their items
     switchMap( user => !!user ? this.firestore
-      .collection<Item>('items', ref => ref.where('user','==',user.uid))
+      .collection<Item>('items', ref => ref
+        .where('user','==',user.uid)
+        .where('obtained','==',true)
+      )
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
-    // Filter out items that have been obtained
-    map( items => Array.isArray(items) ? items.filter( item => !!item.obtained ) : undefined ),
     shareReplay(1),
   );
   /** Filtered list of items */

@@ -1,4 +1,5 @@
 import { DocumentReference } from "@angular/fire/firestore";
+import { List } from "./list.model";
 import { Measurement } from "./measurement.model";
 
 /** Expected format for a item */
@@ -21,4 +22,6 @@ export interface Item {
   obtained: boolean
   /** Unique ID associated with the user that own the item */
   user?: string
+  /** Reference to a list document, colleating items */
+  list?: DocumentReference<List> | null
 }

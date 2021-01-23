@@ -18,11 +18,12 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     auditTime(50),
     // Use UID to get their items
     switchMap( user => !!user ? this.firestore
-      .collection<Item>('items', ref => ref.where('user','==',user.uid))
+      .collection<Item>('items', ref => ref
+        .where('user','==',user.uid)
+        .where('obtained','==',false)
+      )
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
-    // Filter out items that have not been obtained
-    map( items => Array.isArray(items) ? items.filter( item => !item.obtained ) : undefined ),
     shareReplay(1),
   );
   /** Filtered list of items */

@@ -6,8 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of, combineLatest } from 'rxjs';
-import { map, shareReplay, startWith, take, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
+import { List } from '../models/list.model';
 import { Measurement } from '../models/measurement.model';
 
 export const editItemConfig = {
@@ -31,7 +32,18 @@ export class EditItemComponent implements OnInit {
     estimated: false,
     quantity: 1,
     obtained: false,
+    list: null,
   } as Item);
+  /** List of list reference the item can be applied to */
+  public readonly lists$ = this.afAuth.user.pipe(
+    switchMap( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where( user.uid, 'in', 'users')).valueChanges({idField: 'id'}) : of(undefined) ),
+    // Adds extra entry to list of lists for clearing selection
+    map( lists => {
+      if ( Array.isArray(lists) ) lists.unshift( { id: '', name: 'None' } );
+      return lists;
+    }),
+    shareReplay(1),
+  );
   /** List of items already created for reference */
   private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'});
   /** List of measurements for reference */
