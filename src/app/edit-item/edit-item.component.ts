@@ -37,7 +37,7 @@ export class EditItemComponent implements OnInit {
   } as Item);
   /** List of list reference the item can be applied to */
   public readonly lists$ = this.afAuth.user.pipe(
-    switchMap( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where( user.uid, 'in', 'users')).valueChanges({idField: 'id'}) : of(undefined) ),
+    switchMap( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where( 'users', 'array-contains', user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve lists';
       console.error(issue + ' |', err);
