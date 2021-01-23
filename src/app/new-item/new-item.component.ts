@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -8,7 +9,6 @@ import { EMPTY, of } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
-import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-new-item',
@@ -21,7 +21,7 @@ export class NewItemComponent implements OnInit {
 
   constructor( 
     private readonly firestore: AngularFirestore,
-    private readonly authService: AuthService,
+    private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
     private readonly matDialog: MatDialog,
     private readonly iconRegistry: MatIconRegistry,
@@ -44,9 +44,9 @@ export class NewItemComponent implements OnInit {
   /** Attempts to create input item in DB */
   private createItem(item: Item) {
 
-    this.authService.user$.pipe(
+    this.afAuth.user.pipe(
       take(1),
-      switchMap( user => !!user.uid ? this.firestore.collection<Item>('items').add({
+      switchMap( user => !!user ? this.firestore.collection<Item>('items').add({
         user: user.uid,
         ...item
       }) : of(undefined) ),

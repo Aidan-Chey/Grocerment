@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -8,7 +9,6 @@ import { of, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, take, tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
 import { Measurement } from '../models/measurement.model';
-import { AuthService } from '../services/auth.service';
 
 export const editItemConfig = {
 	minWidth: '5em',
@@ -80,10 +80,10 @@ export class EditItemComponent implements OnInit {
     private readonly iconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
     private readonly firestore: AngularFirestore,
+    private afAuth: AngularFireAuth,
     private readonly fb: FormBuilder,
     public readonly dialogRef: MatDialogRef<EditItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Item,
-    private readonly auth: AuthService,
   ) {
     this.iconRegistry.addSvgIcon( 'cancel', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
   }
@@ -106,11 +106,13 @@ export class EditItemComponent implements OnInit {
       return;
     }
 
-    this.auth.user$.pipe(
+    const formData = this.itemGroup.getRawValue();
+
+    this.afAuth.user.pipe(
       take(1),
     ).subscribe( user => {
 
-      const item = Object.assign(this.data, this.itemGroup.getRawValue(), { user: user.uid });
+      const item = { id: this.data?.id, ...formData, user: user?.uid };
   
       this.dialogRef.close(item);
 

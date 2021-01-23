@@ -4,8 +4,8 @@ import { combineLatest } from 'rxjs';
 import { auditTime, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
-import { AuthService } from '../services/auth.service';
 import { of } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-list-need',
@@ -14,10 +14,10 @@ import { of } from 'rxjs';
 })
 export class ListNeedComponent implements OnInit, OnDestroy {
   /** List of items from the store */
-  private readonly itemsStore$ = this.authService.user$.pipe( // Get logged in user UID
+  private readonly itemsStore$ = this.afAuth.user.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( user => !!user.uid ? this.firestore
+    switchMap( user => !!user ? this.firestore
       .collection<Item>('items', ref => ref.where('user','==',user.uid))
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
@@ -50,7 +50,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
   );
 
   constructor(
-    private readonly authService: AuthService,
+    private readonly afAuth: AngularFireAuth,
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
   ) { }

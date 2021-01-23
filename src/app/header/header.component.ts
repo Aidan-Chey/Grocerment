@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
@@ -35,6 +36,7 @@ export class HeaderComponent implements OnInit {
     private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
     public readonly filterService: FilterService,
+    public readonly afAuth: AngularFireAuth,
     public readonly authService: AuthService,
   ) {
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );

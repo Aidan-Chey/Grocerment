@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
-import { auditTime, debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
-import { AuthService } from '../services/auth.service';
 import { of } from 'rxjs';
 
 @Component({
@@ -14,10 +13,10 @@ import { of } from 'rxjs';
 })
 export class ListHaveComponent implements OnInit, OnDestroy {
   /** list of items from the store */
-  private readonly itemsStore$ = this.authService.user$.pipe( // Get logged in user UID
+  private readonly itemsStore$ = this.afAuth.user.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( user => !!user.uid ? this.firestore
+    switchMap( user => !!user ? this.firestore
       .collection<Item>('items', ref => ref.where('user','==',user.uid))
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
@@ -50,7 +49,7 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   );
 
   constructor(
-    private readonly authService: AuthService,
+    private readonly afAuth: AngularFireAuth,
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
   ) { }

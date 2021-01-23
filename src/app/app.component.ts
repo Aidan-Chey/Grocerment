@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 
@@ -13,12 +14,13 @@ export class AppComponent implements AfterViewInit {
 
   constructor(
     public readonly authService: AuthService,
+    public readonly afAuth: AngularFireAuth,
   ) { }
 
   ngAfterViewInit() {
     this.authService.authContainerRef = this.authContainer?.nativeElement;
     
-    this.authService.user$.pipe(
+    this.afAuth.user.pipe(
       filter( user => !user ),
     ).subscribe( () => {
       this.authService.signIn();

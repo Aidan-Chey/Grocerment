@@ -1,5 +1,5 @@
 <mat-toolbar id="main-footer" role="heading">
-  <ng-container *ngIf="(authService.user$ | async); else noLoggedIn">
+  <ng-container *ngIf="(afAuth.user | async); else noLoggedIn">
     <span id="header-title">{{pageTitle$ | async}}</span>
     <span class="spacer"></span>
     <app-filter 

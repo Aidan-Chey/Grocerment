@@ -11,7 +11,6 @@ import { auth } from 'firebaseui';
 })
 export class AuthService {
 
-  user$: Observable<User>;
   private readonly _loadingAuth = new BehaviorSubject<Boolean>(false);
   public readonly loadingAuth$ = this._loadingAuth.asObservable();
   public authContainerRef!: Element;
@@ -45,12 +44,7 @@ export class AuthService {
     // privacyPolicyUrl: '<your-privacy-policy-url>'
   };
 
-  constructor(
-    private router: Router,
-    private afAuth: AngularFireAuth,
-  ) {
-    this.user$ = this.afAuth.authState as Observable<User>;
-  }
+  constructor() {}
 
   public signIn() {
     if ( !this.authContainerRef ) throw Error('Can\'t begin authentication process, no container element for UI');
