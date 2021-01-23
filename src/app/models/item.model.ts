@@ -1,4 +1,7 @@
-/** Expected format for a list item */
+import { DocumentReference } from "@angular/fire/firestore";
+import { Measurement } from "./measurement.model";
+
+/** Expected format for a item */
 export interface Item {
   /** ID of the item's document in the items collection */
   id?: string
@@ -7,7 +10,7 @@ export interface Item {
   /** Name of the category the item should be placed under */
   category: string
   /** Unit the item is measured in */
-  measurement: string | null
+  measurement: DocumentReference<Measurement> | null
   /** How much of the unit of measurement should each item have */
   amount: string | null
   /** How reliable/accurate the quantity of measurement should be */
