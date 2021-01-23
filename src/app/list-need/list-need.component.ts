@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
-import { auditTime, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { auditTime, catchError, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { EMPTY } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list-need',
@@ -24,6 +26,12 @@ export class ListNeedComponent implements OnInit, OnDestroy {
       )
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
+    catchError( err => {
+      const issue = 'Failed to retrieve items';
+      console.error(issue + ' |',err);
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+      return EMPTY;
+    } ),
     shareReplay(1),
   );
   /** Filtered list of items */
@@ -54,6 +62,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     private readonly afAuth: AngularFireAuth,
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
+    private readonly snackbar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
