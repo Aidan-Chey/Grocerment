@@ -52,7 +52,8 @@ export class EditItemComponent implements OnInit {
     shareReplay(1),
   );
   /** List of items already created for reference */
-  private readonly itemsStore$ = this.firestore.collection<Item>('items').valueChanges({idField: 'id'}).pipe(
+  private readonly itemsStore$ = this.afAuth.user.pipe(
+    switchMap( user => !!user ? this.firestore.collection<Item>('items', ref => ref.where('user','==',user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       console.error(issue + ' |',err);
