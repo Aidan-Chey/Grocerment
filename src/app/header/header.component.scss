@@ -9,6 +9,11 @@
   text-overflow: ellipsis;
 }
 
+#main-footer {
+  // Prevents scroll bars appearing when the filter opens when the flex order is reversed so the tool bar is on the bottom
+  overflow-y: hidden;
+}
+
 app-filter {
   flex: 0 0 auto;
 }

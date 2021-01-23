@@ -1,11 +1,35 @@
 
-<button mat-icon-button color="accent" (click)="openFilter($event)">
+<button mat-icon-button 
+  color="accent" 
+  (click)="openFilter($event)"
+  aria-label="Opens an input field for input to filter active list of items"
+  matTooltip="Filter active list"
+>
   <mat-icon svgIcon="search"></mat-icon>
 </button>
 
-<mat-form-field #fieldField appearance="legacy" *ngIf="!!filterOpen" floatLabel="never" color="accent">
-  <input matInput #filterInput type="text" [formControl]="filterControl" placeholder="Filtering Term" aria-label="Filter active list by a term" (blur)="onBlur()">
-  <button mat-button *ngIf="filterControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="filterControl.setValue('')">
+<mat-form-field #fieldField 
+  appearance="legacy" 
+  *ngIf="!!filterOpen" 
+  floatLabel="never" 
+  color="accent"
+>
+  <input matInput 
+    #filterInput 
+    type="text" 
+    [formControl]="filterControl" 
+    placeholder="Filtering Term" 
+    aria-label="Input that filters active list by the typed value" 
+    (blur)="onBlur()"
+  >
+  <button mat-button 
+    *ngIf="filterControl.value" 
+    matSuffix 
+    mat-icon-button 
+    matTooltip="Clear filter value"
+    aria-label="Clears the filter value for the active list, restoring it to the full list"
+    (click)="filterControl.setValue('')"
+  >
     <mat-icon style="transform: rotate(45deg);" svgIcon="close"></mat-icon>
   </button>
 </mat-form-field>

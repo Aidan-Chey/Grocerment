@@ -84,7 +84,10 @@
   
   </form>
 
-  <button class="button-cancel" mat-icon-button matTooltip="Cancel"
+  <button mat-icon-button 
+    matTooltip="Cancel"
+    class="button-cancel" 
+    cdkFocusInitial 
     aria-label="Close the item edit dialog, canceling the action"
     (click)="dialogRef.close()"
   ><mat-icon style="transform: rotate(45deg);" svgIcon="cancel"></mat-icon></button>
