@@ -2,9 +2,11 @@
 <div *ngIf="!!item?.measurement && !!item?.amount">
     <span *ngIf="!!item?.estimated">~</span>
     <span>{{item.amount}}</span>
-    <span *ngIf="(item.measurement | getMeasurement | async) as measurement" 
-        [matTooltip]="(measurement.name | titlecase) || 'No measurement name'"
-    >{{measurement?.unit || 'No measurement unit'}}</span>
+    <span *ngIf="!!item.measurement">
+        <ng-container *ngIf="(item.measurement | getMeasurement | async) as measurement" 
+            [matTooltip]="(measurement.name | titlecase) || 'No measurement name'"
+        >{{measurement?.unit || 'No measurement unit'}}</ng-container>
+    </span>
 </div>
 <div>
     <span>x</span>
