@@ -123,7 +123,7 @@ export class EditItemComponent implements OnInit {
     this.afAuth.user.pipe(
       take(1),
     ).subscribe( user => {
-      if ( !!formData.measurement ) formData.measurement = this.firestore.collection<Measurement>("measurement").doc(formData.measurement).ref;
+      if ( !!formData.measurement ) formData.measurement = this.firestore.collection<Measurement>("measurements").doc(formData.measurement).ref;
 
       const item = { id: this.data?.id, ...formData, user: user?.uid };
   
