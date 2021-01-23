@@ -15,7 +15,8 @@ import { Measurement } from '../models/measurement.model';
 export const editItemConfig = {
 	minWidth: '5em',
 	width: '95vw',
-	maxWidth: '50em',
+  maxWidth: '50em',
+  maxHeight: '95vh',
 };
 
 @Component({
