@@ -34,7 +34,7 @@ export class ListItemComponent implements OnInit {
   openEditDialog( item: Item ) {
     const dialogConfig = Object.assign({ data: item }, editItemConfig);
 
-    this.matDialog.open( EditItemComponent, { data: item } ).afterClosed().subscribe( (res: Item) => {
+    this.matDialog.open( EditItemComponent, dialogConfig).afterClosed().subscribe( (res: Item) => {
       if ( !!res ) this.editItem( res );
     } );
   }
