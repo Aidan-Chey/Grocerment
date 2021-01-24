@@ -6,8 +6,9 @@
       *ngIf="!!(filterService.filterable$ | async)" 
       (filter)="filterService.filterTerm = $event"
     ></app-filter>
-    <button mat-mini-fab 
-      color="primary" 
+    <button 
+      mat-icon-button 
+      color="accent" 
       id="header-menu" 
       [matMenuTriggerFor]="menu" 
       aria-label="Opens an extra menu of actions and navigation"
