@@ -43,12 +43,13 @@ export class NewItemComponent implements OnInit {
 
   /** Attempts to create input item in DB */
   private createItem(item: Item) {
+    const { id, ...toSave } = item;
 
     this.afAuth.user.pipe(
       take(1),
       switchMap( user => !!user ? this.firestore.collection<Item>('items').add({
         user: user.uid,
-        ...item
+        ...toSave
       }) : of(undefined) ),
       catchError( err => {
         const issue = 'Failed to create item';
