@@ -127,7 +127,7 @@ export class EditItemComponent implements OnInit {
     const { measurement, list, ...toPatch} = this.data;
     this.itemGroup.patchValue( toPatch );
 
-    if ( !!measurement ) this.itemGroup.get('measurment')?.setValue(measurement.id);
+    if ( !!measurement ) this.itemGroup.get('measurement')?.setValue(measurement.id);
     if ( !!list ) this.itemGroup.get('list')?.setValue(list.id);
   }
   /** Function that filters list of options based on input field value */
