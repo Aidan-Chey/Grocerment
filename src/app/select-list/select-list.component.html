@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Pick new list</h2>
+<mat-selection-list #listsList [multiple]="false" mat-dialog-content>
+    <mat-list-option 
+        *ngFor="let list of (listsOptions$ | async)" 
+        [value]="list.id"
+    >
+        <div>
+            <span>{{list.name}}</span>
+            <span *ngIf="!!list?.users"> ({{list.users}})</span>
+        </div>
+    </mat-list-option>
+</mat-selection-list>
+
+<button mat-icon-button 
+    matTooltip="Cancel"
+    class="button-cancel" 
+    cdkFocusInitial 
+    aria-label="Close the list selection dialog, canceling the action"
+    (click)="dialogRef.close()"
+><mat-icon style="transform: rotate(45deg);" svgIcon="cancel"></mat-icon></button>

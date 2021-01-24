@@ -23,6 +23,13 @@
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>
+  <button mat-menu-item 
+    matTooltip="Switch viewed list"
+    (click)="selectList()"
+  >
+    <mat-icon svgIcon="list"></mat-icon>
+    <span>{{(list$ | async)?.name || 'Default'}}</span>
+  </button>
   <ng-container *ngIf="(pagePath$ | async) as pagePath">
     <button mat-menu-item 
       routerLink="have"

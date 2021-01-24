@@ -35,6 +35,7 @@ import { NewItemComponent } from './new-item/new-item.component';
 import { GetMeasurementPipe } from './pipes/get-measurement.pipe';
 import { ListItemComponent } from './list-item/list-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { SelectListComponent } from './select-list/select-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { EditItemComponent } from './edit-item/edit-item.component';
     GetMeasurementPipe,
     ListItemComponent,
     EditItemComponent,
+    SelectListComponent,
   ],
   imports: [
     BrowserModule,
