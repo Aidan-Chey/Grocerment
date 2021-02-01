@@ -7,8 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EMPTY, of } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
+import * as Sentry from '@sentry/angular';
 
 @Component({
   selector: 'app-new-item',
@@ -53,7 +55,8 @@ export class NewItemComponent implements OnInit {
       }) : of(undefined) ),
       catchError( err => {
         const issue = 'Failed to create item';
-        console.error(issue + ' |', err);
+        if ( environment.production ) Sentry.captureException(err);
+        else console.error(issue + ' |', err);
         const errorSnackbarRef = this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } );
         errorSnackbarRef.onAction().subscribe(() => {
           this.openDialog(item);
