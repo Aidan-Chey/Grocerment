@@ -1,20 +1,52 @@
-<h2 mat-dialog-title>Pick new list</h2>
-<mat-selection-list #listsList [multiple]="false" mat-dialog-content>
-    <mat-list-option 
-        *ngFor="let list of (listsOptions$ | async)" 
-        [value]="list.id"
-    >
-        <div>
-            <span>{{list.name}}</span>
-            <span *ngIf="!!list?.users"> ({{list.users}})</span>
-        </div>
-    </mat-list-option>
-</mat-selection-list>
+<div class="container" *ngIf="{ activeList: (listService.activeListSubject | async) } as results">
+    <mat-list role="list">
+        <mat-list-item
+            role="listitem" 
+            [ngClass]="{ 'active': !results.activeList?.id }"
+        >
+            <span class="name">Personal</span>
+            <button 
+                mat-icon-button 
+                color="accent" 
+                aria-label="Clear active list and only view personal list"
+                matTooltip="View personal items"
+                (click)="listService.activeListSubject.next(undefined)"
+            >
+                <mat-icon svgIcon="list"></mat-icon>
+            </button>
+        </mat-list-item>
+        <mat-list-item *ngFor="let list of (lists$ | async)" 
+            role="listitem" 
+            [ngClass]="{ 'active': results.activeList?.id === list.id }"
+        >
+            <span class="name">{{list.name}}</span>
+            <span class="users" matTooltip="Number of users" *ngIf="!!list?.users"> ({{list.users?.length}})</span>
+            <button 
+                mat-icon-button 
+                color="accent" 
+                [matMenuTriggerFor]="menu" 
+                aria-label="Opens an extra menu of actions related to the list"
+                matTooltip="Options"
+            >
+                <mat-icon svgIcon="options"></mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <ng-template matMenuContent>
+                    <button mat-menu-item (click)="setActiveList(list)">Set Active</button>
+                    <button mat-menu-item (click)="deleteList(list)">Delete</button>
+                    <button mat-menu-item (click)="editListUsers(list)">Users</button>
+                    <button mat-menu-item (click)="renameList(list)">Rename</button>
+                </ng-template>
+            </mat-menu>
+        </mat-list-item>
+    </mat-list>
+</div>
 
-<button mat-icon-button 
-    matTooltip="Cancel"
-    class="button-cancel" 
-    cdkFocusInitial 
-    aria-label="Close the list selection dialog, canceling the action"
-    (click)="dialogRef.close()"
-><mat-icon style="transform: rotate(45deg);" svgIcon="cancel"></mat-icon></button>
+<div class="button-create">
+    <button mat-fab 
+        matTooltip="New list"
+        color="primary"
+        aria-label="Create new list entry for adding items against"
+        (click)="listService.newList()"
+    ><mat-icon svgIcon="new"></mat-icon></button>
+</div>

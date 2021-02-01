@@ -1,11 +1,33 @@
-mat-list-option div {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
+mat-list-item.active {
+	background: hsla(0, 100%, 100%, 0.2)
 }
-  
-.button-cancel {
-	position: absolute;
-	top: 3px;
-	right: 3px;
+
+mat-list-item .name {
+	flex: 1 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+:host {
+	flex: 1 1 auto;
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.container {
+	flex: 1 1 auto;
+	margin: 1em;
+}
+
+.button-create {
+	position: sticky;
+	bottom: 0;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+
+	button {
+		transform: scale(0.8);
+	}
 }
