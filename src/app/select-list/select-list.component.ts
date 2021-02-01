@@ -36,7 +36,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   ]).pipe(
     map( ([lists, activeList]) => Array.isArray(lists) ? lists.reduce( (acc,cur) => {
       // Don't include currently active list in selction
-      if ( !!activeList?.id && activeList.id !== cur.id ) acc.push( { name: cur.name, id: cur.id, users: cur.users?.length } );
+      if ( activeList?.id !== cur.id ) acc.push( { name: cur.name, id: cur.id, users: cur.users?.length } );
       return acc;
     }, [] as { name: string, id: string | null, users: number | undefined }[] ) : undefined ),
     withLatestFrom(this.afAuth.user),
