@@ -36,6 +36,7 @@ import { GetMeasurementPipe } from './pipes/get-measurement.pipe';
 import { ListItemComponent } from './list-item/list-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 import { SelectListComponent } from './select-list/select-list.component';
+import { ConfirmDialog } from './confirm/confirm.dialog';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { SelectListComponent } from './select-list/select-list.component';
     ListItemComponent,
     EditItemComponent,
     SelectListComponent,
+    ConfirmDialog,
   ],
   imports: [
     BrowserModule,
