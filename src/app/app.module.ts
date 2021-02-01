@@ -37,6 +37,7 @@ import { ListItemComponent } from './list-item/list-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 import { SelectListComponent } from './select-list/select-list.component';
 import { ConfirmDialog } from './confirm/confirm.dialog';
+import { RenameDialog } from './select-list/rename/rename.dialog';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ConfirmDialog } from './confirm/confirm.dialog';
     EditItemComponent,
     SelectListComponent,
     ConfirmDialog,
+    RenameDialog,
   ],
   imports: [
     BrowserModule,
