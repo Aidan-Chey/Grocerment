@@ -9,6 +9,7 @@ import { SelectListComponent, selectListConfig } from '../select-list/select-lis
 import { AuthService } from '../services/auth.service';
 import { FilterService } from '../services/filter.service';
 import { ListService } from '../services/list.service';
+import { ShowUserIDDialog } from '../show-user-id/show-user-id.dialog';
 
 @Component({
   selector: 'app-header',
@@ -59,7 +60,8 @@ export class HeaderComponent implements OnInit {
     this.matDialog.open(SelectListComponent, dialogConfig);
   }
 
-  ngOnInit(): void {
+  public showUserID() {
+    this.dialog.open( ShowUserIDDialog );
   }
 
 }

@@ -23,6 +23,10 @@
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>
+  <button mat-menu-item (click)="showUserID()" *ngIf="(afAuth.user | async)">
+    <mat-icon svgIcon="person"></mat-icon>
+    <span>Show user ID</span>
+  </button>
   <button mat-menu-item 
     matTooltip="Switch viewed list"
     (click)="selectList()"

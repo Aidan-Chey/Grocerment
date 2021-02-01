@@ -39,6 +39,7 @@ import { SelectListComponent } from './select-list/select-list.component';
 import { ConfirmDialog } from './confirm/confirm.dialog';
 import { RenameDialog } from './select-list/rename/rename.dialog';
 import { UsersDialog } from './select-list/users/users.dialog';
+import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { UsersDialog } from './select-list/users/users.dialog';
     ConfirmDialog,
     RenameDialog,
     UsersDialog,
+    ShowUserIDDialog,
   ],
   imports: [
     BrowserModule,
