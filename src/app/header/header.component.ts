@@ -5,7 +5,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { map, shareReplay, filter } from 'rxjs/operators';
-import { SelectListComponent, selectListConfig } from '../select-list/select-list.component';
 import { AuthService } from '../services/auth.service';
 import { FilterService } from '../services/filter.service';
 import { ListService } from '../services/list.service';
@@ -44,7 +43,7 @@ export class HeaderComponent implements OnInit {
     public readonly filterService: FilterService,
     private readonly listService: ListService,
     public readonly afAuth: AngularFireAuth,
-    private readonly matDialog: MatDialog,
+    public readonly dialog: MatDialog,
     public readonly authService: AuthService,
   ) {
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
@@ -55,9 +54,7 @@ export class HeaderComponent implements OnInit {
     this.iconRegistry.addSvgIcon( 'list', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/list.svg') );
   }
 
-  public selectList() {
-    const dialogConfig = Object.assign( {}, selectListConfig);
-    this.matDialog.open(SelectListComponent, dialogConfig);
+  ngOnInit(): void {
   }
 
   public showUserID() {

@@ -28,8 +28,9 @@
     <span>Show user ID</span>
   </button>
   <button mat-menu-item 
+    routerLink="lists"
+    aria-label="Navigate to the page of lists you are apart of"
     matTooltip="Switch viewed list"
-    (click)="selectList()"
   >
     <mat-icon svgIcon="list"></mat-icon>
     <span>{{(list$ | async)?.name || 'Default'}}</span>
