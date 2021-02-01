@@ -8,6 +8,8 @@ import { Item } from '../models/item.model';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import * as Sentry from "@sentry/angular";
 
 @Component({
   selector: 'app-list-have',
@@ -28,7 +30,8 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
-      console.error(issue + ' |',err);
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
       return EMPTY;
     } ),

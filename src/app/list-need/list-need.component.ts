@@ -8,6 +8,8 @@ import { of } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
+import * as Sentry from "@sentry/angular";
 
 @Component({
   selector: 'app-list-need',
@@ -28,7 +30,8 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
-      console.error(issue + ' |',err);
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
       return EMPTY;
     } ),

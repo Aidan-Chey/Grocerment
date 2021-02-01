@@ -8,9 +8,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of, combineLatest, EMPTY } from 'rxjs';
 import { catchError, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
 import { List } from '../models/list.model';
 import { Measurement } from '../models/measurement.model';
+import * as Sentry from '@sentry/angular';
 
 export const editItemConfig = {
 	minWidth: '5em',
@@ -41,7 +43,8 @@ export class EditItemComponent implements OnInit {
     switchMap( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where( 'users', 'array-contains', user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve lists';
-      console.error(issue + ' |', err);
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
       return of([] as (List & {id: string})[]);
     }),
@@ -57,7 +60,8 @@ export class EditItemComponent implements OnInit {
     switchMap( user => !!user ? this.firestore.collection<Item>('items', ref => ref.where('user','==',user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
-      console.error(issue + ' |',err);
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
       return EMPTY;
     } ),
@@ -66,7 +70,8 @@ export class EditItemComponent implements OnInit {
   public readonly measurements$ = this.firestore.collection<Measurement>('measurements').valueChanges({idField: 'id'}).pipe(
     catchError( err => {
       const issue = 'Failed to retrieve measurements';
-      console.error(issue + ' |',err);
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
       return EMPTY;
     } ),
