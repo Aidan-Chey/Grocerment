@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -22,11 +20,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   /** Emits when the component is destroyed */
   private readonly destruction$ = new Subject();
   constructor(
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
   ) {
-    this.iconRegistry.addSvgIcon( 'search', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/magnifying-glass.svg') );
-    this.iconRegistry.addSvgIcon( 'close', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
   }
 
   ngOnInit(): void {

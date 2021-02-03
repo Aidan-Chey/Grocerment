@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from '@angular/platform-browser';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
 
@@ -18,13 +16,10 @@ export class ListItemComponent implements OnInit {
   @Input() item = {} as Item;
 
   constructor(
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
     private readonly matDialog: MatDialog,
     private readonly firestore: AngularFirestore,
     private readonly snackbar: MatSnackBar,
   ) {
-    this.iconRegistry.addSvgIcon( 'edit', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pencil.svg') );
   }
 
   ngOnInit(): void {

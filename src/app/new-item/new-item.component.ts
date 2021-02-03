@@ -2,9 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from '@angular/platform-browser';
 import { EMPTY, of } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -26,10 +24,7 @@ export class NewItemComponent implements OnInit {
     private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
     private readonly matDialog: MatDialog,
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
    ) {
-    this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
   }
 
   ngOnInit(): void {

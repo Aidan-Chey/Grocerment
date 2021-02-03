@@ -5,9 +5,6 @@ import { catchError, filter, map, shareReplay, switchMap, take, withLatestFrom }
 import { combineLatest, EMPTY, from, of } from 'rxjs';
 import { List } from '../models/list.model';
 import { ListService } from '../services/list.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { confirmData, ConfirmDialog } from '../confirm/confirm.dialog';
 import { environment } from 'src/environments/environment';
@@ -33,17 +30,11 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   );
 
   constructor(
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
     private readonly firestore: AngularFirestore,
-    private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
     public readonly listService: ListService,
     public readonly dialog: MatDialog,
   ) {
-    this.iconRegistry.addSvgIcon( 'plus', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
-    this.iconRegistry.addSvgIcon( 'options', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/options.svg') );
-    this.iconRegistry.addSvgIcon( 'list', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/list.svg') );
   }
 
   ngOnInit(): void {

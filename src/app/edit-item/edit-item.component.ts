@@ -3,9 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DomSanitizer } from '@angular/platform-browser';
 import { of, combineLatest, EMPTY } from 'rxjs';
 import { catchError, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -116,8 +114,6 @@ export class EditItemComponent implements OnInit {
   );
 
   constructor(
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
     private readonly firestore: AngularFirestore,
     private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
@@ -125,7 +121,6 @@ export class EditItemComponent implements OnInit {
     public readonly dialogRef: MatDialogRef<EditItemComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Item,
   ) {
-    this.iconRegistry.addSvgIcon( 'cancel', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
   }
 
   ngOnInit(): void {

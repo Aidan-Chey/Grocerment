@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { map, shareReplay, filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
@@ -37,8 +35,6 @@ export class HeaderComponent implements OnInit {
   public readonly list$ = this.listService.activeListSubject.asObservable();
 
   constructor(
-    private readonly iconRegistry: MatIconRegistry,
-    private readonly sanitizer: DomSanitizer,
     private readonly router: Router,
     public readonly filterService: FilterService,
     private readonly listService: ListService,
@@ -46,12 +42,6 @@ export class HeaderComponent implements OnInit {
     public readonly dialog: MatDialog,
     public readonly authService: AuthService,
   ) {
-    this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
-    this.iconRegistry.addSvgIcon( 'new', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/add.svg') );
-    this.iconRegistry.addSvgIcon( 'person', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/person.svg') );
-    this.iconRegistry.addSvgIcon( 'need', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cart.svg') );
-    this.iconRegistry.addSvgIcon( 'have', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/refrigerator.svg') );
-    this.iconRegistry.addSvgIcon( 'list', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/list.svg') );
   }
 
   ngOnInit(): void {
