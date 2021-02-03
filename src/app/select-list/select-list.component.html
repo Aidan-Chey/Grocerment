@@ -32,10 +32,22 @@
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
                 <ng-template matMenuContent>
-                    <button mat-menu-item (click)="setActiveList(list)">Set Active</button>
-                    <button mat-menu-item (click)="deleteList(list)">Delete</button>
-                    <button mat-menu-item (click)="editListUsers(list)">Users</button>
-                    <button mat-menu-item (click)="renameList(list)">Rename</button>
+                    <button mat-menu-item 
+                        (click)="setActiveList(list)"
+                        matTooltip="Set list as active list to view it's items"
+                    >Set Active</button>
+                    <button mat-menu-item 
+                        (click)="editListUsers(list)"
+                        matTooltip="Edit list's user who have access"
+                    >Users</button>
+                    <button mat-menu-item 
+                        (click)="renameList(list)"
+                        matTooltip="Change the name of the list"
+                    >Rename</button>
+                    <button mat-menu-item 
+                        (click)="deleteList(list)"
+                        matTooltip="Delete list"
+                    >Delete</button>
                 </ng-template>
             </mat-menu>
         </mat-list-item>
