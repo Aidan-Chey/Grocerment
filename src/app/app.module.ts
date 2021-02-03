@@ -25,6 +25,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './header/header.component';
@@ -80,6 +81,7 @@ import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
     MatExpansionModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    ClipboardModule,
     MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
