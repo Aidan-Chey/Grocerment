@@ -1,0 +1,17 @@
+mat-dialog-content {
+    display: flex;
+    flex-flow: column nowrap;
+
+    mat-form-field {
+        margin-bottom: 0.5em;
+
+        button {
+            vertical-align: text-bottom;
+        }
+    }
+
+}
+
+.adduser mat-icon {
+    transform: scale(0.6);
+}

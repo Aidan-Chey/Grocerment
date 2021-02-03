@@ -1,1 +1,46 @@
-<p>users works!</p>
+<h2 mat-dialog-title>Edit List Users</h2>
+<form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+        <mat-form-field 
+            color="accent" 
+            [hintLabel]="(afAuth.user | async)?.uid === control.value ? 'Yourself' : ''"
+            *ngFor="let control of usersArray.controls; index as i">
+            <mat-label>User</mat-label>
+            <input matInput #user
+                cdkFocusInitial
+                #filterInput 
+                type="text"
+                [formControl]="$any(control)" 
+                hint
+                aria-label="User ID to grant access to the list"
+            >
+            <button mat-icon-button 
+                matSuffix 
+                matTooltip="Remove user"
+                aria-label="Removes user from access to list"
+                (click)="usersArray.removeAt(i)"
+                type="button"
+            >
+                <mat-icon style="transform: rotate(45deg);" svgIcon="plus"></mat-icon>
+            </button>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button
+            class="adduser"
+            type="button"
+            aria-label="Add user to list of users granted access to the list"
+            (click)="addUser()"
+        ><mat-icon svgIcon="plus"></mat-icon>Add User</button>
+        <button mat-button 
+            type="button" 
+            mat-dialog-close 
+            aria-label="Close dialog without changing list users"
+        >Cancel</button>
+        <button 
+            mat-button 
+            type="submit"
+            aria-label="Close dialog saving list of users"
+        >Save</button>
+    </mat-dialog-actions>
+</form>

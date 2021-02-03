@@ -10,6 +10,7 @@ import { confirmData, ConfirmDialog } from '../confirm/confirm.dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
 import { RenameDialog } from './rename/rename.dialog';
+import { UsersDialog } from './users/users.dialog';
 
 export const selectListConfig = {
 	minWidth: '5em',
@@ -54,8 +55,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   deleteList( list: List ) {
     if ( !list.id ) return;
 
-    const toDelete = list.id;
-
+    const toEdit = list.id;
     const data = {
       title: 'Are you sure?',
       content: `You are about to delete the list ${list.name}? Everyone will loose access to the list and it's items will be deleted; this data will not be recoverable!`,
@@ -67,7 +67,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
     this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
       take(1),
       filter(choice => !!choice ),
-      switchMap( () => this.firestore.collection<List>('lists').doc(toDelete).delete() ),
+      switchMap( () => this.firestore.collection<List>('lists').doc(toEdit).delete() ),
       catchError( err => {
         const issue = 'Failed to delete list';
         if ( environment.production ) Sentry.captureException(err);
@@ -85,15 +85,14 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   renameList( list: List ) {
     if ( !list.id ) return;
 
-    const toRename = list.id;
+    const toEdit = list.id;
     const data = {
       name: list.name,
     }
     this.dialog.open( RenameDialog, { data } ).afterClosed().pipe(
-      
       take(1),
       filter(revision => !!revision ),
-      switchMap( revision => this.firestore.collection<List>('lists').doc(toRename).update(revision) ),
+      switchMap( revision => this.firestore.collection<List>('lists').doc(toEdit).update(revision) ),
       catchError( err => {
         const issue = 'Failed to rename list';
         if ( environment.production ) Sentry.captureException(err);
@@ -113,18 +112,15 @@ export class SelectListComponent implements OnInit, AfterViewInit {
     if ( !list.id ) return;
 
     const toEdit = list.id;
-
-    const toRename = list.id;
     const data = {
-      name: list.name,
+      users: list.users,
     }
-    this.dialog.open( RenameDialog, { data } ).afterClosed().pipe(
-      
+    this.dialog.open( UsersDialog, { data } ).afterClosed().pipe(
       take(1),
       filter(revision => !!revision ),
-      switchMap( revision => this.firestore.collection<List>('lists').doc(toRename).update(revision) ),
+      switchMap( revision => this.firestore.collection<List>('lists').doc(toEdit).update(revision) ),
       catchError( err => {
-        const issue = 'Failed to rename list';
+        const issue = 'Failed to save list users';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
         this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
@@ -132,7 +128,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
       } )
     ).subscribe( () => {
       // List renamed successfully
-      this.snackbar.open( 'List renamed', undefined, { duration: 1000, verticalPosition: 'top' } );
+      this.snackbar.open( 'List users saved', undefined, { duration: 1000, verticalPosition: 'top' } );
     } );
   } 
 
