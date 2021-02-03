@@ -1,1 +1,9 @@
-<p>show-user-id works!</p>
+<span #test>{{(afAuth.user | async)?.uid}}</span>
+<button #shareButton
+    mat-icon-button
+    cdkFocusInitial
+    color="accent"
+    matTooltip="Copy UID to clipboard"
+>
+    <mat-icon svgIcon="copy"></mat-icon>
+</button>
