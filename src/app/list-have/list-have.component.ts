@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auditTime, catchError, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { auditTime, catchError, debounceTime, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import * as Sentry from "@sentry/angular";
+import { ListService } from '../services/list.service';
+import { List } from '../models/list.model';
 
 @Component({
   selector: 'app-list-have',
@@ -21,13 +23,14 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   private readonly itemsStore$ = this.afAuth.user.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( user => !!user ? this.firestore
-      .collection<Item>('items', ref => ref
-        .where('user','==',user.uid)
-        .where('obtained','==',true)
-      )
-      .valueChanges({idField: 'id'}) : of(undefined)
-    ),
+    switchMap( (user) => {
+      if ( !user ) return of(undefined);
+      // const listCondition = (!!activeList ? ['list.users','array-contains',activeList.id] : ['user','==',user.uid]) as [string, 'array-contains'|'==', string|number];
+      return this.firestore.collection<List>('lists', ref => ref.where('users', 'array-contains', user.uid))
+        .doc(this.listService.activeList?.id)
+        .collection<Item>('items',ref => ref.where( 'obtained', '==', true ) )
+        .valueChanges({idField: 'id'}) 
+    } ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);
@@ -66,6 +69,7 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
     private readonly snackbar: MatSnackBar,
+    private readonly listService: ListService,
   ) { }
 
   ngOnInit(): void {

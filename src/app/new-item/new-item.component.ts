@@ -3,12 +3,14 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, of } from 'rxjs';
+import { combineLatest, EMPTY, of } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
 import * as Sentry from '@sentry/angular';
+import { ListService } from '../services/list.service';
+import { List } from '../models/list.model';
 
 @Component({
   selector: 'app-new-item',
@@ -24,6 +26,7 @@ export class NewItemComponent implements OnInit {
     private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
     private readonly matDialog: MatDialog,
+    private readonly listService: ListService,
    ) {
   }
 
@@ -44,10 +47,7 @@ export class NewItemComponent implements OnInit {
 
     this.afAuth.user.pipe(
       take(1),
-      switchMap( user => !!user ? this.firestore.collection<Item>('items').add({
-        user: user.uid,
-        ...toSave
-      }) : of(undefined) ),
+      switchMap( user => !!user && !!this.listService.activeList ? this.firestore.collection<List>('lists').doc(this.listService.activeList.id).collection<Item>('items').add(toSave) : of(undefined) ),
       catchError( err => {
         const issue = 'Failed to create item';
         if ( environment.production ) Sentry.captureException(err);

@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
+import { List } from '../models/list.model';
+import { ListService } from '../services/list.service';
 
 @Component({
   selector: 'app-list-item',
@@ -19,6 +21,7 @@ export class ListItemComponent implements OnInit {
     private readonly matDialog: MatDialog,
     private readonly firestore: AngularFirestore,
     private readonly snackbar: MatSnackBar,
+    private readonly listService: ListService,
   ) {
   }
 
@@ -36,7 +39,7 @@ export class ListItemComponent implements OnInit {
   /** Save edited item to DB */
   editItem( item: Item ) {
     const {id, ...toSave} = item,
-      itemRef = this.firestore.collection<Item>('items').doc(id);
+      itemRef = this.firestore.collection<List>('lists').doc(this.listService.activeList?.id).collection<Item>('items').doc(id);
 
     itemRef.set(toSave).then( res => {
       // Item editied successfully

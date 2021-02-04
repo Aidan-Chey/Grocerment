@@ -11,6 +11,7 @@ import { Item } from '../models/item.model';
 import { List } from '../models/list.model';
 import { Measurement } from '../models/measurement.model';
 import * as Sentry from '@sentry/angular';
+import { ListService } from '../services/list.service';
 
 export const editItemConfig = {
 	minWidth: '5em',
@@ -34,28 +35,14 @@ export class EditItemComponent implements OnInit {
     estimated: false,
     quantity: 1,
     obtained: false,
-    list: null,
   } as Item);
-  /** List of list reference the item can be applied to */
-  public readonly lists$ = this.afAuth.user.pipe(
-    switchMap( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where( 'users', 'array-contains', user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
-    catchError( err => {
-      const issue = 'Failed to retrieve lists';
-      if ( environment.production ) Sentry.captureException(err);
-      else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
-      return of([] as (List & {id: string})[]);
-    }),
-    // Adds extra entry to list of lists for clearing selection
-    map( lists => {
-      if ( Array.isArray(lists) ) lists.unshift( { id: '', name: 'None' } );
-      return lists;
-    }),
-    shareReplay(1),
-  );
   /** List of items already created for reference */
   private readonly itemsStore$ = this.afAuth.user.pipe(
-    switchMap( user => !!user ? this.firestore.collection<Item>('items', ref => ref.where('user','==',user.uid)).valueChanges({idField: 'id'}) : of(undefined) ),
+    switchMap( user => !!user ? this.firestore
+      .collection<List>('lists', ref => ref.where('users','array-contains',user.uid))
+      .doc(this.listService.activeList?.id)
+      .collection<Item>('items')
+      .valueChanges({idField: 'id'}) : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);
@@ -115,6 +102,7 @@ export class EditItemComponent implements OnInit {
 
   constructor(
     private readonly firestore: AngularFirestore,
+    private readonly listService: ListService,
     private readonly afAuth: AngularFireAuth,
     private readonly snackbar: MatSnackBar,
     private readonly fb: FormBuilder,
@@ -124,11 +112,10 @@ export class EditItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const { measurement, list, ...toPatch} = this.data;
+    const { measurement, ...toPatch} = this.data;
     this.itemGroup.patchValue( toPatch );
 
     if ( !!measurement ) this.itemGroup.get('measurement')?.setValue(measurement.id);
-    if ( !!list ) this.itemGroup.get('list')?.setValue(list.id);
   }
   /** Function that filters list of options based on input field value */
   private filterOptions(value: string, options: string[]) {
@@ -157,6 +144,8 @@ export class EditItemComponent implements OnInit {
       this.dialogRef.close(item);
 
     } );
+
+    return false;
 
   }
 

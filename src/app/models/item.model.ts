@@ -20,8 +20,4 @@ export interface Item {
   quantity: number
   /** Whether the item is already possessed or not */
   obtained: boolean
-  /** Unique ID associated with the user that own the item */
-  user?: string
-  /** Reference to a list document, colleating items */
-  list?: DocumentReference<List> | null
 }

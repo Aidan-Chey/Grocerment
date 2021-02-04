@@ -14,6 +14,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class ListService {
 
   public readonly activeListSubject = new BehaviorSubject<List | undefined>(undefined);
+  public get activeList() { return this.activeListSubject.getValue(); }
   
   public readonly lists$ = this.firestore.collection<List>('lists').valueChanges({idField: 'id'}).pipe(
     shareReplay(1),
@@ -62,7 +63,8 @@ export class ListService {
       take(1),
       switchMap( user => !!user ? this.firestore.collection<List>('lists').add({
         users: [user.uid],
-        name: 'New List'
+        name: 'New List',
+        items: [],
       }) : of(undefined) ),
       catchError( err => {
         const issue = 'Failed to create list';

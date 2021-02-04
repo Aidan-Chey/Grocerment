@@ -10,6 +10,8 @@ import { EMPTY } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import * as Sentry from "@sentry/angular";
+import { ListService } from '../services/list.service';
+import { List } from '../models/list.model';
 
 @Component({
   selector: 'app-list-need',
@@ -22,10 +24,9 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     auditTime(50),
     // Use UID to get their items
     switchMap( user => !!user ? this.firestore
-      .collection<Item>('items', ref => ref
-        .where('user','==',user.uid)
-        .where('obtained','==',false)
-      )
+      .collection<List>('lists')
+      .doc(this.listService.activeList?.id)
+      .collection<Item>('items',ref => ref.where( 'obtained', '==', false ) )
       .valueChanges({idField: 'id'}) : of(undefined)
     ),
     catchError( err => {
@@ -66,6 +67,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
     private readonly snackbar: MatSnackBar,
+    private readonly listService: ListService,
   ) { }
 
   ngOnInit(): void {
