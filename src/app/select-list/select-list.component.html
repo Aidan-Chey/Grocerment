@@ -1,58 +1,52 @@
-<div class="container" *ngIf="{ activeList: (listService.activeListSubject | async) } as results">
-    <mat-list role="list">
-        <mat-list-item
-            role="listitem" 
-            [ngClass]="{ 'active': !results.activeList?.id }"
+<mat-list role="list" class="container"> 
+    <mat-list-item *ngFor="let list of (lists$ | async)" 
+        role="listitem" 
+        [ngClass]="{ 'active': (listService.activeListSubject | async)?.id === list.id }"
+    >
+        <span class="name">{{list.name}}</span>
+        <span class="users" matTooltip="Number of users" *ngIf="!!list?.users && !list?.personal"> ({{list.users?.length}})</span>
+        <button 
+            *ngIf="!!list?.personal"
+            mat-icon-button 
+            color="accent" 
+            aria-label="Clear active list and only view personal list"
+            matTooltip="View personal items"
+            (click)="listService.activeListSubject.next(list)"
         >
-            <span class="name">Personal</span>
-            <button 
-                mat-icon-button 
-                color="accent" 
-                aria-label="Clear active list and only view personal list"
-                matTooltip="View personal items"
-                (click)="listService.activeListSubject.next(undefined)"
-            >
-                <mat-icon svgIcon="list"></mat-icon>
-            </button>
-        </mat-list-item>
-        <mat-list-item *ngFor="let list of (lists$ | async)" 
-            role="listitem" 
-            [ngClass]="{ 'active': results.activeList?.id === list.id }"
+            <mat-icon svgIcon="list"></mat-icon>
+        </button>
+        <button 
+            *ngIf="!list?.personal"
+            mat-icon-button 
+            color="accent" 
+            [matMenuTriggerFor]="menu" 
+            aria-label="Opens an extra menu of actions related to the list"
+            matTooltip="Options"
         >
-            <span class="name">{{list.name}}</span>
-            <span class="users" matTooltip="Number of users" *ngIf="!!list?.users"> ({{list.users?.length}})</span>
-            <button 
-                mat-icon-button 
-                color="accent" 
-                [matMenuTriggerFor]="menu" 
-                aria-label="Opens an extra menu of actions related to the list"
-                matTooltip="Options"
-            >
-                <mat-icon svgIcon="options"></mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-                <ng-template matMenuContent>
-                    <button mat-menu-item 
-                        (click)="setActiveList(list)"
-                        matTooltip="Set list as active list to view it's items"
-                    >Set Active</button>
-                    <button mat-menu-item 
-                        (click)="editListUsers(list)"
-                        matTooltip="Edit list's user who have access"
-                    >Users</button>
-                    <button mat-menu-item 
-                        (click)="renameList(list)"
-                        matTooltip="Change the name of the list"
-                    >Rename</button>
-                    <button mat-menu-item 
-                        (click)="deleteList(list)"
-                        matTooltip="Delete list"
-                    >Delete</button>
-                </ng-template>
-            </mat-menu>
-        </mat-list-item>
-    </mat-list>
-</div>
+            <mat-icon svgIcon="options"></mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <ng-template matMenuContent>
+                <button mat-menu-item 
+                    (click)="setActiveList(list)"
+                    matTooltip="Set list as active list to view it's items"
+                >Set Active</button>
+                <button mat-menu-item 
+                    (click)="editListUsers(list)"
+                    matTooltip="Edit list's user who have access"
+                >Users</button>
+                <button mat-menu-item 
+                    (click)="renameList(list)"
+                    matTooltip="Change the name of the list"
+                >Rename</button>
+                <button mat-menu-item 
+                    (click)="deleteList(list)"
+                    matTooltip="Delete list"
+                >Delete</button>
+            </ng-template>
+        </mat-menu>
+    </mat-list-item>
+</mat-list>
 
 <div class="button-create">
     <button mat-fab 

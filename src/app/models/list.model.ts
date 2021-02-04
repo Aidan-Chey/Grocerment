@@ -9,4 +9,6 @@ export interface List {
   users: string[]
   /** Items in the list */
   items: Item[]
+  /** Whether the list is the default personal list */
+  personal: boolean
 }

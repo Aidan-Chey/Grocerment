@@ -37,12 +37,12 @@ export class EditItemComponent implements OnInit {
     obtained: false,
   } as Item);
   /** List of items already created for reference */
-  private readonly itemsStore$ = this.afAuth.user.pipe(
-    switchMap( user => !!user ? this.firestore
-      .collection<List>('lists', ref => ref.where('users','array-contains',user.uid))
+  private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe(
+    switchMap( ref => !!ref ? ref
       .doc(this.listService.activeList?.id)
       .collection<Item>('items')
-      .valueChanges({idField: 'id'}) : of(undefined) ),
+      .valueChanges({idField: 'id'}) 
+    : of(undefined) ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { map, take } from 'rxjs/operators';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
 import { List } from '../models/list.model';
@@ -38,10 +39,12 @@ export class ListItemComponent implements OnInit {
   }
   /** Save edited item to DB */
   editItem( item: Item ) {
-    const {id, ...toSave} = item,
-      itemRef = this.firestore.collection<List>('lists').doc(this.listService.activeList?.id).collection<Item>('items').doc(id);
-
-    itemRef.set(toSave).then( res => {
+    const {id, ...toSave} = item;
+    
+    this.listService.listsCollectionRef$.pipe(
+      take(1),
+      map( ref => ref?.doc(this.listService.activeList?.id).collection<Item>('items').doc(id) ),
+    ).subscribe( itemRef => !!itemRef ? itemRef.set(toSave).then( res => {
       // Item editied successfully
       this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'top' } );
     }).catch( err => {
@@ -50,7 +53,7 @@ export class ListItemComponent implements OnInit {
       errorSnackbarRef.onAction().subscribe(() => {
         this.openEditDialog(item);
       });
-    });
+    }) : undefined );
   }
 
 }

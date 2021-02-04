@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { catchError, filter, shareReplay, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { EMPTY, of, } from 'rxjs';
 import { List } from '../models/list.model';
 import { ListService } from '../services/list.service';
@@ -27,10 +27,8 @@ export const selectListConfig = {
 })
 export class SelectListComponent implements OnInit, AfterViewInit {
 
-  public readonly lists$ = this.afAuth.user.pipe(
-	switchMap( user => !!user ? this.firestore
-		.collection<List>('lists', ref => ref.where( 'users', 'array-contains', user.uid ) )
-		.valueChanges({idField: 'id'}) : of(undefined) ),
+  public readonly lists$ = this.listService.listsCollectionRef$.pipe(
+	switchMap( ref => !!ref ? ref.valueChanges({idField: 'id'}) : of(undefined) ),
 	shareReplay(1),
   );
 
@@ -72,7 +70,8 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
 	  take(1),
 	  filter(choice => !!choice ),
-	  switchMap( () => this.firestore.collection<List>('lists').doc(toEdit).delete() ),
+	  withLatestFrom( this.listService.listsCollectionRef$ ),
+	  switchMap( ([choice, ref]) => !!ref ? ref.doc(toEdit).delete() : of(undefined) ),
 	  catchError( err => {
 		const issue = 'Failed to delete list';
 		if ( environment.production ) Sentry.captureException(err);
@@ -97,7 +96,8 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	this.dialog.open( RenameDialog, { data } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
-	  switchMap( revision => this.firestore.collection<List>('lists').doc(toEdit).update(revision) ),
+	  withLatestFrom( this.listService.listsCollectionRef$ ),
+	  switchMap( ([revision,ref]) => !!ref ? ref.doc(toEdit).update(revision) : of(undefined) ),
 	  catchError( err => {
 		const issue = 'Failed to rename list';
 		if ( environment.production ) Sentry.captureException(err);
@@ -123,7 +123,8 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	this.dialog.open( UsersDialog, { data } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
-	  switchMap( revision => this.firestore.collection<List>('lists').doc(toEdit).update(revision) ),
+	  withLatestFrom( this.listService.listsCollectionRef$ ),
+	  switchMap( ([revision,ref]) => !!ref ? ref.doc(toEdit).update(revision): of(undefined) ),
 	  catchError( err => {
 		const issue = 'Failed to save list users';
 		if ( environment.production ) Sentry.captureException(err);

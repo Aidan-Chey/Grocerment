@@ -45,9 +45,9 @@ export class NewItemComponent implements OnInit {
   private createItem(item: Item) {
     const { id, ...toSave } = item;
 
-    this.afAuth.user.pipe(
+    this.listService.listsCollectionRef$.pipe(
       take(1),
-      switchMap( user => !!user && !!this.listService.activeList ? this.firestore.collection<List>('lists').doc(this.listService.activeList.id).collection<Item>('items').add(toSave) : of(undefined) ),
+      switchMap( ref => !!ref && !!this.listService.activeList ? ref.doc(this.listService.activeList.id).collection<Item>('items').add(toSave) : of(undefined) ),
       catchError( err => {
         const issue = 'Failed to create item';
         if ( environment.production ) Sentry.captureException(err);

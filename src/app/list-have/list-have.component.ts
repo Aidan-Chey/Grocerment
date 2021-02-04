@@ -20,13 +20,13 @@ import { List } from '../models/list.model';
 })
 export class ListHaveComponent implements OnInit, OnDestroy {
   /** list of items from the store */
-  private readonly itemsStore$ = this.afAuth.user.pipe( // Get logged in user UID
+  private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( (user) => {
-      if ( !user ) return of(undefined);
+    switchMap( (ref) => {
+      if ( !ref ) return of(undefined);
       // const listCondition = (!!activeList ? ['list.users','array-contains',activeList.id] : ['user','==',user.uid]) as [string, 'array-contains'|'==', string|number];
-      return this.firestore.collection<List>('lists', ref => ref.where('users', 'array-contains', user.uid))
+      return ref
         .doc(this.listService.activeList?.id)
         .collection<Item>('items',ref => ref.where( 'obtained', '==', true ) )
         .valueChanges({idField: 'id'}) 
