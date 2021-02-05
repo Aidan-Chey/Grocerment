@@ -1,9 +1,18 @@
-<span #test>{{(afAuth.user | async)?.uid}}</span>
-<button #shareButton
-    mat-icon-button
-    cdkFocusInitial
-    color="accent"
-    matTooltip="Copy UID to clipboard"
->
-    <mat-icon svgIcon="copy"></mat-icon>
-</button>
+<div mat-dialog-content #test>{{(afAuth.user | async)?.uid}}</div>
+<div mat-dialog-actions align="end">
+    <button #shareButton
+        mat-icon-button
+        cdkFocusInitial
+        color="accent"
+        matTooltip="Copy UID to clipboard"
+    >
+        <mat-icon svgIcon="copy"></mat-icon>
+    </button>
+    <button 
+        mat-icon-button
+        matTooltip="Close dialog"
+        mat-dialog-close 
+    >
+        <mat-icon style="transform: rotate(45deg);" svgIcon="plus"></mat-icon>
+    </button>
+</div>
