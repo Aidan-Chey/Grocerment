@@ -63,8 +63,6 @@ export class ListNeedComponent implements OnInit, OnDestroy {
   );
 
   constructor(
-    private readonly afAuth: AngularFireAuth,
-    private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
     private readonly snackbar: MatSnackBar,
     private readonly listService: ListService,
