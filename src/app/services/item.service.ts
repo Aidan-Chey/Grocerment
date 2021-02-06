@@ -47,6 +47,7 @@ export class ItemService {
 
   }
 
+  /** Creates a new item */
   public createItem( item: Item ): Observable<unknown> {
 
     const { id, ...toSave } = item;
@@ -74,7 +75,7 @@ export class ItemService {
 
   }
 
-  /**  */
+  /** Updates an existing item */
   public editItem( item: Item ): Observable<boolean | void> {
 
     const { id, ...toSave } = item;
