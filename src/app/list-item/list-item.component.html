@@ -11,7 +11,31 @@
 <div>
     <span>x</span>
     <span>{{item?.quantity || 1}}</span>
-    <button (click)="openEditDialog(item)" mat-icon-button matTooltip="Edit Item" aria-label="Open a dialog for the item with editable fields">
-        <mat-icon color="accent" svgIcon="edit"></mat-icon>
+    <button mat-icon-button
+        matTooltip="item options" 
+        [matMenuTriggerFor]="itemMenu" 
+        aria-label="Reveal additional options related to the item"
+        class="options"
+    >
+        <mat-icon color="accent" svgIcon="options"></mat-icon>
     </button>
+    <mat-menu #itemMenu="matMenu">
+        <button mat-menu-item
+            (click)="toggleObtained(item)"  
+            aria-label="Switch the item between 'have' & 'need' state"
+        >
+            <mat-icon svgIcon="edit"></mat-icon><span>Toggle obtained</span>
+        </button>
+        <button mat-menu-item
+            (click)="openEditDialog(item)"  
+            aria-label="Open a dialog for the item with editable fields"
+        >
+            <mat-icon svgIcon="edit"></mat-icon><span>Edit Item</span>
+        </button>
+        <button mat-menu-item
+            (click)="deleteItem(item)"
+        >
+            <mat-icon svgIcon="edit"></mat-icon><span>Delete item</span>
+        </button>
+    </mat-menu>
 </div>

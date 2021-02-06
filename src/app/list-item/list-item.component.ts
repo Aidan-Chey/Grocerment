@@ -9,6 +9,7 @@ import { Item } from '../models/item.model';
 import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
 import { environment } from 'src/environments/environment';
+import { ItemService } from '../services/item.service';
 
 @Component({
   selector: 'app-list-item',
@@ -22,9 +23,9 @@ export class ListItemComponent implements OnInit {
 
   constructor(
     private readonly matDialog: MatDialog,
-    private readonly firestore: AngularFirestore,
     private readonly snackbar: MatSnackBar,
     private readonly listService: ListService,
+    private readonly itemService: ItemService,
   ) {
   }
 
@@ -33,42 +34,39 @@ export class ListItemComponent implements OnInit {
 
   /** Open item editing dialog */
   openEditDialog( item: Item ) {
+    
     const dialogConfig = Object.assign({ data: item }, editItemConfig);
 
-    this.matDialog.open( EditItemComponent, dialogConfig).afterClosed().subscribe( (res: Item) => {
-      if ( !!res ) this.editItem( res );
-    } );
-  }
-  
-  /** Save edited item to DB */
-  editItem( item: Item ) {
-    const {id, ...toSave} = item;
-    
-    this.listService.listsCollectionRef$.pipe(
-      take(1),
-      switchMap( ref => !!ref ? ref.doc(this.listService.activeList?.id)
-        .collection<Item>('items')
-        .doc(id)
-        .set(toSave) 
-      : EMPTY ),
-      tap( () => { 
-        // Item editied successfully
-        this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
-      } ),
-      catchError( err => {
-        // Failed to edit item
-        const issue = 'Failed to edit item';
-        if ( environment.production ) Sentry.captureException(err);
-        else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
-        return errorSnackbarRef.onAction().pipe( 
-          tap( () => { this.openEditDialog(item); } ),
-        );
-      } )
-    ).subscribe(); 
-  }
+    this.matDialog.open( EditItemComponent, dialogConfig)
+      .afterClosed()
+      .subscribe( (res: Item) => {
+        if ( !!res ) this.editItem( res );
+      } );
 
   }
+
+  /** Save edited item to DB */
+  editItem( item: Item ) {
+    
+    this.itemService.editItem( item ).pipe(
+      tap( res => { if (!!tap) this.openEditDialog(item) } ),
+    ).subscribe(); 
+
+  }
+
+  /** Moves the item between have & need states */
+  toggleObtained( item: Item ) {
+
+    const toSave = { id: item.id, obtained: !item.obtained } as Item;
+
+    this.itemService.editItem( toSave ).subscribe();
+
+  }
+
+  /** deletes the item from DB */
+  deleteItem( item: Item ) {
+
+    this.itemService.deleteitem( item ).subscribe();
 
   }
 
