@@ -46,7 +46,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     debounceTime(50),
     map( ([store,term]) => Array.isArray(store) ? store.reduce( (acc,cur) => {
       // Filter out items with non-matching names
-      if ( !!cur.name.toLowerCase().includes(term.toLowerCase()) ) {
+      if ( !term || !!cur.name.toLowerCase().includes(term.toLowerCase()) ) {
         // add new property to ouput object of item category as an array
         if ( !acc.hasOwnProperty(cur.category) ) acc[cur.category] = [];
         // add the item to the array of the matching category property
