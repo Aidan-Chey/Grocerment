@@ -30,19 +30,31 @@
                 <button mat-menu-item 
                     (click)="setActiveList(list)"
                     matTooltip="Set list as active list to view it's items"
-                >Set Active</button>
+                >
+                    <mat-icon svgIcon="star"></mat-icon>
+                    <span>Set Active</span>
+                </button>
                 <button mat-menu-item 
                     (click)="editListUsers(list)"
                     matTooltip="Edit list's user who have access"
-                >Users</button>
+                >
+                    <mat-icon svgIcon="person"></mat-icon>
+                    <span>Users</span>
+                </button>
                 <button mat-menu-item 
                     (click)="renameList(list)"
                     matTooltip="Change the name of the list"
-                >Rename</button>
+                >
+                    <mat-icon svgIcon="edit"></mat-icon>
+                    <span>Rename</span>
+                </button>
                 <button mat-menu-item 
                     (click)="deleteList(list)"
                     matTooltip="Delete list"
-                >Delete</button>
+                >
+                    <mat-icon svgIcon="trash"></mat-icon>
+                    <span>Delete</span>
+                </button>
             </ng-template>
         </mat-menu>
     </mat-list-item>
