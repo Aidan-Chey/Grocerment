@@ -11,6 +11,7 @@ import { Item } from '../models/item.model';
 import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
 import { List } from '../models/list.model';
+import { ItemService } from '../services/item.service';
 
 @Component({
   selector: 'app-new-item',
@@ -21,12 +22,9 @@ export class NewItemComponent implements OnInit {
 
   @Input() obtained = false;
 
-  constructor( 
-    private readonly firestore: AngularFirestore,
-    private readonly afAuth: AngularFireAuth,
-    private readonly snackbar: MatSnackBar,
+  constructor(
     private readonly matDialog: MatDialog,
-    private readonly listService: ListService,
+    private readonly itemService: ItemService,
    ) {
   }
 
@@ -34,34 +32,11 @@ export class NewItemComponent implements OnInit {
   }
 
   public openDialog( item = { obtained: this.obtained } ) {
+    
     const dialogConfig = Object.assign({ data: item }, editItemConfig);
-    this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().subscribe( (item: Item) => {
-      if ( !!item ) this.createItem(item);
-    });
-
-  }
-
-  /** Attempts to create input item in DB */
-  private createItem(item: Item) {
-    const { id, ...toSave } = item;
-
-    this.listService.listsCollectionRef$.pipe(
-      take(1),
-      switchMap( ref => !!ref && !!this.listService.activeList ? ref.doc(this.listService.activeList.id).collection<Item>('items').add(toSave) : of(undefined) ),
-      catchError( err => {
-        const issue = 'Failed to create item';
-        if ( environment.production ) Sentry.captureException(err);
-        else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } );
-        errorSnackbarRef.onAction().subscribe(() => {
-          this.openDialog(item);
-        });
-        return EMPTY;
-      } )
-    ).subscribe( res => {
-      // Item created successfully
-      this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
-    } );
+    this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
+      switchMap( item => this.itemService.createItem( item ) ),
+    ).subscribe();
 
   }
 
