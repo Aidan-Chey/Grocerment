@@ -31,7 +31,10 @@
             type="button"
             aria-label="Add user to list of users granted access to the list"
             (click)="addUser()"
-        ><mat-icon svgIcon="plus"></mat-icon>Add User</button>
+        >
+            <mat-icon svgIcon="plus"></mat-icon>
+            <span>Add User</span>
+        </button>
         <button mat-button 
             type="button" 
             mat-dialog-close 
@@ -40,7 +43,7 @@
         <button 
             mat-button 
             type="submit"
-            aria-label="Close dialog saving list of users"
+            aria-label="Close dialog, saving list of users"
         >Save</button>
     </mat-dialog-actions>
 </form>
