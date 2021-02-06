@@ -2,11 +2,13 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, take } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
-import { List } from '../models/list.model';
+import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-item',
@@ -37,23 +39,37 @@ export class ListItemComponent implements OnInit {
       if ( !!res ) this.editItem( res );
     } );
   }
+  
   /** Save edited item to DB */
   editItem( item: Item ) {
     const {id, ...toSave} = item;
     
     this.listService.listsCollectionRef$.pipe(
       take(1),
-      map( ref => ref?.doc(this.listService.activeList?.id).collection<Item>('items').doc(id) ),
-    ).subscribe( itemRef => !!itemRef ? itemRef.set(toSave).then( res => {
-      // Item editied successfully
-      this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'top' } );
-    }).catch( err => {
-      // Failed to edit item
-      const errorSnackbarRef = this.snackbar.open( 'Failed to edit item', 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
-      errorSnackbarRef.onAction().subscribe(() => {
-        this.openEditDialog(item);
-      });
-    }) : undefined );
+      switchMap( ref => !!ref ? ref.doc(this.listService.activeList?.id)
+        .collection<Item>('items')
+        .doc(id)
+        .set(toSave) 
+      : EMPTY ),
+      tap( () => { 
+        // Item editied successfully
+        this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
+      } ),
+      catchError( err => {
+        // Failed to edit item
+        const issue = 'Failed to edit item';
+        if ( environment.production ) Sentry.captureException(err);
+        else console.error(issue + ' |', err);
+        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        return errorSnackbarRef.onAction().pipe( 
+          tap( () => { this.openEditDialog(item); } ),
+        );
+      } )
+    ).subscribe(); 
+  }
+
+  }
+
   }
 
 }
