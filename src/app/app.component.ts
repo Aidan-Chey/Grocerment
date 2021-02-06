@@ -30,6 +30,7 @@ export class AppComponent implements AfterViewInit {
     this.iconRegistry.addSvgIcon( 'plus', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plus.svg') );
     this.iconRegistry.addSvgIcon( 'options', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/options.svg') );
     this.iconRegistry.addSvgIcon( 'list', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/list.svg') );
+    this.iconRegistry.addSvgIcon( 'trash', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/trash.svg') );
   }
 
   ngAfterViewInit() {
