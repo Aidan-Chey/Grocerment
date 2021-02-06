@@ -6,7 +6,7 @@ import { EMPTY, of, } from 'rxjs';
 import { List } from '../models/list.model';
 import { ListService } from '../services/list.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { confirmData, ConfirmDialog } from '../confirm/confirm.dialog';
+import { ConfirmData, ConfirmDialog } from '../confirm/confirm.dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
 import { RenameDialog } from './rename/rename.dialog';
@@ -64,7 +64,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	  content: `You are about to delete the list ${list.name}? Everyone will loose access to the list and it's items will be deleted; this data will not be recoverable!`,
 	  accept: 'Delete list',
 	  decline: 'Cancel',
-	} as confirmData;
+	} as ConfirmData;
 
 	// activate dialog as check
 	this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
