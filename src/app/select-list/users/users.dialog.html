@@ -7,7 +7,6 @@
             *ngFor="let control of usersArray.controls; index as i">
             <mat-label>User</mat-label>
             <input matInput #user
-                cdkFocusInitial
                 #filterInput 
                 type="text"
                 [formControl]="$any(control)" 
@@ -28,6 +27,7 @@
     <mat-dialog-actions align="end">
         <button mat-button
             class="adduser"
+            cdkFocusInitial
             type="button"
             aria-label="Add user to list of users granted access to the list"
             (click)="addUser()"

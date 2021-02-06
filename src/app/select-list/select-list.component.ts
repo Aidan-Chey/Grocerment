@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, filter, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { EMPTY, of, } from 'rxjs';
@@ -11,13 +10,12 @@ import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
 import { RenameDialog } from './rename/rename.dialog';
 import { UsersDialog } from './users/users.dialog';
-import { AngularFireAuth } from '@angular/fire/auth';
 
 export const selectListConfig = {
 	minWidth: '5em',
 	width: '95vw',
-  maxWidth: '50em',
-  maxHeight: '95vh',
+	maxWidth: '50em',
+	maxHeight: '95vh',
 };
 
 @Component({
@@ -33,8 +31,6 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   );
 
   constructor(
-	private readonly firestore: AngularFirestore,
-	private readonly afAuth: AngularFireAuth,
 	private readonly snackbar: MatSnackBar,
 	public readonly listService: ListService,
 	public readonly dialog: MatDialog,
