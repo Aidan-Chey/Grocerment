@@ -59,7 +59,9 @@ export class ListItemComponent implements OnInit {
 
     const toSave = { id: item.id, obtained: !item.obtained } as Item;
 
-    this.itemService.editItem( toSave ).subscribe();
+    this.itemService.editItem( toSave ).pipe(
+      tap( res => { if (!!res) this.toggleObtained(item) } ),
+    ).subscribe();
 
   }
 
