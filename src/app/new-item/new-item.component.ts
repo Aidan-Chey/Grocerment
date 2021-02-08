@@ -1,16 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { combineLatest, EMPTY, of } from 'rxjs';
-import { catchError, switchMap, take } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { EMPTY } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
-import { Item } from '../models/item.model';
-import * as Sentry from '@sentry/angular';
-import { ListService } from '../services/list.service';
-import { List } from '../models/list.model';
 import { ItemService } from '../services/item.service';
 
 @Component({

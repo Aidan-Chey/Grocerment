@@ -8,7 +8,6 @@ import { of, combineLatest, EMPTY } from 'rxjs';
 import { catchError, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
-import { List } from '../models/list.model';
 import { Measurement } from '../models/measurement.model';
 import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
