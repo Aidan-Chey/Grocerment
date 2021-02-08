@@ -1,15 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY } from 'rxjs';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
-import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
-import { environment } from 'src/environments/environment';
 import { ItemService } from '../services/item.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-item',
