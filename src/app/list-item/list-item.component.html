@@ -1,5 +1,5 @@
 <ng-content></ng-content>
-<div>{{item?.name || 'No item name'}}</div>
+<div class="name">{{item?.name || 'No item name'}}</div>
 <div *ngIf="!!item?.measurement && !!item?.amount">
     <span *ngIf="!!item?.estimated">~</span>
     <span>{{item.amount}}</span>

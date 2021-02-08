@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '../edit-item/edit-item.component';
 import { Item } from '../models/item.model';
-import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
 import { tap } from 'rxjs/operators';
 
@@ -19,8 +17,6 @@ export class ListItemComponent implements OnInit {
 
   constructor(
     private readonly matDialog: MatDialog,
-    private readonly snackbar: MatSnackBar,
-    private readonly listService: ListService,
     private readonly itemService: ItemService,
   ) {
   }
