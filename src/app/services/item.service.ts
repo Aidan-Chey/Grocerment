@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
 import { ListService } from './list.service';
 import * as Sentry from '@sentry/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+
 
 @Injectable({
   providedIn: 'root'
@@ -125,10 +126,6 @@ export class ItemService {
 
         return batch.commit()
       } ),
-      tap( () => { 
-        // Item editied successfully
-        this.snackbar.open( 'Items edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
-      } ),
       catchError( err => {
         // Failed to edit item
         const issue = 'Failed to edit items';
@@ -136,6 +133,11 @@ export class ItemService {
         else console.error(issue + ' |', err);
         const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
         return errorSnackbarRef.onAction()
+      } ),
+      map( () => { 
+        // Item editied successfully
+        this.snackbar.open( 'Items edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
+        return undefined;
       } ),
     );
 

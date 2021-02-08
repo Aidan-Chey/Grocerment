@@ -1,23 +1,70 @@
 <div>
-  <ng-container *ngIf="(categories$ | async) as categories">
+  <ng-container *ngIf="{ categories: (categories$ | async), categorizedItems: (itemsCatagorizedFiltered$ | async) } as results">
     <mat-accordion class="categories">
-      <mat-expansion-panel class="category" *ngFor="let category of categories">
-        <mat-expansion-panel-header>
-          <mat-panel-title>{{category}}</mat-panel-title>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-          <ng-container *ngIf="(itemsCatagorizedFiltered$ | async) as items">
-            <ul class="items">
-              <li
-                class="item"
-                *ngFor="let item of items[category]"
-                tabindex="0"
-              ><app-list-item [item]="item"></app-list-item></li>
-            </ul>
-          </ng-container>
-        </ng-template>
-      </mat-expansion-panel>
+      <ng-container *ngFor="let category of results.categories">
+        <ng-container *ngIf="!!results.categorizedItems">
+          <mat-expansion-panel class="category" *ngIf="results.categorizedItems[category] as items">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{category}}</mat-panel-title>
+              <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <ul class="items">
+                <li
+                  class="item"
+                  *ngFor="let item of (items || [])"
+                  tabindex="0"
+                >
+                  <app-list-item [item]="item">
+                    <button mat-mini-fab
+                      color="accent"
+                      (click)="moveToCart(item)"
+                      type="button"
+                      matTooltip="Move item to shopping cart"
+                      aria-label="Moves item to shopping cart for bulk toogle of item's obtained state"
+                    ><mat-icon svgIcon="cart"></mat-icon></button>
+                  </app-list-item>
+                </li>
+              </ul>
+            </ng-template>
+          </mat-expansion-panel>
+        </ng-container>
+      </ng-container>
     </mat-accordion>
   </ng-container>
 </div>
 <app-new-item [obtained]="false"></app-new-item>
+<div *ngIf="(cartItemsFiltered$ | async) as items">
+  <mat-expansion-panel *ngIf="!!items?.length">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Shopping Cart</mat-panel-title>
+      <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <ng-container >
+        <ul class="items">
+          <li
+            class="item"
+            *ngFor="let item of items"
+            tabindex="0"
+          >
+            <app-list-item [item]="item">
+              <button mat-mini-fab
+                (click)="removeFromCart(item)"
+                type="button"
+                matTooltip="Remove item from shopping cart"
+              ><mat-icon class="rotate-45" svgIcon="plus"></mat-icon></button>
+            </app-list-item>
+          </li>
+        </ul>
+      </ng-container>
+      <button mat-raised-button
+        class="full-width checkout"
+        color="primary"
+        type="button"
+        (click)="checkout()"
+        matTooltip="Checkout all cart items moving them to the 'have' list"
+      >Checkout</button>
+    </ng-template>
+  </mat-expansion-panel>
+</div>
