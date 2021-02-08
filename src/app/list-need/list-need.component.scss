@@ -3,7 +3,7 @@
   display: flex;
   flex-flow: column nowrap;
 
-  > div {
+  > div:first-child {
     flex: 1 1 auto;
   }
 }
@@ -27,4 +27,12 @@ ul.items {
     background-color: hsl(0 0% 100% / 0.05);
     outline: none;
   }
+}
+
+mat-panel-description {
+  justify-content: flex-end;
+}
+
+.checkout {
+  margin-top: 1em;
 }
