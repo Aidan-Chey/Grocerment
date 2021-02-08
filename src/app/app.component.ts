@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewInit {
     this.iconRegistry.addSvgIcon( 'copy', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/copy.svg') );
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
     this.iconRegistry.addSvgIcon( 'person', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/person.svg') );
-    this.iconRegistry.addSvgIcon( 'need', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cart.svg') );
+    this.iconRegistry.addSvgIcon( 'cart', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cart.svg') );
     this.iconRegistry.addSvgIcon( 'have', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/refrigerator.svg') );
     this.iconRegistry.addSvgIcon( 'search', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/magnifying-glass.svg') );
     this.iconRegistry.addSvgIcon( 'edit', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pencil.svg') );
