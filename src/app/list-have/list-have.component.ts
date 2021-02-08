@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { combineLatest } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auditTime, catchError, debounceTime, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { auditTime, catchError, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -11,7 +9,6 @@ import { EMPTY } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import * as Sentry from "@sentry/angular";
 import { ListService } from '../services/list.service';
-import { List } from '../models/list.model';
 
 @Component({
   selector: 'app-list-have',
@@ -65,8 +62,6 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   );
 
   constructor(
-    private readonly afAuth: AngularFireAuth,
-    private readonly firestore: AngularFirestore,
     private readonly filterService: FilterService,
     private readonly snackbar: MatSnackBar,
     private readonly listService: ListService,
