@@ -35,7 +35,7 @@ export class NewItemComponent implements OnInit {
     
     const dialogConfig = Object.assign({ data: item }, editItemConfig);
     this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
-      switchMap( item => this.itemService.createItem( item ) ),
+      switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
     ).subscribe();
 
   }
