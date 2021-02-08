@@ -6,6 +6,7 @@ import { Item } from '../models/item.model';
 import { ListService } from './list.service';
 import * as Sentry from '@sentry/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +95,43 @@ export class ItemService {
       catchError( err => {
         // Failed to edit item
         const issue = 'Failed to edit item';
+        if ( environment.production ) Sentry.captureException(err);
+        else console.error(issue + ' |', err);
+        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        return errorSnackbarRef.onAction()
+      } ),
+    );
+
+  }
+
+  /** Update many items at once */
+  public batchEdit( items: Item[], update: Item ) {
+
+    const { id, ...toSave } = update;
+    const toUpdate = items.map( i => i.id );
+    const batch = firebase.firestore().batch();
+    
+    return this.listService.listsCollectionRef$.pipe(
+      take(1),
+      switchMap( ref => {
+        if ( !ref ) return EMPTY;
+
+        const itemsRef = ref.doc(this.listService.activeList?.id)
+        .collection<Item>('items');
+        
+        toUpdate.forEach( itemID => {
+          batch.update( itemsRef.doc(itemID).ref, toSave );
+        } );
+
+        return batch.commit()
+      } ),
+      tap( () => { 
+        // Item editied successfully
+        this.snackbar.open( 'Items edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
+      } ),
+      catchError( err => {
+        // Failed to edit item
+        const issue = 'Failed to edit items';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
         const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
