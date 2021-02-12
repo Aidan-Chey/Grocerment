@@ -5,8 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
-import { take } from 'rxjs/operators';
-import { MatButton } from '@angular/material/button';
+import { filter, switchMap, tap } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-show-user-id',
@@ -31,36 +31,33 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.shareButton?.nativeElement.addEventListener( 'click', event => {
-      this.afAuth.user.pipe( take(1) ).subscribe( user => {
-        if ( !user ) return;
-        if ( !!navigator.share ) {
-          navigator.share({
-            title: 'Grocerment user UID',
-            text: user.uid,
-          }).then(() => {
-            this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'top' } );
-          })
-          .catch( err => {
-            const issue = 'Failed to copy';
-            if ( environment.production ) Sentry.captureException(err);
-            else console.error(issue + ' |', err);
-            this.snackbar.open( issue, undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
-          });
-          return;
-        }
+    if( !!this.shareButton ) fromEvent( this.shareButton.nativeElement , 'click' ).pipe(
+      tap( () => { this.dialogRef.close(); } ),
+      switchMap( () => this.afAuth.user ),
+    ).subscribe( (user) => {
+      if ( !user ) return;
+      if ( !!navigator.share ) {
+        navigator.share({
+          title: 'Grocerment user UID',
+          text: user.uid,
+        }).then(() => {
+          this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'top' } );
+        }).catch( err => {
+          const issue = 'Failed to share';
+          if ( environment.production ) Sentry.captureException(err);
+          else console.error(issue + ' |', err);
+          this.snackbar.open( issue, undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
+        });
+      }
+      else {
         if ( !!this.clipboard.copy(user.uid) ) {
           this.snackbar.open( 'Copied', undefined, { duration: 1000, verticalPosition: 'top' } );
-          this.dialogRef.close();
         } else {
           this.snackbar.open( 'Failed to copy', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
         }
-      } );
-    } );
-  }
+      }
 
-  public addToClipboard( event: Event, toCopy: string ) {
-    
+    } );
   }
 
 }
