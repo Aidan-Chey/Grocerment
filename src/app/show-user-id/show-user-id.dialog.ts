@@ -32,11 +32,10 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if( !!this.shareButton ) fromEvent( this.shareButton.nativeElement , 'click' ).pipe(
-      tap( () => { this.dialogRef.close(); } ),
       switchMap( () => this.afAuth.user ),
     ).subscribe( (user) => {
-      if ( !user ) return;
-      if ( !!navigator.share ) {
+      if ( !user )  this.snackbar.open( 'No user loaded', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
+      else if ( !!navigator.share ) {
         navigator.share({
           title: 'Grocerment user UID',
           text: user.uid,
@@ -50,12 +49,11 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
         });
       }
       else {
-        if ( !!this.clipboard.copy(user.uid) ) {
-          this.snackbar.open( 'Copied', undefined, { duration: 1000, verticalPosition: 'top' } );
-        } else {
-          this.snackbar.open( 'Failed to copy', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
-        }
+        if ( !!this.clipboard.copy(user.uid) ) this.snackbar.open( 'Copied', undefined, { duration: 1000, verticalPosition: 'top' } );
+        else this.snackbar.open( 'Failed to copy', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
       }
+      
+      this.dialogRef.close();
 
     } );
   }
