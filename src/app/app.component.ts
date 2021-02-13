@@ -20,6 +20,7 @@ export class AppComponent implements AfterViewInit {
     private readonly iconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
   ) {
+    // Register svg Icons used in app
     this.iconRegistry.addSvgIcon( 'copy', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/copy.svg') );
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
     this.iconRegistry.addSvgIcon( 'person', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/person.svg') );
