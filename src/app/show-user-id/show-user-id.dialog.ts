@@ -39,7 +39,7 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
         navigator.share({
           title: 'Grocerment user UID',
           text: user.uid,
-          url: 'https://grocerment.web.app/lists',
+          url: 'https://grocerment.aidancheyd.info/lists',
         }).then(() => {
           this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'top' } );
         }).catch( err => {
