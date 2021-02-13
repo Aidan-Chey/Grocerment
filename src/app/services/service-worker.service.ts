@@ -25,6 +25,7 @@ export class ServiceWorkerService {
 
     // Display a popup dialog when ever an update is avaliable
     this.updateAvaliable$.pipe(
+      filter( avaliable => !!avaliable ),
       switchMap( () => {
         const data = {
           title: 'App Update Avaliable!',
