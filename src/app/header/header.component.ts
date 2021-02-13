@@ -6,6 +6,7 @@ import { map, shareReplay, filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { FilterService } from '../services/filter.service';
 import { ListService } from '../services/list.service';
+import { ServiceWorkerService } from '../services/service-worker.service';
 import { ShowUserIDDialog } from '../show-user-id/show-user-id.dialog';
 
 @Component({
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit {
     public readonly afAuth: AngularFireAuth,
     public readonly dialog: MatDialog,
     public readonly authService: AuthService,
+    public readonly updateService: ServiceWorkerService,
   ) {
   }
 

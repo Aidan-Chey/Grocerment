@@ -2,6 +2,10 @@
   <ng-container *ngIf="(afAuth.user | async); else noLoggedIn">
     <span id="header-title">{{pageTitle$ | async}}</span>
     <span class="spacer"></span>
+    <button mat-stroked-button
+      *ngIf="!!(updateService.updateAvaliable$ | async)"
+      (click)="updateService.reloadApp()"
+    >Update</button>
     <app-filter 
       *ngIf="!!(filterService.filterable$ | async)" 
       (filter)="filterService.filterTerm = $event"
