@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
-import { filter, switchMap, tap } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
+import { first, switchMap, takeUntil } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-show-user-id',
@@ -14,7 +14,9 @@ import { fromEvent } from 'rxjs';
   styleUrls: ['./show-user-id.dialog.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ShowUserIDDialog implements OnInit, AfterViewInit {
+export class ShowUserIDDialog implements OnInit, AfterViewInit, OnDestroy {
+
+  private readonly componentDestruction$ = new Subject();
 
   @ViewChild('shareButton', { read: ElementRef }) shareButton?: ElementRef<HTMLButtonElement>;
 
@@ -32,7 +34,8 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if( !!this.shareButton ) fromEvent( this.shareButton.nativeElement , 'click' ).pipe(
-      switchMap( () => this.afAuth.user ),
+      takeUntil(this.componentDestruction$),
+      switchMap( () => this.afAuth.user.pipe( first() ) ),
     ).subscribe( (user) => {
       if ( !user )  this.snackbar.open( 'No user loaded', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
       else if ( !!navigator.share ) {
@@ -62,6 +65,10 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
       this.dialogRef.close();
 
     } );
+  }
+
+  ngOnDestroy() {
+    this.componentDestruction$.next();
   }
 
 }
