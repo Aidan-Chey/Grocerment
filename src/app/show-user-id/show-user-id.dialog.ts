@@ -42,7 +42,8 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit {
         }).then(() => {
           this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'top' } );
         }).catch( err => {
-          if ( err.toLowerCase().includes('share canceled') ) {
+          console.debug(err, err.message, err.toString());
+          if ( err.message.toLowerCase().includes('share canceled') ) {
             // Triggers when the share is canceled or copied
             this.snackbar.open( 'Share canceled', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
           } else {
