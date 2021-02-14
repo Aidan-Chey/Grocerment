@@ -17,6 +17,18 @@ export class ServiceWorkerService {
     public readonly updates: SwUpdate,
     public readonly dialog: MatDialog,
   ) {
+
+    if ( !updates.isEnabled ) console.info( 'Service worker not enabled' );
+
+    // Debug logs for service worker activity
+    updates.available.subscribe(event => {
+      console.log('current version is', event.current);
+      console.log('available version is', event.available);
+    });
+    updates.activated.subscribe(event => {
+      console.log('old version was', event.previous);
+      console.log('new version is', event.current);
+    });
  
     // Watch for avaiable service worker updates
     updates.available.subscribe(event => {
