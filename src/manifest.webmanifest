@@ -8,8 +8,10 @@
   "start_url": "./",
   "icons": [
     {
-        "src": "assets/icons/google-touch-icon.png",
-        "sizes": "512x512"
+      "src": "assets/icons/google-touch-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "path/to/maskable_icon.png",
