@@ -32,7 +32,7 @@ export class ListHaveComponent implements OnInit, OnDestroy {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);
       else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       return EMPTY;
     } ),
     shareReplay(1),
