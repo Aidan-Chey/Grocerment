@@ -1,8 +1,6 @@
-<h2 mat-dialog-title>Edit List Users</h2>
 <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
-        <mat-form-field 
-            color="accent" 
+        <mat-form-field
             [hintLabel]="(afAuth.user | async)?.uid === control.value ? 'Yourself' : ''"
             *ngFor="let control of usersArray.controls; index as i">
             <mat-label>User</mat-label>
@@ -35,15 +33,18 @@
             <mat-icon svgIcon="plus"></mat-icon>
             <span>Add User</span>
         </button>
-        <button mat-button 
-            type="button" 
-            mat-dialog-close 
-            aria-label="Close dialog without changing list users"
-        >Cancel</button>
-        <button 
-            mat-button 
+        <button mat-raised-button 
+            color="accent"
             type="submit"
             aria-label="Close dialog, saving list of users"
         >Save</button>
     </mat-dialog-actions>
 </form>
+
+<button mat-icon-button 
+  color="accent"
+  matTooltip="Cancel"
+  class="button-cancel" 
+  aria-label="Close the item edit dialog, canceling the action"
+  mat-dialog-close
+><mat-icon class="rotate-45" svgIcon="plus"></mat-icon></button>
