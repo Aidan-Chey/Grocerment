@@ -4,6 +4,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
+import { ColorSchemeService } from './services/color-scheme.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,10 @@ export class AppComponent implements AfterViewInit {
     public readonly afAuth: AngularFireAuth,
     private readonly iconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
+    private readonly colorSchemeService: ColorSchemeService,
   ) {
+    this.colorSchemeService.load();
+
     // Register svg Icons used in app
     this.iconRegistry.addSvgIcon( 'copy', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/copy.svg') );
     this.iconRegistry.addSvgIcon( 'menu', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/burger.svg') );
