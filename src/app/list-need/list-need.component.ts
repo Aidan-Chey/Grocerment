@@ -17,7 +17,6 @@ import { ItemService } from '../services/item.service';
   styleUrls: ['./list-need.component.scss']
 })
 export class ListNeedComponent implements OnInit, OnDestroy {
-  public readonly cartItems$ = new BehaviorSubject<Item[]>([]);
 
   /** List of items from the store */
   private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe( // Get logged in user UID
@@ -38,6 +37,21 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     } ),
     shareReplay(1),
   );
+
+  private readonly cartItemRefs$ = new BehaviorSubject<string[]>([]);
+  public readonly cartItems$ = combineLatest([
+    this.cartItemRefs$,
+    this.itemsStore$,
+  ]).pipe(
+    map( ([references,items]) => Array.isArray(references) && Array.isArray(items) ? references.reduce( (acc,cur) => {
+      const foundItem = items.find( item => item.id === cur );
+      if ( !!foundItem ) acc.push(foundItem);
+      return acc
+    }, [] as Item[] ) : [] ),
+    shareReplay(1),
+  );
+  private readonly cartitemsLabel = 'basket';
+  private readonly componentDestruction$ = new Subject();
 
   /** Filtered list of items */
   public readonly itemsCatagorizedFiltered$ = combineLatest([
@@ -100,9 +114,11 @@ export class ListNeedComponent implements OnInit, OnDestroy {
 
   /** Moves item out of main list for later edit to toggle it's obtained state */
   public moveToCart( toAdd: Item ) {
-    const itemCart = this.cartItems$.getValue();
-    itemCart.push(toAdd);
-    this.cartItems$.next( itemCart );
+    const itemCart = this.cartItemRefs$.getValue();
+    if ( !!toAdd.id ) {
+      itemCart.push(toAdd.id);
+      this.cartItemRefs$.next( itemCart );
+    }
   }
 
   /** Begins the checkout process for bulk editing the cart items */
@@ -111,14 +127,15 @@ export class ListNeedComponent implements OnInit, OnDestroy {
       // Error occured and user opted to retry
       if ( !!res ) this.checkout();
       // Operation completed successfully
-      else this.cartItems$.next([]);
+      else this.cartItemRefs$.next([]);
+
     } );
   }
   
   /** Removes item from shopping cart */
   public removeFromCart( toRemove: Item ) {
-    const itemCart = this.cartItems$.getValue();
-    this.cartItems$.next( itemCart.filter( item => item.id !== toRemove.id ) );
+    const itemCart = this.cartItemRefs$.getValue();
+    this.cartItemRefs$.next( itemCart.filter( item => item !== toRemove.id ) );
   }
 
 }
