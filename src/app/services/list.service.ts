@@ -34,7 +34,6 @@ export class ListService {
     try {
       const storedlist = localStorage.getItem('activeList');
       if ( !!storedlist && storedlist !== 'undefined' ) this.activeListSubject.next(JSON.parse(storedlist));
-      else this.newList('Personal', true);
     } catch (err) {
       const issue = 'Failed to retrieving active list';
       if ( environment.production ) Sentry.captureException(err);
@@ -49,7 +48,6 @@ export class ListService {
         // Select a new active list
         if ( !!Array.isArray(lists) && !!lists.length ) this.activeListSubject.next(lists[0]);
         // Create a new list
-        else this.newList('Personal', true, true);
       } );
     }
     // Saves active list to localstorage for retrieval on init
