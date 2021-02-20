@@ -78,4 +78,9 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     this.filterService.filterable = false;
   }
 
+  /** Tracks items by their ID */
+  public trackByItemID(index:number, el:any): number {
+    return el.id;
+  }
+
 }
