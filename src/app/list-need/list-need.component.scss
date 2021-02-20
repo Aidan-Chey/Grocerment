@@ -10,10 +10,10 @@
 
 .category {
   margin: 0 0.2em;
+}
 
-  mat-panel-title {
-    text-decoration: underline;
-  }
+mat-panel-title {
+  text-decoration: underline;
 }
 
 .category:not(:first-child) {
