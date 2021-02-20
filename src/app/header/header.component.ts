@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { map, shareReplay, filter } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { ColorSchemeService } from '../services/color-scheme.service';
 import { FilterService } from '../services/filter.service';
 import { ListService } from '../services/list.service';
 import { ServiceWorkerService } from '../services/service-worker.service';
@@ -43,6 +44,7 @@ export class HeaderComponent implements OnInit {
     public readonly dialog: MatDialog,
     public readonly authService: AuthService,
     public readonly updateService: ServiceWorkerService,
+    public readonly colorSchemeService: ColorSchemeService,
   ) {
   }
 

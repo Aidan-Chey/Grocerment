@@ -27,6 +27,10 @@
     <mat-icon svgIcon="person"></mat-icon>
     <span>logout</span>
   </button>
+  <button mat-menu-item (click)="colorSchemeService.toggle()">
+    <mat-icon svgIcon="star"></mat-icon>
+    <span>Switch theme</span>
+  </button>
   <button mat-menu-item (click)="showUserID()" *ngIf="(afAuth.user | async)">
     <mat-icon svgIcon="person"></mat-icon>
     <span>Show user ID</span>
