@@ -46,8 +46,8 @@ export class ListService {
         takeUntil(this.activeListSubject.asObservable()),
       ).subscribe( lists => {
         // Select a new active list
-        if ( !!Array.isArray(lists) && !!lists.length ) this.activeListSubject.next(lists[0]);
-        // Create a new list
+        if ( !this.activeListSubject.getValue() && !!Array.isArray(lists) && !!lists.length ) 
+          this.activeListSubject.next(lists[0]);
       } );
     }
     // Saves active list to localstorage for retrieval on init
