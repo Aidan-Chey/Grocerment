@@ -34,13 +34,13 @@ export class ItemService {
         const issue = 'Failed to delete item';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'bottom', panelClass: 'error' } );
         return errorSnackbarRef.onAction().pipe( 
           tap( () => { this.deleteitem(item); } ),
         );
       } ),
       switchMap( () => {
-        const errorSnackbarRef = this.snackbar.open( 'Item Deleted', 'Undo', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        const errorSnackbarRef = this.snackbar.open( 'Item Deleted', 'Undo', { duration: 3000, verticalPosition: 'bottom', panelClass: 'error' } );
         return errorSnackbarRef.onAction().pipe( 
           switchMap( () => this.createItem(item) ),
         );
@@ -64,14 +64,14 @@ export class ItemService {
         const issue = 'Failed to create item';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'top' } );
+        const errorSnackbarRef = this.snackbar.open( 'Failed to create item', 'Retry', { duration: 3000, verticalPosition: 'bottom' } );
         return errorSnackbarRef.onAction().pipe(
           switchMap( () => this.createItem(toSave) ),
         );
       } ),
       tap( () => {
         // Item created successfully
-        this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'top' } );
+        this.snackbar.open( 'Item created', undefined, { duration: 1000, verticalPosition: 'bottom' } );
       } ),
     )
 
@@ -91,14 +91,14 @@ export class ItemService {
       : EMPTY ),
       tap( () => { 
         // Item editied successfully
-        this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
+        this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 
       } ),
       catchError( err => {
         // Failed to edit item
         const issue = 'Failed to edit item';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'bottom', panelClass: 'error' } );
         return errorSnackbarRef.onAction()
       } ),
     );
@@ -131,12 +131,12 @@ export class ItemService {
         const issue = 'Failed to edit items';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'top', panelClass: 'error' } );
+        const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'bottom', panelClass: 'error' } );
         return errorSnackbarRef.onAction()
       } ),
       map( () => { 
         // Item editied successfully
-        this.snackbar.open( 'Items edited', undefined, { duration: 1000, verticalPosition: 'top' } ); 
+        this.snackbar.open( 'Items edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 
         return undefined;
       } ),
     );

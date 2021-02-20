@@ -24,7 +24,7 @@ export class GetMeasurementPipe implements PipeTransform {
         const issue = 'Failed to retrieve measurement';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
         return EMPTY;
       } ),
       map( doc => {

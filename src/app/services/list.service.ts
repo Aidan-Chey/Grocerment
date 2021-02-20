@@ -38,7 +38,7 @@ export class ListService {
       const issue = 'Failed to retrieving active list';
       if ( environment.production ) Sentry.captureException(err);
       else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
     }
     // Looks for a list to set as the active list on app init
     if ( !this.activeListSubject.getValue() ) {
@@ -75,7 +75,7 @@ export class ListService {
         const issue = 'Failed to save active list';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       }
     } );
   }
@@ -93,7 +93,7 @@ export class ListService {
         const issue = 'Failed to create list';
         if ( environment.production ) Sentry.captureException(err);
         else console.error(issue + ' |', err);
-        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+        this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
         return EMPTY;
       } ),
       switchMap( res => !!res ? from(res.get()) : EMPTY )
@@ -105,7 +105,7 @@ export class ListService {
         this.activeListSubject.next({ id, ...listData } as List);
       }
       // List created successfully
-      this.snackbar.open( 'List created', undefined, { duration: 1000, verticalPosition: 'top' } );
+      this.snackbar.open( 'List created', undefined, { duration: 1000, verticalPosition: 'bottom' } );
     } );
   }
 

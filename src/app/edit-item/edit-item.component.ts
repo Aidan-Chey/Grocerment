@@ -46,7 +46,7 @@ export class EditItemComponent implements OnInit {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);
       else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       return EMPTY;
     } ),
   );
@@ -56,7 +56,7 @@ export class EditItemComponent implements OnInit {
       const issue = 'Failed to retrieve measurements';
       if ( environment.production ) Sentry.captureException(err);
       else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       return EMPTY;
     } ),
     // Adds extra entry to list of measurements for clearing selection

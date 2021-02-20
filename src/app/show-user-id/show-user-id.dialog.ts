@@ -37,25 +37,25 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.componentDestruction$),
       switchMap( () => this.afAuth.user.pipe( first() ) ),
     ).subscribe( (user) => {
-      if ( !user )  this.snackbar.open( 'No user loaded', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
+      if ( !user )  this.snackbar.open( 'No user loaded', undefined, { duration: 2000, verticalPosition: 'bottom', panelClass: "error" } );
       else if ( !!navigator.share ) {
         navigator.share({
           title: 'Grocerment user UID',
           text: user.uid,
         }).then(() => {
-          this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'top' } );
+          this.snackbar.open( 'Shared', undefined, { duration: 1000, verticalPosition: 'bottom' } );
         }).catch( err => {
           if ( !err.message.toLowerCase().includes('share canceled') ) {
             const issue = 'Failed to share';
             if ( environment.production ) Sentry.captureException(err);
             else console.error(issue + ' |', err);
-            this.snackbar.open( issue, undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
+            this.snackbar.open( issue, undefined, { duration: 2000, verticalPosition: 'bottom', panelClass: "error" } );
           }
         });
       }
       else {
-        if ( !!this.clipboard.copy(user.uid) ) this.snackbar.open( 'Copied', undefined, { duration: 1000, verticalPosition: 'top' } );
-        else this.snackbar.open( 'Failed to copy', undefined, { duration: 2000, verticalPosition: 'top', panelClass: "error" } );
+        if ( !!this.clipboard.copy(user.uid) ) this.snackbar.open( 'Copied', undefined, { duration: 1000, verticalPosition: 'bottom' } );
+        else this.snackbar.open( 'Failed to copy', undefined, { duration: 2000, verticalPosition: 'bottom', panelClass: "error" } );
       }
       
       this.dialogRef.close();

@@ -72,12 +72,12 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 		const issue = 'Failed to delete list';
 		if ( environment.production ) Sentry.captureException(err);
 		else console.error(issue + ' |', err);
-		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
 		return EMPTY;
 	  } )
 	).subscribe( () => {
 	  // List deleted successfully
-	  this.snackbar.open( 'List deleted', undefined, { duration: 1000, verticalPosition: 'top' } );
+	  this.snackbar.open( 'List deleted', undefined, { duration: 1000, verticalPosition: 'bottom' } );
 	} );
   }
 
@@ -98,12 +98,12 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 		const issue = 'Failed to rename list';
 		if ( environment.production ) Sentry.captureException(err);
 		else console.error(issue + ' |', err);
-		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
 		return EMPTY;
 	  } )
 	).subscribe( () => {
 	  // List renamed successfully
-	  this.snackbar.open( 'List renamed', undefined, { duration: 1000, verticalPosition: 'top' } );
+	  this.snackbar.open( 'List renamed', undefined, { duration: 1000, verticalPosition: 'bottom' } );
 	} );
 	
   }
@@ -125,12 +125,12 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 		const issue = 'Failed to save list users';
 		if ( environment.production ) Sentry.captureException(err);
 		else console.error(issue + ' |', err);
-		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'top' } );
+		this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
 		return EMPTY;
 	  } )
 	).subscribe( () => {
 	  // List renamed successfully
-	  this.snackbar.open( 'List users saved', undefined, { duration: 1000, verticalPosition: 'top' } );
+	  this.snackbar.open( 'List users saved', undefined, { duration: 1000, verticalPosition: 'bottom' } );
 	} );
   } 
 
