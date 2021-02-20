@@ -1,6 +1,5 @@
 
-<button mat-icon-button 
-  color="accent" 
+<button mat-icon-button
   (click)="openFilter($event)"
   aria-label="Opens an input field for input to filter active list of items"
   matTooltip="Filter active list"
@@ -11,8 +10,7 @@
 <mat-form-field #fieldField 
   appearance="legacy" 
   *ngIf="!!filterOpen" 
-  floatLabel="never" 
-  color="accent"
+  floatLabel="never"
 >
   <input matInput 
     #filterInput 
