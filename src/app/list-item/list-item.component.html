@@ -23,9 +23,9 @@
     <mat-menu #itemMenu="matMenu">
         <button mat-menu-item
             (click)="toggleObtained(item)"  
-            aria-label="Switch the item between 'have' & 'need' state"
+            matTooltip="Switch the item between 'have' & 'need' state"
         >
-            <mat-icon svgIcon="edit"></mat-icon><span>Toggle obtained</span>
+            <mat-icon svgIcon="edit"></mat-icon><span>Toggle Obtained</span>
         </button>
         <button mat-menu-item
             (click)="openEditDialog(item)"  
@@ -36,7 +36,7 @@
         <button mat-menu-item
             (click)="deleteItem(item)"
         >
-            <mat-icon svgIcon="trash"></mat-icon><span>Delete item</span>
+            <mat-icon svgIcon="trash"></mat-icon><span>Remove Item</span>
         </button>
     </mat-menu>
 </div>
