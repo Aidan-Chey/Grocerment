@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { auditTime, catchError, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
 import * as Sentry from "@sentry/angular";
 import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog, ConfirmData } from '../confirm/confirm.dialog';
 
 @Component({
   selector: 'app-list-need',
@@ -123,7 +125,20 @@ export class ListNeedComponent implements OnInit, OnDestroy {
 
   /** Begins the checkout process for bulk editing the cart items */
   public checkout() {
-    this.itemService.batchEdit( this.cartItems$.getValue(), { obtained: true } as Item ).subscribe( res => {
+    const data = {
+      title: 'Checkout Shopping Cart',
+      content: 'Please confirm you wish to move the shopping cart items to your "I have" list',
+      accept: 'Checkout',
+      decline: 'Cancel',
+    } as ConfirmData;
+
+    this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
+      first(),
+      filter( res => !!res ),
+      switchMap( () => this.cartItems$ ),
+      first(),
+      switchMap( items => this.itemService.batchEdit( items, { obtained: true } as Item ) ),
+    ).subscribe( res => {
       // Error occured and user opted to retry
       if ( !!res ) this.checkout();
       // Operation completed successfully
