@@ -45,6 +45,11 @@ mat-panel-description {
   justify-content: flex-end;
 }
 
-.checkout {
-  margin-top: 1em;
+.cart-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  > * {
+    margin-top: 1em;
+  }
 }

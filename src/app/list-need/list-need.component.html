@@ -34,7 +34,7 @@
   </ng-container>
 </div>
 <app-new-item [obtained]="false"></app-new-item>
-<div *ngIf="(cartItemsFiltered$ | async) as items">
+<div *ngIf="(cartItemsFiltered$ | async) as items" class="basket">
   <mat-expansion-panel *ngIf="!!items?.length">
     <mat-expansion-panel-header>
       <mat-panel-title>Shopping Cart</mat-panel-title>
