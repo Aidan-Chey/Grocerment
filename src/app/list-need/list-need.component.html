@@ -16,13 +16,13 @@
                   tabindex="0"
                 >
                   <app-list-item [item]="item">
-                    <button mat-mini-fab
-                      color="accent"
+                    <button mat-icon-button
                       (click)="moveToCart(item)"
+                      color="accent"
                       type="button"
                       matTooltip="Move item to shopping cart"
                       aria-label="Moves item to shopping cart for bulk toogle of item's obtained state"
-                    ><mat-icon svgIcon="cart"></mat-icon></button>
+                    ><mat-icon svgIcon="checkbox-empty"></mat-icon></button>
                   </app-list-item>
                 </li>
               </ul>
@@ -41,30 +41,31 @@
       <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <ng-container >
-        <ul class="items">
-          <li
-            class="item"
-            *ngFor="let item of items"
-            tabindex="0"
-          >
-            <app-list-item [item]="item">
-              <button mat-mini-fab
-                (click)="removeFromCart(item)"
-                type="button"
-                matTooltip="Remove item from shopping cart"
-              ><mat-icon class="rotate-45" svgIcon="plus"></mat-icon></button>
-            </app-list-item>
-          </li>
-        </ul>
-      </ng-container>
-      <button mat-raised-button
-        class="full-width checkout"
-        color="primary"
-        type="button"
-        (click)="checkout()"
-        matTooltip="Checkout all cart items moving them to the 'have' list"
-      >Checkout</button>
+      <ul class="items">
+        <li
+          class="item"
+          *ngFor="let item of items"
+          tabindex="0"
+        >
+          <app-list-item [item]="item">
+            <button mat-icon-button
+              color="accent"
+              (click)="removeFromCart(item)"
+              type="button"
+              matTooltip="Remove item from shopping cart"
+            ><mat-icon svgIcon="checkbox-filled"></mat-icon></button>
+          </app-list-item>
+        </li>
+      </ul>
+      <div class="cart-actions">
+        <button mat-raised-button
+          class="checkout"
+          color="accent"
+          type="button"
+          (click)="checkout()"
+          matTooltip="Checkout all cart items moving them to the 'have' list"
+        >Checkout</button>
+      </div>
     </ng-template>
   </mat-expansion-panel>
 </div>

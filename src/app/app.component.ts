@@ -37,6 +37,8 @@ export class AppComponent implements AfterViewInit {
     this.iconRegistry.addSvgIcon( 'list', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/list.svg') );
     this.iconRegistry.addSvgIcon( 'trash', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/trash.svg') );
     this.iconRegistry.addSvgIcon( 'star', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/star.svg') );
+    this.iconRegistry.addSvgIcon( 'checkbox-empty', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-empty.svg') );
+    this.iconRegistry.addSvgIcon( 'checkbox-filled', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-filled.svg') );
   }
 
   ngAfterViewInit() {
