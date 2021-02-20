@@ -101,17 +101,33 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     private readonly snackbar: MatSnackBar,
     private readonly listService: ListService,
     private readonly itemService: ItemService,
-  ) { }
+    private readonly dialog: MatDialog,
+  ) {
+    const basket = localStorage.getItem(this.cartitemsLabel);
+    if ( !!basket && basket !== 'undefined' ) {
+      this.cartItemRefs$.next( JSON.parse(basket) );
+    }
+  }
 
   ngOnInit(): void {
+
     // Indicates to the header that a list is filterable
     this.itemsStore$.subscribe( items => {
       this.filterService.filterable = (Array.isArray(items) && !!items.length);
     } );
+
+    this.cartItemRefs$.pipe(
+      takeUntil(this.componentDestruction$),
+    ).subscribe( data => {
+      if ( !!data ) localStorage.setItem(this.cartitemsLabel,JSON.stringify(data));
+      else localStorage.removeItem(this.cartitemsLabel);
+    } );
+
   }
 
   ngOnDestroy() {
     this.filterService.filterable = false;
+    this.componentDestruction$.next();
   }
 
   /** Moves item out of main list for later edit to toggle it's obtained state */
