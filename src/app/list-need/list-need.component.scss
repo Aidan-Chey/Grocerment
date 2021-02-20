@@ -52,6 +52,10 @@ mat-panel-description {
   > * {
     margin-top: 1em;
   }
+
+  > *:not(:last-child) {
+    margin-right: 0.5em;
+  }
 }
 
 .basket {

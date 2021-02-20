@@ -143,7 +143,23 @@ export class ListNeedComponent implements OnInit, OnDestroy {
       if ( !!res ) this.checkout();
       // Operation completed successfully
       else this.cartItemRefs$.next([]);
+    } );
+  }
 
+  /** Clears the shopping cart of all items, making them appear on the need list agian */
+  public clearCart() {
+    const data = {
+      title: 'Clear Shopping Cart',
+      content: 'Please confirm you wish to clear the shopping cart',
+      accept: 'Clear',
+      decline: 'Cancel',
+    } as ConfirmData;
+
+    this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
+      first(),
+      filter( res => !!res ),
+    ).subscribe( () => {
+      this.cartItemRefs$.next([]);
     } );
   }
   

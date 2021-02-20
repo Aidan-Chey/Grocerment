@@ -59,6 +59,12 @@
       </ul>
       <div class="cart-actions">
         <button mat-raised-button
+          class="clear"
+          type="button"
+          (click)="clearCart()"
+          matTooltip="Clear shopping cart, moving items to main list"
+        >Clear</button>
+        <button mat-raised-button
           class="checkout"
           color="accent"
           type="button"
