@@ -5,7 +5,7 @@ import { BehaviorSubject, combineLatest, EMPTY, from, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { List } from '../models/list.model';
 import * as Sentry from '@sentry/angular';
-import { catchError, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
+import { catchError, map, shareReplay, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
@@ -45,6 +45,11 @@ export class ListService {
       this.lists$.pipe(
         takeUntil(this.activeListSubject.asObservable()),
       ).subscribe( lists => {
+        // If no lists, create one
+        if ( !Array.isArray(lists) || !lists.length ) {
+          this.newList('Personal', true, true);
+          return;
+        }
         // Select a new active list
         if ( !this.activeListSubject.getValue() && !!Array.isArray(lists) && !!lists.length ) 
           this.activeListSubject.next(lists[0]);
@@ -56,12 +61,7 @@ export class ListService {
       this.lists$,
     ]).subscribe( ([activeList,lists]) => {
       // Don't continue if no active list set
-      if ( !activeList ) return;
-      // If no lists, create one
-      if ( !Array.isArray(lists) || !lists.length ) {
-        this.newList('Personal', true, true);
-        return;
-      }
+      if ( !activeList || !Array.isArray(lists) ) return;
       if ( !lists.some( list => !!list.personal ) ) this.newList('Personal', false, true);
       // If active list doesn't match any list, change to first list
       if ( !lists.some( list => list.id === activeList.id ) ) {
