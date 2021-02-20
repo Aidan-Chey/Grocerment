@@ -12,7 +12,7 @@
               <ul class="items">
                 <li
                   class="item"
-                  *ngFor="let item of (items || [])"
+                  *ngFor="let item of (items || []); trackBy: trackByItemID"
                   tabindex="0"
                 >
                   <app-list-item [item]="item">
@@ -44,7 +44,7 @@
       <ul class="items">
         <li
           class="item"
-          *ngFor="let item of items"
+          *ngFor="let item of items; trackBy: trackByItemID"
           tabindex="0"
         >
           <app-list-item [item]="item">

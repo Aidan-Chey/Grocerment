@@ -71,7 +71,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
         acc[cur.category].push(cur);
       }
       return acc;
-    }, {} as { [key: string]: Item[] } ) : undefined ),
+    }, {} as { [key: string]: Item[] } ) : {} ),
     shareReplay(1),
   );
 
@@ -84,7 +84,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     // Keep item if matches filter
     map( ([cart,term]) => Array.isArray(cart) 
       ? cart.filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) ) 
-      : undefined 
+      : [] 
     ),
     shareReplay(1),
   );
@@ -92,7 +92,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
 
   /** List of item categories retrieved from the list of items */
   public readonly categories$ = this.itemsCatagorizedFiltered$.pipe(
-    map( items => !!items ? Object.keys(items) : undefined ),
+    map( items => !!items ? Object.keys(items).sort() : [] ),
     shareReplay(1),
   );
 
@@ -183,6 +183,11 @@ export class ListNeedComponent implements OnInit, OnDestroy {
   public removeFromCart( toRemove: Item ) {
     const itemCart = this.cartItemRefs$.getValue();
     this.cartItemRefs$.next( itemCart.filter( item => item !== toRemove.id ) );
+  }
+
+  /** Tracks items by their ID */
+  public trackByItemID(index:number, el:any): number {
+    return el.id;
   }
 
 }
