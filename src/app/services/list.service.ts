@@ -21,7 +21,10 @@ export class ListService {
     shareReplay(1),
   );
   public readonly lists$ = this.listsCollectionRef$.pipe(
-    switchMap( ref => !!ref ? ref.valueChanges({idField: 'id'}) : of(undefined) ),
+    switchMap( ref => !!ref ? merge(
+      ref.valueChanges({idField: 'id'}),
+      ref.get().pipe( map( data => data.docs.map( doc => doc.data ) ), mergeAll() ),
+    ) : of([]) ),
     shareReplay(1),
   );
 
