@@ -1,5 +1,5 @@
 <mat-list role="list" class="container"> 
-    <mat-list-item *ngFor="let list of (lists$ | async)" 
+    <mat-list-item *ngFor="let list of (lists$ | async); trackBy: trackByID" 
         role="listitem" 
         [ngClass]="{ 'active': (listService.activeListSubject | async)?.id === list.id }"
     >

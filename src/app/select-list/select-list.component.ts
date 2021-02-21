@@ -134,4 +134,9 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	} );
   } 
 
+  /** Tracks loop entries by their ID */
+  public trackByID(index:number, el:any): number {
+    return el.id;
+  }
+
 }
