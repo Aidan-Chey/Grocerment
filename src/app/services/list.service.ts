@@ -69,7 +69,7 @@ export class ListService {
       this.lists$,
     ]).subscribe( ([activeList,lists]) => {
       // Don't continue if no active list set
-      if ( !activeList || !Array.isArray(lists) ) return;
+      if ( !activeList || !Array.isArray(lists) || !lists.length ) return;
       if ( !lists.some( list => !!list.personal ) ) this.newList('Personal', false, true);
       // If active list doesn't match any list, change to first list
       if ( !lists.some( list => list.id === activeList.id ) ) {
