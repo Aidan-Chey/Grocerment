@@ -78,6 +78,15 @@ export class ListService {
         this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       }
     } );
+
+    // Removes localstorage & clears variables on logout
+    this.afAuth.user.pipe(
+      filter(res => !res),
+    ).subscribe( () => {
+      localStorage.removeItem('activeList');
+      this.activeListSubject.next(undefined);
+    } );
+
   }
 
   public newList( name = 'New List', active = false, personal = false ) {

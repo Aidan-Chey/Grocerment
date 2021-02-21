@@ -12,6 +12,7 @@ import { ListService } from '../services/list.service';
 import { ItemService } from '../services/item.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog, ConfirmData } from '../confirm/confirm.dialog';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-list-need',
@@ -102,11 +103,20 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     private readonly listService: ListService,
     private readonly itemService: ItemService,
     private readonly dialog: MatDialog,
+    private readonly afAuth: AngularFireAuth,
   ) {
     const basket = localStorage.getItem(this.cartitemsLabel);
     if ( !!basket && basket !== 'undefined' ) {
       this.cartItemRefs$.next( JSON.parse(basket) );
     }
+
+    // Removes localstorage & clears variables on logout
+    this.afAuth.user.pipe(
+      filter(res => !res),
+    ).subscribe( () => {
+      localStorage.removeItem(this.cartitemsLabel);
+      this.cartItemRefs$.next([]);
+    } );
   }
 
   ngOnInit(): void {
