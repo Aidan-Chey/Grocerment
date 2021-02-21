@@ -33,6 +33,7 @@ export class ListService {
     private readonly snackbar: MatSnackBar,
     private readonly afAuth: AngularFireAuth,
   ) {
+
     // Retrieve active list from storage if set on app init
     try {
       const storedlist = localStorage.getItem('activeList');
@@ -43,10 +44,13 @@ export class ListService {
       else console.error(issue + ' |', err);
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
     }
+
     // Looks for a list to set as the active list on app init
     if ( !this.activeListSubject.getValue() ) {
       this.lists$.pipe(
-        takeUntil(this.activeListSubject.asObservable()),
+        takeUntil(this.activeListSubject.asObservable().pipe(
+          filter(active => !!active)
+        )),
       ).subscribe( lists => {
         // If no lists, create one
         if ( !Array.isArray(lists) || !lists.length ) {
@@ -58,6 +62,7 @@ export class ListService {
           this.activeListSubject.next(lists[0]);
       } );
     }
+
     // Saves active list to localstorage for retrieval on init
     combineLatest([
       this.activeListSubject.asObservable(),
