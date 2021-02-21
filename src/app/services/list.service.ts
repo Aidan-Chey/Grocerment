@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { BehaviorSubject, combineLatest, EMPTY, from, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, from, merge, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { List } from '../models/list.model';
 import * as Sentry from '@sentry/angular';
-import { catchError, map, shareReplay, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { audit, auditTime, catchError, filter, map, mergeAll, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
@@ -67,7 +67,9 @@ export class ListService {
     combineLatest([
       this.activeListSubject.asObservable(),
       this.lists$,
-    ]).subscribe( ([activeList,lists]) => {
+    ]).pipe(
+      auditTime(500),
+    ).subscribe( ([activeList,lists]) => {
       // Don't continue if no active list set
       if ( !activeList || !Array.isArray(lists) || !lists.length ) return;
       if ( !lists.some( list => !!list.personal ) ) this.newList('Personal', false, true);
