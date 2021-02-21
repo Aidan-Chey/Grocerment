@@ -52,7 +52,9 @@ export class HeaderComponent implements OnInit {
   }
 
   public showUserID() {
-    this.dialog.open( ShowUserIDDialog );
+    this.dialog.open( ShowUserIDDialog, {
+      maxHeight: '8em',
+    });
   }
 
 }
