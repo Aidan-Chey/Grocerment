@@ -15,6 +15,7 @@ import { ListService } from '../services/list.service';
 export const editItemConfig = {
 	minWidth: '5em',
 	width: '95vw',
+  height: 'auto',
   maxWidth: '50em',
   maxHeight: '95vh',
 };

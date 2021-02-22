@@ -23,9 +23,9 @@ export class NewItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public openDialog( item = { obtained: this.obtained } ) {
+  public openDialog( data = { obtained: this.obtained } ) {
     
-    const dialogConfig = Object.assign({ data: item }, editItemConfig);
+    const dialogConfig = Object.assign({ data, height: 'auto' }, editItemConfig);
     this.matDialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
       switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
     ).subscribe();

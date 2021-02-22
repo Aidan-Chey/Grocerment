@@ -63,7 +63,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	} as ConfirmData;
 
 	// activate dialog as check
-	this.dialog.open( ConfirmDialog, { data } ).afterClosed().pipe(
+	this.dialog.open( ConfirmDialog, { data, height: 'auto' } ).afterClosed().pipe(
 	  take(1),
 	  filter(choice => !!choice ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
@@ -89,7 +89,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	const data = {
 	  name: list.name,
 	}
-	this.dialog.open( RenameDialog, { data } ).afterClosed().pipe(
+	this.dialog.open( RenameDialog, { data, height: 'auto' } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
@@ -116,7 +116,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	const data = {
 	  users: list.users,
 	}
-	this.dialog.open( UsersDialog, { data } ).afterClosed().pipe(
+	this.dialog.open( UsersDialog, { data, height: 'auto' } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
