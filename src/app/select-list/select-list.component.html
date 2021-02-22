@@ -5,9 +5,9 @@
     >
         <span class="name">{{list.name}}</span>
         <span class="users" matTooltip="Number of users" *ngIf="!!list?.users && !list?.personal"> ({{list.users?.length}})</span>
-        <button 
+        <button mat-icon-button
             *ngIf="!!list?.personal"
-            mat-icon-button 
+            
             color="accent" 
             aria-label="Clear active list and only view personal list"
             matTooltip="View personal items"
@@ -15,9 +15,8 @@
         >
             <mat-icon svgIcon="star"></mat-icon>
         </button>
-        <button 
+        <button mat-icon-button 
             *ngIf="!list?.personal"
-            mat-icon-button 
             color="accent" 
             [matMenuTriggerFor]="menu" 
             aria-label="Opens an extra menu of actions related to the list"
