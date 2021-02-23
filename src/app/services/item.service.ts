@@ -24,11 +24,11 @@ export class ItemService {
 
     return this.listService.listsCollectionRef$.pipe(
       take(1),
-      switchMap( ref => !!ref ? ref.doc(this.listService.activeList?.id)
+      switchMap( ref => ref.doc(this.listService.activeList?.id)
         .collection<Item>('items')
         .doc(item.id)
         .delete()
-      : EMPTY ),
+      ),
       catchError( err => {
         // Failed to edit item
         const issue = 'Failed to delete item';
@@ -56,7 +56,7 @@ export class ItemService {
     
     return this.listService.listsCollectionRef$.pipe(
       take(1),
-      switchMap( ref => !!ref && !!this.listService.activeList ? ref.doc(this.listService.activeList.id)
+      switchMap( ref => !!this.listService.activeList ? ref.doc(this.listService.activeList.id)
         .collection<Item>('items')
         .add(toSave) 
       : EMPTY ),
@@ -84,11 +84,11 @@ export class ItemService {
     
     return this.listService.listsCollectionRef$.pipe(
       take(1),
-      switchMap( ref => !!ref ? ref.doc(this.listService.activeList?.id)
+      switchMap( ref => ref.doc(this.listService.activeList?.id)
         .collection<Item>('items')
         .doc(id)
         .update(toSave) 
-      : EMPTY ),
+      ),
       tap( () => { 
         // Item editied successfully
         this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 

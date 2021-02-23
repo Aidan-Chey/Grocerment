@@ -26,7 +26,7 @@ export const selectListConfig = {
 export class SelectListComponent implements OnInit, AfterViewInit {
 
   public readonly lists$ = this.listService.listsCollectionRef$.pipe(
-	switchMap( ref => !!ref ? ref.valueChanges({idField: 'id'}) : of(undefined) ),
+	switchMap( ref => ref.valueChanges({idField: 'id'}) ),
 	shareReplay(1),
   );
 
@@ -67,7 +67,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	  take(1),
 	  filter(choice => !!choice ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
-	  switchMap( ([choice, ref]) => !!ref ? ref.doc(toEdit).delete() : of(undefined) ),
+	  switchMap( ([choice, ref]) => ref.doc(toEdit).delete() ),
 	  catchError( err => {
 		const issue = 'Failed to delete list';
 		if ( environment.production ) Sentry.captureException(err);
@@ -93,7 +93,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
-	  switchMap( ([revision,ref]) => !!ref ? ref.doc(toEdit).update(revision) : of(undefined) ),
+	  switchMap( ([revision,ref]) => ref.doc(toEdit).update(revision) ),
 	  catchError( err => {
 		const issue = 'Failed to rename list';
 		if ( environment.production ) Sentry.captureException(err);
@@ -120,7 +120,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
-	  switchMap( ([revision,ref]) => !!ref ? ref.doc(toEdit).update(revision): of(undefined) ),
+	  switchMap( ([revision,ref]) => ref.doc(toEdit).update(revision) ),
 	  catchError( err => {
 		const issue = 'Failed to save list users';
 		if ( environment.production ) Sentry.captureException(err);

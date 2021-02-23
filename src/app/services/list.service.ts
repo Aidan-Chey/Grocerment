@@ -5,8 +5,9 @@ import { BehaviorSubject, combineLatest, EMPTY, from, merge, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { List } from '../models/list.model';
 import * as Sentry from '@sentry/angular';
-import { audit, auditTime, catchError, filter, map, mergeAll, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { auditTime, catchError, filter, first, map, mergeAll, mergeMap, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
+import notEmpty from 'src/app/globals/not-empty-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,12 @@ export class ListService {
   public get activeList() { return this.activeListSubject.getValue(); }
   
   public readonly listsCollectionRef$ = this.afAuth.user.pipe(
-    map( user => !!user ? this.firestore.collection<List>('lists', ref => ref.where('users','array-contains',user.uid)) : undefined ),
+    filter( notEmpty ),
+    map( user => this.firestore.collection<List>('lists', ref => ref.where('users','array-contains',user.uid)) ),
     shareReplay(1),
   );
   public readonly lists$ = this.listsCollectionRef$.pipe(
-    switchMap( ref => !!ref ? merge(
-      ref.valueChanges({idField: 'id'}),
-      ref.get().pipe( map( data => data.docs.map( doc => doc.data ) ), mergeAll() ),
-    ) : of([]) ),
+    switchMap( ref => ref.valueChanges({idField: 'id'}) ),
     shareReplay(1),
   );
 
@@ -101,13 +100,14 @@ export class ListService {
 
   public newList( name = 'New List', active = false, personal = false ) {
     this.afAuth.user.pipe(
-      take(1),
-      switchMap( user => !!user ? this.firestore.collection<List>('lists').add({
+      filter( notEmpty ),
+      first(),
+      switchMap( user => this.firestore.collection<List>('lists').add({
         users: [user.uid],
         name,
         personal,
         items: [],
-      }) : of(undefined) ),
+      }) ),
       catchError( err => {
         const issue = 'Failed to create list';
         if ( environment.production ) Sentry.captureException(err);

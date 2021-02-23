@@ -5,12 +5,13 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, combineLatest, EMPTY } from 'rxjs';
-import { catchError, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, filter, first, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
 import { Measurement } from '../models/measurement.model';
 import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
+import notEmpty from 'src/app/globals/not-empty-filter';
 
 export const editItemConfig = {
   minWidth: '5em',
@@ -38,11 +39,11 @@ export class EditItemComponent implements OnInit {
   } as Item);
   /** List of items already created for reference */
   private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe(
-    switchMap( ref => !!ref ? ref
+    switchMap( ref => ref
       .doc(this.listService.activeList?.id)
       .collection<Item>('items')
       .valueChanges({idField: 'id'}) 
-    : of(undefined) ),
+    ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);
@@ -135,11 +136,12 @@ export class EditItemComponent implements OnInit {
     const formData = this.itemGroup.getRawValue();
 
     this.afAuth.user.pipe(
-      take(1),
+      filter( notEmpty ),
+      first(),
     ).subscribe( user => {
       if ( !!formData.measurement ) formData.measurement = this.firestore.collection<Measurement>("measurements").doc(formData.measurement).ref;
 
-      const item = { id: this.data?.id, ...formData, user: user?.uid };
+      const item = { id: this.data?.id, ...formData, user: user.uid };
   
       this.dialogRef.close(item);
 

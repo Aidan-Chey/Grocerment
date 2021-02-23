@@ -25,11 +25,10 @@ export class ListNeedComponent implements OnInit, OnDestroy {
   private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( ref => !!ref ? ref
+    switchMap( ref => ref
       .doc(this.listService.activeList?.id)
       .collection<Item>('items',ref => ref.where( 'obtained', '==', false ) )
-      .valueChanges({idField: 'id'}) 
-    : of(undefined)
+      .valueChanges({idField: 'id'})
     ),
     catchError( err => {
       const issue = 'Failed to retrieve items';

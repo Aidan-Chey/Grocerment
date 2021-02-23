@@ -20,14 +20,11 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( (ref) => {
-      if ( !ref ) return of(undefined);
-      // const listCondition = (!!activeList ? ['list.users','array-contains',activeList.id] : ['user','==',user.uid]) as [string, 'array-contains'|'==', string|number];
-      return ref
-        .doc(this.listService.activeList?.id)
-        .collection<Item>('items',ref => ref.where( 'obtained', '==', true ) )
-        .valueChanges({idField: 'id'}) 
-    } ),
+    switchMap( ref => ref
+      .doc(this.listService.activeList?.id)
+      .collection<Item>('items',ref => ref.where( 'obtained', '==', true ) )
+      .valueChanges({idField: 'id'}) 
+    ),
     catchError( err => {
       const issue = 'Failed to retrieve items';
       if ( environment.production ) Sentry.captureException(err);

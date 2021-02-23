@@ -5,8 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
-import { first, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, first, switchMap, takeUntil } from 'rxjs/operators';
 import { fromEvent, Subject } from 'rxjs';
+import notEmpty from 'src/app/globals/not-empty-filter';
 
 @Component({
   selector: 'app-show-user-id',
@@ -35,7 +36,7 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if( !!this.shareButton ) fromEvent( this.shareButton.nativeElement , 'click' ).pipe(
       takeUntil(this.componentDestruction$),
-      switchMap( () => this.afAuth.user.pipe( first() ) ),
+      switchMap( () => this.afAuth.user.pipe( filter( notEmpty ), first() ) ),
     ).subscribe( (user) => {
       if ( !user )  this.snackbar.open( 'No user loaded', undefined, { duration: 2000, verticalPosition: 'bottom', panelClass: "error" } );
       else if ( !!navigator.share ) {
