@@ -3,6 +3,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+export const renameConfig = {
+  height: 'auto',
+  maxHeight: '21em',
+};
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.dialog.html',

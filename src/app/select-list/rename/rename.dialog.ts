@@ -2,6 +2,11 @@ import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/cor
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+export const renameConfig = {
+	height: 'auto',
+	maxHeight: '12em',
+};
+
 @Component({
   selector: 'app-rename',
   templateUrl: './rename.dialog.html',

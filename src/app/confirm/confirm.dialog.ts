@@ -12,6 +12,11 @@ export type ConfirmData = {
 	accept?: string
 };
 
+export const confirmConfig = {
+	height: 'auto',
+	maxHeight: '17em',
+};
+
 @Component({
 	selector: 'app-confirm',
 	templateUrl: './confirm.dialog.html',

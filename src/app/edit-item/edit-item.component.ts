@@ -13,11 +13,11 @@ import * as Sentry from '@sentry/angular';
 import { ListService } from '../services/list.service';
 
 export const editItemConfig = {
-	minWidth: '5em',
-	width: '95vw',
+  minWidth: '5em',
+  width: '95vw',
   height: 'auto',
   maxWidth: '50em',
-  maxHeight: '95vh',
+  maxHeight: '37em',
 };
 
 @Component({
