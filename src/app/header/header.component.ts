@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { ColorSchemeService } from '../services/color-scheme.service';
 import { FilterService } from '../services/filter.service';
 import { ListService } from '../services/list.service';
+import { OnlineStateService } from '../services/online-state.service';
 import { ServiceWorkerService } from '../services/service-worker.service';
 import { ShowUserIDDialog } from '../show-user-id/show-user-id.dialog';
 
@@ -45,6 +46,7 @@ export class HeaderComponent implements OnInit {
     public readonly authService: AuthService,
     public readonly updateService: ServiceWorkerService,
     public readonly colorSchemeService: ColorSchemeService,
+    public readonly onlineState: OnlineStateService,
   ) {
   }
 

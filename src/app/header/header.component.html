@@ -6,6 +6,10 @@
       *ngIf="!!(updateService.updateAvaliable$ | async)"
       (click)="updateService.reloadApp()"
     >Update</button>
+    <mat-icon svgIcon="disconnected"
+      *ngIf="!(onlineState.appOnline$ | async)"
+      matTooltip="Disconnected from the internet"
+    ></mat-icon>
     <app-filter 
       *ngIf="!!(filterService.filterable$ | async)" 
       (filter)="filterService.filterTerm = $event"
