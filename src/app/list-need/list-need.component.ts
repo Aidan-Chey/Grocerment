@@ -157,7 +157,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
       decline: 'Cancel',
     } as ConfirmData;
 
-    this.dialog.open( ConfirmDialog, { data, height: 'auto' } ).afterClosed().pipe(
+    this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed().pipe(
       first(),
       filter( res => !!res ),
       switchMap( () => this.cartItems$ ),
@@ -180,7 +180,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
       decline: 'Cancel',
     } as ConfirmData;
 
-    this.dialog.open( ConfirmDialog, { data, height: 'auto' } ).afterClosed().pipe(
+    this.dialog.open( ConfirmDialog, { data, maxHeight: '12em' } ).afterClosed().pipe(
       first(),
       filter( res => !!res ),
     ).subscribe( () => {

@@ -45,7 +45,7 @@ export class ServiceWorkerService {
           accept: 'Update',
           decline: 'Later',
         } as ConfirmData;
-        return this.dialog.open( ConfirmDialog, { data, height: 'auto' } ).afterClosed();
+        return this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed();
       } ),
       filter( res => !!res ),
     ).subscribe( () => {

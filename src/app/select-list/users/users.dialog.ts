@@ -3,9 +3,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export const renameConfig = {
+export const usersConfig = {
   height: 'auto',
-  maxHeight: '21em',
+  maxHeight: '25em',
 };
 
 @Component({

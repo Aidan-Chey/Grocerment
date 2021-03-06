@@ -8,8 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmData, ConfirmDialog } from '../confirm/confirm.dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
-import { RenameDialog } from './rename/rename.dialog';
-import { UsersDialog } from './users/users.dialog';
+import { renameConfig, RenameDialog } from './rename/rename.dialog';
+import { usersConfig, UsersDialog } from './users/users.dialog';
 
 export const selectListConfig = {
 	minWidth: '5em',
@@ -63,7 +63,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	} as ConfirmData;
 
 	// activate dialog as check
-	this.dialog.open( ConfirmDialog, { data, height: 'auto' } ).afterClosed().pipe(
+	this.dialog.open( ConfirmDialog, { data, maxHeight: '15em' } ).afterClosed().pipe(
 	  take(1),
 	  filter(choice => !!choice ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
@@ -89,7 +89,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	const data = {
 	  name: list.name,
 	}
-	this.dialog.open( RenameDialog, { data, height: 'auto' } ).afterClosed().pipe(
+	this.dialog.open( RenameDialog, { data, ...renameConfig } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
@@ -116,7 +116,7 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 	const data = {
 	  users: list.users,
 	}
-	this.dialog.open( UsersDialog, { data, height: 'auto' } ).afterClosed().pipe(
+	this.dialog.open( UsersDialog, { data, ...usersConfig } ).afterClosed().pipe(
 	  take(1),
 	  filter(revision => !!revision ),
 	  withLatestFrom( this.listService.listsCollectionRef$ ),
