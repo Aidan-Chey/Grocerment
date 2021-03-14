@@ -1,10 +1,14 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { FirebaseApp } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './services/auth.service';
 import { ColorSchemeService } from './services/color-scheme.service';
+import * as Sentry from "@sentry/angular";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +25,8 @@ export class AppComponent implements AfterViewInit {
     private readonly iconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
     private readonly colorSchemeService: ColorSchemeService,
+    private readonly firebase: FirebaseApp,
+    private readonly snackbar: MatSnackBar,
   ) {
     this.colorSchemeService.load();
 
@@ -40,6 +46,24 @@ export class AppComponent implements AfterViewInit {
     this.iconRegistry.addSvgIcon( 'checkbox-empty', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-empty.svg') );
     this.iconRegistry.addSvgIcon( 'checkbox-filled', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-filled.svg') );
     this.iconRegistry.addSvgIcon( 'disconnected', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/disconnected.svg') );
+
+    // Enable offline persistance of firestore data
+    this.firebase.firestore().enablePersistence()
+      .catch( err => {
+        let issue = '';
+          switch (err.code) {
+            case 'failed-precondition':
+              issue = 'Unable to store data offline, more than one tab of application open';
+              break;
+            case 'unimplemented':
+              issue = 'Unable to store data offline, browser not supported';
+              break;
+            default:
+              if ( environment.production ) Sentry.captureException(err);
+              issue = 'Unable to store data offline, unkown issue occured';
+          }
+          if (issue) this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
+      } );
   }
 
   ngAfterViewInit() {
