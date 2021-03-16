@@ -23,9 +23,9 @@
     <mat-menu #itemMenu="matMenu">
         <button mat-menu-item
             (click)="toggleObtained(item)"  
-            matTooltip="Switch the item between 'have' & 'need' state"
+            matTooltip="Switch the item between 'have' & 'need' list"
         >
-            <mat-icon svgIcon="edit"></mat-icon><span>Toggle Obtained</span>
+            <mat-icon svgIcon="edit"></mat-icon><span>{{ item.obtained ? 'I Need This' : 'I Have This' }}</span>
         </button>
         <button mat-menu-item
             (click)="openEditDialog(item)"  
