@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { auditTime, catchError, debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, from } from 'rxjs';
+import { auditTime, catchError, debounceTime, filter, map, shareReplay, switchMap, toArray } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -35,26 +35,17 @@ export class ListHaveComponent implements OnInit, OnDestroy {
     shareReplay(1),
   );
   /** Filtered list of items */
-  public readonly itemsCatagorizedFiltered$ = combineLatest([
+  public readonly itemsFiltered$ = combineLatest([
     this.itemsStore$,
     this.filterService.filterTerm$,
   ]).pipe(
     debounceTime(50),
-    map( ([store,term]) => Array.isArray(store) ? store.reduce( (acc,cur) => {
+    switchMap( ([store,term]) => Array.isArray(store) ? from(store).pipe(
       // Filter out items with non-matching names
-      if ( !!cur.name.toLowerCase().includes(term.toLowerCase()) ) {
-        // add new property to ouput object of item category as an array
-        if ( !acc.hasOwnProperty(cur.category) ) acc[cur.category] = [];
-        // add the item to the array of the matching category property
-        acc[cur.category].push(cur);
-      }
-      return acc;
-    }, {} as { [key: string]: Item[] } ) : undefined ),
-    shareReplay(1),
-  );
-
-  public readonly categories$ = this.itemsCatagorizedFiltered$.pipe(
-    map( items => !!items ? Object.keys(items) : undefined ),
+      filter( item => !!item.name.toLowerCase().includes(term.toLowerCase()) ),
+      toArray(),
+    ) : of([]) ),
+    map( items => items.sort(this.compareFn) ),
     shareReplay(1),
   );
 
@@ -74,6 +65,15 @@ export class ListHaveComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.filterService.filterable = false;
   }
+
+   /** Function to compare two objects by comparing their `name` property. */
+   private compareFn(a: Item, b: Item) {
+    if (a.name < b.name)
+      return -1;
+    if (a.name > b.name)
+      return 1;
+    return 0;
+  };
 
   /** Tracks items by their ID */
   public trackByItemID(index:number, el:any): number {

@@ -41,6 +41,7 @@ import { ConfirmDialog } from './confirm/confirm.dialog';
 import { RenameDialog } from './select-list/rename/rename.dialog';
 import { UsersDialog } from './select-list/users/users.dialog';
 import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
     MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ScrollingModule,
   ],
   providers: [
     {

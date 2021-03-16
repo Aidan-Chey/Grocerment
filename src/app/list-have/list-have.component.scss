@@ -2,41 +2,29 @@
   flex: 1 1 auto;
   display: flex;
   flex-flow: column nowrap;
+  position: relative;
 
-  > div {
+  > cdk-virtual-scroll-viewport {
     flex: 1 1 auto;
   }
+
+  // > app-new-item {
+  //   position: sticky;
+  //   bottom: 0;
+  // }
 }
 
-.category {
-  margin: 0 0.2em;
-
-  mat-panel-title {
-    text-decoration: underline;
-  }
+div.item {
+  padding: 0.3em 1em;
+  border-radius: 5px;
 }
 
-.category:not(:first-child) {
-  margin-top: 0.2em;
+div.item:not(:last-child) {
+  margin-bottom: 0.3em;
 }
 
-ul.items {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-
-  li.item {
-    padding: 0.5em 0;
-    border-radius: 5px;
-  }
-
-  li.item:not(:last-child) {
-    margin-bottom: 0.3em;
-  }
-
-  li.item:hover,
-  li.item:focus {
-    background-color: hsl(0 0% 100% / 0.05);
-    outline: none;
-  }
+div.item:hover,
+div.item:focus {
+  background-color: hsl(0 0% 100% / 0.05);
+  outline: none;
 }
