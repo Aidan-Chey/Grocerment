@@ -34,44 +34,46 @@
   </ng-container>
 </div>
 <app-new-item [obtained]="false"></app-new-item>
-<div *ngIf="(cartItemsFiltered$ | async) as items" class="basket">
-  <mat-expansion-panel *ngIf="!!items?.length">
-    <mat-expansion-panel-header>
-      <mat-panel-title>Shopping Cart</mat-panel-title>
-      <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <ul class="items">
-        <li
-          class="item"
-          *ngFor="let item of items; trackBy: trackByItemID"
-          tabindex="0"
-        >
-          <app-list-item [item]="item">
-            <button mat-icon-button
-              color="accent"
-              (click)="removeFromCart(item)"
-              type="button"
-              matTooltip="Remove item from shopping cart"
-            ><mat-icon svgIcon="checkbox-filled"></mat-icon></button>
-          </app-list-item>
-        </li>
-      </ul>
-      <div class="cart-actions">
-        <button mat-raised-button
-          class="clear"
-          type="button"
-          (click)="clearCart()"
-          matTooltip="Clear shopping cart, moving items to main list"
-        >Clear</button>
-        <button mat-raised-button
-          class="checkout"
-          color="accent"
-          type="button"
-          (click)="checkout()"
-          matTooltip="Checkout all cart items moving them to the 'have' list"
-        >Checkout</button>
-      </div>
-    </ng-template>
-  </mat-expansion-panel>
-</div>
+<ng-container *ngIf="(cartItemsFiltered$ | async) as items">
+  <div class="basket" *ngIf="!!items?.length">
+    <mat-expansion-panel >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Shopping Cart</mat-panel-title>
+        <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <ul class="items">
+          <li
+            class="item"
+            *ngFor="let item of items; trackBy: trackByItemID"
+            tabindex="0"
+          >
+            <app-list-item [item]="item">
+              <button mat-icon-button
+                color="accent"
+                (click)="removeFromCart(item)"
+                type="button"
+                matTooltip="Remove item from shopping cart"
+              ><mat-icon svgIcon="checkbox-filled"></mat-icon></button>
+            </app-list-item>
+          </li>
+        </ul>
+        <div class="cart-actions">
+          <button mat-raised-button
+            class="clear"
+            type="button"
+            (click)="clearCart()"
+            matTooltip="Clear shopping cart, moving items to main list"
+          >Clear</button>
+          <button mat-raised-button
+            class="checkout"
+            color="accent"
+            type="button"
+            (click)="checkout()"
+            matTooltip="Checkout all cart items moving them to the 'have' list"
+          >Checkout</button>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+</ng-container>
