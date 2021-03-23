@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, from, Subject } from 'rxjs';
+import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, toArray } from 'rxjs/operators';
 import { FilterService } from '../services/filter.service';
 import { Item } from '../models/item.model';
 import { of } from 'rxjs';
@@ -46,11 +46,15 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     this.cartItemRefs$,
     this.itemsStore$,
   ]).pipe(
-    map( ([references,items]) => Array.isArray(references) && Array.isArray(items) ? references.reduce( (acc,cur) => {
-      const foundItem = items.find( item => item.id === cur );
-      if ( !!foundItem ) acc.push(foundItem);
-      return acc
-    }, [] as Item[] ) : [] ),
+    switchMap( ([references,items]) => {
+      const output = [] as Item[];
+      if ( !Array.isArray(references) || !Array.isArray(items) ) return of(output);
+      return from(references).pipe(
+        map( ref => items.find( item => item.id === ref ) ),
+        filter( notEmpty ),
+        toArray(),
+      );
+    }),
     shareReplay(1),
   );
   private readonly cartitemsLabel = 'basket';
@@ -63,16 +67,22 @@ export class ListNeedComponent implements OnInit, OnDestroy {
     this.filterService.filterTerm$,
   ]).pipe(
     debounceTime(50),
-    map( ([store,cart,term]) => Array.isArray(store) ? store.reduce( (acc,cur) => {
-      // Filter out items with non-matching names or that are in the cart
-      if ( (!term || !!cur.name.toLowerCase().includes(term.toLowerCase())) && cart.every( i => i.id !== cur.id ) ) {
-        // add new property to ouput object of item category as an array
-        if ( !acc.hasOwnProperty(cur.category) ) acc[cur.category] = [];
-        // add the item to the array of the matching category property
-        acc[cur.category].push(cur);
-      }
-      return acc;
-    }, {} as { [key: string]: Item[] } ) : {} ),
+    switchMap( ([store,cart,term]) => {
+      const output = {} as { [key: string]: Item[] };
+      if ( !Array.isArray(store) ) return of(output);
+      return from(store).pipe(
+        // Filter out items with non-matching names or that are in the cart
+        filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) && cart.every( i => i.id !== item.id ) ),
+        map( item => {
+          // add new property to ouput object of item category as an array
+          if ( !output.hasOwnProperty(item.category) ) output[item.category] = [];
+          // add the item to the array of the matching category property
+          output[item.category].push(item);
+        } ),
+        toArray(),
+        map( () => output ),
+      );
+    }),
     shareReplay(1),
   );
 
@@ -83,10 +93,13 @@ export class ListNeedComponent implements OnInit, OnDestroy {
   ]).pipe(
     debounceTime(50),
     // Keep item if matches filter
-    map( ([cart,term]) => Array.isArray(cart) 
-      ? cart.filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) ) 
-      : [] 
-    ),
+    switchMap( ([cart,term]) => {
+      if (!Array.isArray(cart) ) return of([]);
+      return from(cart).pipe(
+        filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) ),
+        toArray(),
+      );
+    }),
     shareReplay(1),
   );
 
