@@ -5,7 +5,7 @@
         <ng-container *ngIf="!!results.categorizedItems">
           <mat-expansion-panel class="category" *ngIf="results.categorizedItems[category] as items">
             <mat-expansion-panel-header>
-              <mat-panel-title>{{category}}</mat-panel-title>
+              <mat-panel-title>{{category || '(No Category Set)'}}</mat-panel-title>
               <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
