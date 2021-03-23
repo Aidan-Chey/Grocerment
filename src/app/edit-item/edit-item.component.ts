@@ -4,8 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of, combineLatest, EMPTY } from 'rxjs';
-import { catchError, filter, first, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { of, combineLatest, EMPTY, from } from 'rxjs';
+import { catchError, filter, first, map, shareReplay, startWith, switchMap, toArray } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
 import { Measurement } from '../models/measurement.model';
@@ -70,26 +70,36 @@ export class EditItemComponent implements OnInit {
   );
   /** List of names of existing items */
   public readonly nameOptions$ = this.itemsStore$.pipe(
-    map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
-      if ( !acc.includes(cur.name) ) acc.push(cur.name);
-      return acc;
-    }, [] as string[] ) : undefined ),
+    switchMap( items => {
+      if ( !Array.isArray(items) ) return of([]);
+      const output = [] as string[];
+      return from(items).pipe(
+        filter( item => !output.includes( item.name ) ),
+        map( item => item.name ),
+        toArray(),
+      );
+    }),
     shareReplay(1),
   );
-  /** filtered lit of names based on existing value of name field */
+  /** filtered list of names based on existing value of name field */
   public readonly filteredNameOptions$ = combineLatest([
     (this.itemGroup.get('name')?.valueChanges || of('')).pipe( startWith('') ),
     this.nameOptions$,
   ]).pipe(
-    map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
+    switchMap( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
     shareReplay(1),
   );
   /** List of categories of existing items */
   public readonly categoryOptions$ = this.itemsStore$.pipe(
-    map( items => Array.isArray(items) ? items.reduce( (acc,cur) => {
-      if ( !acc.includes(cur.category) ) acc.push(cur.category);
-      return acc;
-    }, [] as string[] ) : undefined ),
+    switchMap( items => {
+      if ( !Array.isArray(items) ) return of([]);
+      const output = [] as string[];
+      return from(items).pipe(
+        filter( item => !output.includes( item.category ) ),
+        map( item => item.category ),
+        toArray(),
+      );
+    } ),
     shareReplay(1),
   );
   /** filtered list of categories based on existing value of category field */
@@ -97,7 +107,7 @@ export class EditItemComponent implements OnInit {
     (this.itemGroup.get('category')?.valueChanges || of('')).pipe( startWith('') ),
     this.categoryOptions$,
   ]).pipe(
-    map( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
+    switchMap( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
     shareReplay(1),
   );
 
@@ -122,7 +132,12 @@ export class EditItemComponent implements OnInit {
   private filterOptions(value: string, options: string[]) {
     const filterValue = value.toLowerCase();
 
-    return Array.isArray(options) ? options.filter( option => !!option && option.toLowerCase().includes(filterValue) ) : undefined;
+    if ( !Array.isArray(options) ) return of([]);
+
+    return from(options).pipe(
+      filter( option => !!option && option.toLowerCase().includes(filterValue) ),
+      toArray(),
+    );
   }
   /** handles submission of item group form */
   public onSubmit() {
