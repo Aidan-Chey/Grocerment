@@ -1,6 +1,9 @@
 <mat-toolbar id="main-footer" role="heading">
   <ng-container *ngIf="(afAuth.user | async); else noLoggedIn">
-    <span id="header-title">{{pageTitle$ | async}}</span>
+    <ng-container *ngIf="{ result: (titleRoute$ | async)} as routerLink">
+      <span id="header-title" *ngIf="!!routerLink.result" [routerLink]="routerLink.result">{{pageTitle$ | async}}</span>
+      <span id="header-title" *ngIf="!routerLink.result">{{pageTitle$ | async}}</span>
+    </ng-container>
     <span class="spacer"></span>
     <button mat-stroked-button
       *ngIf="!!(updateService.updateAvaliable$ | async)"

@@ -37,6 +37,20 @@ export class HeaderComponent implements OnInit {
 
   public readonly list$ = this.listService.activeListSubject.asObservable();
 
+  public readonly titleRoute$ = this.pageTitle$.pipe(
+    map( title => {
+      switch(title) {
+        case 'I Need...':
+          return '/have';
+        case 'I Have...':
+          return '/need';
+        default:
+          return null;
+      }
+    } ),
+    shareReplay(1),
+  );
+
   constructor(
     private readonly router: Router,
     public readonly filterService: FilterService,
