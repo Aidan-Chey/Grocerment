@@ -13,6 +13,7 @@ import { ItemService } from '../services/item.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog, ConfirmData } from '../confirm/confirm.dialog';
 import { AngularFireAuth } from '@angular/fire/auth';
+import notEmpty from '@grocerment-globals/not-empty-filter';
 
 @Component({
   selector: 'app-list-need',
@@ -159,7 +160,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
 
     this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed().pipe(
       first(),
-      filter( res => !!res ),
+      filter( notEmpty ),
       switchMap( () => this.cartItems$ ),
       first(),
       switchMap( items => this.itemService.batchEdit( items, { obtained: true } as Item ) ),
@@ -182,7 +183,7 @@ export class ListNeedComponent implements OnInit, OnDestroy {
 
     this.dialog.open( ConfirmDialog, { data, maxHeight: '12em' } ).afterClosed().pipe(
       first(),
-      filter( res => !!res ),
+      filter( notEmpty ),
     ).subscribe( () => {
       this.cartItemRefs$.next([]);
     } );

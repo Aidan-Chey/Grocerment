@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SwUpdate } from '@angular/service-worker';
+import notEmpty from '@grocerment-globals/not-empty-filter';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { ConfirmData, ConfirmDialog } from '../confirm/confirm.dialog';
@@ -47,7 +48,7 @@ export class ServiceWorkerService {
         } as ConfirmData;
         return this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed();
       } ),
-      filter( res => !!res ),
+      filter( notEmpty ),
     ).subscribe( () => {
       this.reloadApp();
     } );
