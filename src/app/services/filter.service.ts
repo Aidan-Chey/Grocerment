@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 
 /** handles communication with the list filter component */
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterService {
+export class FilterService implements OnDestroy {
+
+  private readonly destruction$ = new Subject();
 
   private readonly _filter = new BehaviorSubject<string>('');
   public readonly filterTerm$ = this._filter.asObservable().pipe( shareReplay(1) );
@@ -19,5 +22,20 @@ export class FilterService {
   public get filterable() { return this._filterable.getValue(); }
   public set filterable(bool: boolean) { this._filterable.next(bool); }
 
-  constructor() { }
+  constructor( 
+    private readonly router: Router,
+  ) {
+     // Watch navigation events, clearing the filter
+     router.events.pipe(
+      takeUntil(this.destruction$),
+      filter( event => event instanceof NavigationEnd ),
+    ).subscribe( event => {
+      this.filterTerm = '';
+    } );
+  }
+
+  ngOnDestroy() {
+    this.destruction$.next();
+  }
+
 }
