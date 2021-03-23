@@ -86,7 +86,10 @@ export class EditItemComponent implements OnInit {
     (this.itemGroup.get('name')?.valueChanges || of('')).pipe( startWith('') ),
     this.nameOptions$,
   ]).pipe(
-    switchMap( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
+    switchMap( ([value,options]) => {
+      if ( !value ) return of([]);
+      return this.filterOptions( (value || ''), options || [] );
+    } ),
     shareReplay(1),
   );
   /** List of categories of existing items */
@@ -107,7 +110,10 @@ export class EditItemComponent implements OnInit {
     (this.itemGroup.get('category')?.valueChanges || of('')).pipe( startWith('') ),
     this.categoryOptions$,
   ]).pipe(
-    switchMap( ([value,options]) => this.filterOptions( (value || ''), options || [] ) ),
+    switchMap( ([value,options]) => {
+      if ( !value ) return of([]);
+      return this.filterOptions( (value || ''), options || [] );
+    } ),
     shareReplay(1),
   );
 
