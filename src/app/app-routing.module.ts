@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ItemsListComponent } from './items-list/items-list.component';
 import { ListHaveComponent } from './list-have/list-have.component';
 import { ListNeedComponent } from './list-need/list-need.component';
 import { SelectListComponent } from './select-list/select-list.component';
@@ -8,7 +9,12 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'need',
+    redirectTo: 'items',
+  },
+  {
+    path: 'items',
+    component: ItemsListComponent,
+    data: { title: 'Items' },
   },
   {
     path: 'lists',

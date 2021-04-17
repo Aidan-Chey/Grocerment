@@ -1,4 +1,4 @@
-<ng-container *ngIf="(itemsFiltered$ | async) as items">
+<ng-container *ngIf="inputItems as items">
   <cdk-virtual-scroll-viewport itemSize="40" minBufferPx="200" maxBufferPx="400">
     <div
       class="item"

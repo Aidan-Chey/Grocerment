@@ -42,6 +42,8 @@ import { RenameDialog } from './select-list/rename/rename.dialog';
 import { UsersDialog } from './select-list/users/users.dialog';
 import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ItemsListComponent } from './items-list/items-list.component';
+import { ListCartComponent } from './list-cart/list-cart.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     RenameDialog,
     UsersDialog,
     ShowUserIDDialog,
+    ItemsListComponent,
+    ListCartComponent,
   ],
   imports: [
     BrowserModule,
