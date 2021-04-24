@@ -10,7 +10,7 @@ import { Item } from '../models/item.model';
 })
 export class ListNeedComponent implements OnChanges {
 
-  @Input('items') inputItems: Item[] = [];
+  @Input('items') inputItems: {[key: string]: Item[]} = {};
 
   private readonly componentDestruction$ = new Subject();
   private readonly itemsStore$ = new BehaviorSubject<Item[]>([]);
