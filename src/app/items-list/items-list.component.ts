@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Item } from '@grocerment-app/models/item.model';
 import { ListService } from '@grocerment-app/services/list.service';
-import { BehaviorSubject, combineLatest, EMPTY, from, of, Subject } from 'rxjs';
-import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, toArray } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, EMPTY, from, Observable, of, Subject } from 'rxjs';
+import { auditTime, catchError, debounceTime, filter, first, map, share, shareReplay, switchMap, takeUntil, toArray } from 'rxjs/operators';
 import * as Sentry from "@sentry/angular";
 import { environment } from 'src/environments/environment';
 import { FilterService } from '@grocerment-app/services/filter.service';
@@ -80,7 +80,7 @@ export class ItemsListComponent implements OnInit {
     debounceTime(50),
     switchMap( ([store,cart,term]) => {
       const output = {} as { [key: string]: Item[] };
-      if ( !Array.isArray(store) ) return of(output);
+      if ( !Array.isArray(store) || !store.length ) return of(output);
       return from(store).pipe(
         // Filter out items with non-matching names or that are in the cart
         filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) && cart.every( i => i.id !== item.id ) && !item.obtained ),
@@ -92,8 +92,20 @@ export class ItemsListComponent implements OnInit {
         } ),
         toArray(),
         map( () => output ),
-      );
+      ) as Observable<{ [key: string]: Item[] }>;
     }),
+    shareReplay(1),
+  );
+
+  public readonly editItemRef$ = new BehaviorSubject<number|undefined>(undefined);
+  public readonly edititem$ = combineLatest([
+    this.itemsStore$,
+    this.editItemRef$,
+  ]).pipe(
+    map( ([items,edit]) => {
+      if ( !edit ) return undefined;
+      return items.find( item => item.id === edit.toString() );
+    } ),
     shareReplay(1),
   );
 
