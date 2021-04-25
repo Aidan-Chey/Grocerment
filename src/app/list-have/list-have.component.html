@@ -4,7 +4,7 @@
       class="item"
       *cdkVirtualFor="let item of items; trackBy: trackByItemID"
     >
-      <app-list-item [item]="item"></app-list-item>
+      <app-list-item [item]="item" (click)="toggleObtained(item)"></app-list-item>
       <div>
         <span>x</span>
         <span>{{item?.quantity || 1}}</span>
