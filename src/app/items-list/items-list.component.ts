@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Item } from '@grocerment-app/models/item.model';
 import { ListService } from '@grocerment-app/services/list.service';
 import { BehaviorSubject, combineLatest, EMPTY, from, Observable, of, Subject } from 'rxjs';
-import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, toArray } from 'rxjs/operators';
+import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
 import * as Sentry from "@sentry/angular";
 import { environment } from 'src/environments/environment';
 import { FilterService } from '@grocerment-app/services/filter.service';
@@ -77,27 +77,34 @@ export class ItemsListComponent implements OnInit {
   );
   
   /** Items the user needs */
-  public readonly itemsNeed$ = combineLatest([
+  public readonly itemsNeed$: Observable<{ name: string, items: Item[] }[]> = combineLatest([
     this.itemsStore$,
     this.cartItems$,
     this.filterService.filterTerm$,
   ]).pipe(
     debounceTime(50),
     switchMap( ([store,cart,term]) => {
-      const output = {} as { [key: string]: Item[] };
+      const output = [] as { name: string, items: Item[] }[];
       if ( !Array.isArray(store) || !store.length ) return of(output);
+      const categoriesMap = new Map<string, number>();
       return from(store).pipe(
         // Filter out items with non-matching names or that are in the cart
-        filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) && cart.every( i => i.id !== item.id ) && !item.obtained ),
-        map( item => {
-          // add new property to ouput object of item category as an array
-          if ( !output.hasOwnProperty(item.category) ) output[item.category] = [];
-          // add the item to the array of the matching category property
-          output[item.category].push(item);
+        filter( item => (!term || !!item.name.toLowerCase().includes(term.toLowerCase())) 
+          && cart.every( i => i.id !== item.id ) 
+          && !item.obtained 
+        ),
+        tap( item => {
+          const categoryIndex = categoriesMap.get(item.category);
+          if ( typeof categoryIndex === 'undefined' ) 
+            categoriesMap.set( item.category, output.push({
+              name: item.category,
+              items: [item],
+            }) );
+          else output[categoryIndex].items.push(item);
         } ),
         toArray(),
         map( () => output ),
-      ) as Observable<{ [key: string]: Item[] }>;
+      );
     }),
     shareReplay(1),
   );

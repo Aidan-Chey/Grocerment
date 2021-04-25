@@ -5,8 +5,26 @@
       *cdkVirtualFor="let item of items; trackBy: trackByItemID"
     >
       <app-list-item [item]="item"></app-list-item>
+      <div>
+        <span>x</span>
+        <span>{{item?.quantity || 1}}</span>
+        <button mat-icon-button matTooltip="item options" [matMenuTriggerFor]="itemMenu"
+            aria-label="Reveal additional options related to the item" class="options">
+            <mat-icon color="accent" svgIcon="options"></mat-icon>
+        </button>
+        <mat-menu #itemMenu="matMenu">
+            <button mat-menu-item (click)="toggleObtained(item)" matTooltip="Switch the item between 'have' & 'need' list">
+                <mat-icon svgIcon="edit"></mat-icon><span>{{ item.obtained ? 'I Need This' : 'I Have This' }}</span>
+            </button>
+            <button mat-menu-item (click)="openEditDialog(item)"
+                aria-label="Open a dialog for the item with editable fields">
+                <mat-icon svgIcon="edit"></mat-icon><span>Edit Item</span>
+            </button>
+            <button mat-menu-item (click)="deleteItem(item)">
+                <mat-icon svgIcon="trash"></mat-icon><span>Remove Item</span>
+            </button>
+        </mat-menu>
+      </div>
     </div>
   </cdk-virtual-scroll-viewport>
 </ng-container>
-
-<app-new-item [obtained]="true"></app-new-item>

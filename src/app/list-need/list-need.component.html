@@ -1,34 +1,52 @@
 <div>
-  <ng-container *ngIf="{ categories: (categories$ | async), categorizedItems: (itemsCatagorized$ | async) } as results">
+  <ng-container *ngIf="{ categorizedItems: (itemsCatagorized$ | async) } as results">
     <mat-accordion class="categories">
-      <ng-container *ngFor="let category of results.categories">
-        <ng-container *ngIf="!!results.categorizedItems">
-          <mat-expansion-panel class="category" *ngIf="results.categorizedItems[category] as items">
-            <mat-expansion-panel-header>
-              <mat-panel-title>{{category || '(No Category Set)'}}</mat-panel-title>
-              <mat-panel-description>{{items?.length || 0}}</mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-template matExpansionPanelContent>
-              <ul class="items">
-                <li
-                  class="item"
-                  *ngFor="let item of (items || []); trackBy: trackByItemID"
-                  tabindex="0"
-                >
-                  <app-list-item [item]="item">
-                    <button mat-icon-button
-                      (click)="moveToCart(item)"
-                      color="accent"
-                      type="button"
-                      matTooltip="Move item to shopping cart"
-                      aria-label="Moves item to shopping cart for bulk toogle of item's obtained state"
-                    ><mat-icon svgIcon="checkbox-empty"></mat-icon></button>
-                  </app-list-item>
-                </li>
-              </ul>
-            </ng-template>
-          </mat-expansion-panel>
-        </ng-container>
+      <ng-container *ngFor="let categoriesEntry of results.categorizedItems">
+        <mat-expansion-panel class="category">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{categoriesEntry.name || '(No Category Set)'}}</mat-panel-title>
+            <mat-panel-description>{{categoriesEntry.items?.length || 0}}</mat-panel-description>
+          </mat-expansion-panel-header>
+          <ng-template matExpansionPanelContent>
+            <ul class="items">
+              <li
+                class="item"
+                *ngFor="let item of (categoriesEntry.items || []); trackBy: trackByItemID"
+                tabindex="0"
+              >
+                <app-list-item [item]="item">
+                  <button mat-icon-button
+                    (click)="moveToCart(item)"
+                    color="accent"
+                    type="button"
+                    matTooltip="Move item to shopping cart"
+                    aria-label="Moves item to shopping cart for bulk toogle of item's obtained state"
+                  ><mat-icon svgIcon="checkbox-empty"></mat-icon></button>
+                </app-list-item>
+                <div>
+                  <span>x</span>
+                  <span>{{item?.quantity || 1}}</span>
+                  <button mat-icon-button matTooltip="item options" [matMenuTriggerFor]="itemMenu"
+                      aria-label="Reveal additional options related to the item" class="options">
+                      <mat-icon color="accent" svgIcon="options"></mat-icon>
+                  </button>
+                  <mat-menu #itemMenu="matMenu">
+                      <button mat-menu-item (click)="toggleObtained(item)" matTooltip="Switch the item between 'have' & 'need' list">
+                          <mat-icon svgIcon="edit"></mat-icon><span>{{ item.obtained ? 'I Need This' : 'I Have This' }}</span>
+                      </button>
+                      <button mat-menu-item (click)="openEditDialog(item)"
+                          aria-label="Open a dialog for the item with editable fields">
+                          <mat-icon svgIcon="edit"></mat-icon><span>Edit Item</span>
+                      </button>
+                      <button mat-menu-item (click)="deleteItem(item)">
+                          <mat-icon svgIcon="trash"></mat-icon><span>Remove Item</span>
+                      </button>
+                  </mat-menu>
+                </div>
+              </li>
+            </ul>
+          </ng-template>
+        </mat-expansion-panel>
       </ng-container>
     </mat-accordion>
   </ng-container>

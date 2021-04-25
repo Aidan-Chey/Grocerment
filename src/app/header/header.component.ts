@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivationEnd, Router, Event } from '@angular/router';
-import { map, shareReplay, filter } from 'rxjs/operators';
+import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
+import { ItemService } from '@grocerment-app/services/item.service';
+import { EMPTY } from 'rxjs';
+import { map, shareReplay, filter, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { ColorSchemeService } from '../services/color-scheme.service';
 import { FilterService } from '../services/filter.service';
@@ -61,6 +64,7 @@ export class HeaderComponent implements OnInit {
     public readonly updateService: ServiceWorkerService,
     public readonly colorSchemeService: ColorSchemeService,
     public readonly onlineState: OnlineStateService,
+    private readonly itemService: ItemService,
   ) {
   }
 
@@ -72,6 +76,16 @@ export class HeaderComponent implements OnInit {
       height: 'auto',
       maxHeight: '8em',
     });
+  }
+
+  public openCreateItemDialog() {
+    const dialogConfig = {
+      ...editItemConfig,
+      height: 'auto',
+    };
+    this.dialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
+      switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
+    ).subscribe();
   }
 
 }

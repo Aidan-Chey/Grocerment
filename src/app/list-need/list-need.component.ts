@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, combineLatest, from, Subject, of } from 'rxjs';
-import { debounceTime, map, shareReplay, switchMap, toArray } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
+import { ItemService } from '@grocerment-app/services/item.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
 
 @Component({
@@ -10,50 +13,65 @@ import { Item } from '../models/item.model';
 })
 export class ListNeedComponent implements OnChanges {
 
-  @Input('items') inputItems: {[key: string]: Item[]} | null = null;
+  @Input('items') inputItems: { name: string, items: Item[] }[] | null = null;
 
   private readonly componentDestruction$ = new Subject();
-  private readonly itemsStore$ = new BehaviorSubject<Item[]>([]);
+  public readonly itemsCatagorized$ = new BehaviorSubject<{ name: string, items: Item[] }[] | null>(null);
 
-  /** Filtered list of items */
-  public readonly itemsCatagorized$ = combineLatest([
-    this.itemsStore$
-  ]).pipe(
-    debounceTime(50),
-    switchMap( ([store]) => {
-      const output = {} as { [key: string]: Item[] };
-      if ( !Array.isArray(store) ) return of(output);
-      return from(store).pipe(
-        map( item => {
-          // add new property to ouput object of item category as an array
-          if ( !output.hasOwnProperty(item.category) ) output[item.category] = [];
-          // add the item to the array of the matching category property
-          output[item.category].push(item);
-        } ),
-        toArray(),
-        map( () => output ),
-      );
-    }),
-    shareReplay(1),
-  );
-
-  /** List of item categories retrieved from the list of items */
-  public readonly categories$ = this.itemsCatagorized$.pipe(
-    map( items => !!items ? Object.keys(items).sort() : [] ),
-    shareReplay(1),
-  );
-
-  constructor() {
+  constructor(
+    private readonly itemService: ItemService,
+    private readonly dialog: MatDialog,
+  ) {
   }
 
   ngOnChanges( changes: SimpleChanges ) {
     if ( changes.hasOwnProperty('inputItems') ) {
-      this.itemsStore$.next(changes.inputItems.currentValue);
+      this.itemsCatagorized$.next(changes.inputItems.currentValue);
     }
   }
 
   ngOnDestroy() {
     this.componentDestruction$.next();
+  }
+
+  /** Open item editing dialog */
+  openEditDialog( item: Item ) {
+
+    const dialogConfig = Object.assign({ data: item }, editItemConfig);
+
+    this.dialog.open( EditItemComponent, dialogConfig)
+      .afterClosed()
+      .subscribe( (res: Item) => {
+        if ( !!res ) this.editItem( res );
+      } );
+
+  }
+
+  /** Save edited item to DB */
+  editItem( item: Item ) {
+    
+    this.itemService.editItem( item ).pipe(
+      tap( res => { if (!!res) this.openEditDialog(item) } ),
+    ).subscribe(); 
+
+  }
+
+  /** Moves the item between have & need states */
+  toggleObtained( item: Item ) {
+
+    const toSave = { id: item.id, obtained: !item.obtained } as Item;
+
+    this.itemService.editItem( toSave ).pipe(
+      tap( res => { if (!!res) this.toggleObtained(item) } ),
+    ).subscribe();
+
+  }
+
+  /** deletes the item from DB */
+  deleteItem( item: Item ) {
+
+    this.itemService.deleteitem( item ).subscribe();
+
   }
 
   /** Moves item out of main list for later edit to toggle it's obtained state */

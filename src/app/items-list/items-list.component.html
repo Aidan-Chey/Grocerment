@@ -1,5 +1,19 @@
-<app-list-need [items]="itemsNeed$ | async"></app-list-need>
-<app-edit-item [item]="edititem$ | async"></app-edit-item>
-<app-list-cart [items]="cartItems$ | async" (clearCart)="clearCart()"
-    (removeCartItem)="removeCartItem($any($event))"></app-list-cart>
-<app-list-have [items]="itemsHave$ | async"></app-list-have>
+<ng-container *ngIf="(itemsNeed$ | async) as needItems">
+    <section *ngIf="!!needItems.length" class="container-need">
+        <h2>Things I Need</h2>
+        <app-list-need [items]="needItems"></app-list-need>
+    </section>
+</ng-container>
+<ng-container *ngIf="(cartItems$ | async) as cartItems">
+    <section *ngIf="!!cartItems.length" class="container-cart">
+        <h2>In my shopping cart</h2>
+        <app-list-cart [items]="cartItems" (clearCart)="clearCart()"
+            (removeCartItem)="removeCartItem($any($event))"></app-list-cart>
+    </section>
+</ng-container>
+<ng-container *ngIf="(itemsHave$ | async) as haveItems">
+    <section *ngIf="!!haveItems.length" class="container-have">
+        <h2>Things I Have</h2>
+        <app-list-have [items]="haveItems"></app-list-have>
+    </section>
+</ng-container>

@@ -15,8 +15,14 @@
 }
 
 div.item {
+  display: flex;
   padding: 0.3em 1em;
   border-radius: 5px;
+
+  > app-list-item {
+    margin-right: 0.5em;
+    flex: 1 1 auto;
+  }
 }
 
 div.item:not(:last-child) {

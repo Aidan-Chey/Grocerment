@@ -32,7 +32,6 @@ import { HeaderComponent } from './header/header.component';
 import { FilterComponent } from './header/filter/filter.component';
 import { ListHaveComponent } from './list-have/list-have.component';
 import { ListNeedComponent } from './list-need/list-need.component';
-import { NewItemComponent } from './new-item/new-item.component';
 import { GetMeasurementPipe } from './pipes/get-measurement.pipe';
 import { ListItemComponent } from './list-item/list-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
@@ -52,7 +51,6 @@ import { ListCartComponent } from './list-cart/list-cart.component';
     FilterComponent,
     ListHaveComponent,
     ListNeedComponent,
-    NewItemComponent,
     GetMeasurementPipe,
     ListItemComponent,
     EditItemComponent,
