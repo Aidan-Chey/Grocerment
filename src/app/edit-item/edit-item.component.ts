@@ -68,30 +68,6 @@ export class EditItemComponent implements OnInit {
     }),
     shareReplay(1),
   );
-  /** List of names of existing items */
-  public readonly nameOptions$ = this.itemsStore$.pipe(
-    switchMap( items => {
-      if ( !Array.isArray(items) ) return of([]);
-      const output = [] as string[];
-      return from(items).pipe(
-        filter( item => !output.includes( item.name ) ),
-        map( item => item.name ),
-        toArray(),
-      );
-    }),
-    shareReplay(1),
-  );
-  /** filtered list of names based on existing value of name field */
-  public readonly filteredNameOptions$ = combineLatest([
-    (this.itemGroup.get('name')?.valueChanges || of('')).pipe( startWith('') ),
-    this.nameOptions$,
-  ]).pipe(
-    switchMap( ([value,options]) => {
-      if ( !value ) return of([]);
-      return this.filterOptions( (value || ''), options || [] );
-    } ),
-    shareReplay(1),
-  );
   /** List of categories of existing items */
   public readonly categoryOptions$ = this.itemsStore$.pipe(
     switchMap( items => {

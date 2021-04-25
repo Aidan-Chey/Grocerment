@@ -8,11 +8,7 @@
           <input type="text"
                 cdkFocusInitial 
                 matInput
-                formControlName="name"
-                [matAutocomplete]="autoNames">
-          <mat-autocomplete #autoNames="matAutocomplete">
-            <mat-option *ngFor="let option of (filteredNameOptions$ | async)" [value]="option">{{option}}</mat-option>
-          </mat-autocomplete>
+                formControlName="name">
         </mat-form-field>
       </mat-list-item>
       <!-- Category Field -->
