@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder } from '@angular/forms';
@@ -26,10 +26,7 @@ export const editItemConfig = {
   templateUrl: './edit-item.component.html',
   styleUrls: ['./edit-item.component.scss']
 })
-export class EditItemComponent implements OnInit, OnChanges {
-
-  @Input('item') itemData: Item | null = null;
-
+export class EditItemComponent implements OnInit {
   /** Controls for an item to edit */
   public readonly itemGroup = this.fb.group({
     name: '',
@@ -127,19 +124,15 @@ export class EditItemComponent implements OnInit, OnChanges {
     private readonly snackbar: MatSnackBar,
     private readonly fb: FormBuilder,
     public readonly dialogRef: MatDialogRef<EditItemComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Item,
   ) {
   }
 
-  ngOnChanges( changes: SimpleChanges ) {
-    if ( changes.hasOwnProperty('itemData') && !!changes.itemData.currentValue ) {
-      const { measurement, ...toPatch} = changes.itemData.currentValue;
-      this.itemGroup.patchValue( toPatch );
-  
-      if ( !!measurement ) this.itemGroup.get('measurement')?.setValue(measurement.id);
-    }
-  }
-
   ngOnInit(): void {
+    const { measurement, ...toPatch} = this.data;
+    this.itemGroup.patchValue( toPatch );
+
+    if ( !!measurement ) this.itemGroup.get('measurement')?.setValue(measurement.id);
   }
   /** Function that filters list of options based on input field value */
   private filterOptions(value: string, options: string[]) {
@@ -169,7 +162,7 @@ export class EditItemComponent implements OnInit, OnChanges {
     ).subscribe( user => {
       if ( !!formData.measurement ) formData.measurement = this.firestore.collection<Measurement>("measurements").doc(formData.measurement).ref;
 
-      const item = { id: this.itemData?.id, ...formData, user: user.uid };
+      const item = { id: this.data?.id, ...formData, user: user.uid };
   
       this.dialogRef.close(item);
 
