@@ -48,7 +48,7 @@ export class ServiceWorkerService {
         } as ConfirmData;
         return this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed();
       } ),
-      filter( notEmpty ),
+      filter( res => !!res ),
     ).subscribe( () => {
       this.reloadApp();
     } );

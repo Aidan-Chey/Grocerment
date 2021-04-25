@@ -2,7 +2,7 @@
 <mat-dialog-content *ngIf="!!data.content" [innerHTML]="data.content"></mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-raised-button 
-    mat-dialog-close 
+    [mat-dialog-close]="false"
     cdkFocusInitial
   >{{data.decline || 'Cancel'}}</button>
   <button mat-raised-button 

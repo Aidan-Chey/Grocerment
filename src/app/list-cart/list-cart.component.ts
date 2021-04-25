@@ -37,7 +37,7 @@ export class ListCartComponent implements OnInit {
 
     this.dialog.open( ConfirmDialog, { data, maxHeight: '12em' } ).afterClosed().pipe(
       first(),
-      filter( notEmpty ),
+      filter( res => !!res ),
     ).subscribe( () => {
       this.clearCartEmitter.emit();
     } );
@@ -56,7 +56,7 @@ export class ListCartComponent implements OnInit {
 
     this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed().pipe(
       first(),
-      filter( notEmpty ),
+      filter( res => !!res ),
       switchMap( () => {
         if ( !this.inputItems ) return EMPTY;
         return this.itemService.batchEdit( this.inputItems, { obtained: true } as Item );
