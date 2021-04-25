@@ -74,7 +74,7 @@ export class ListNeedComponent implements OnChanges {
   /** deletes the item from DB */
   deleteItem( item: Item ) {
 
-    this.itemService.deleteitem( item ).subscribe();
+    this.itemService.deleteItem( item ).subscribe();
 
   }
 

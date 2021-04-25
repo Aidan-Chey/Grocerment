@@ -20,7 +20,7 @@ export class ItemService {
   ) { }
 
   /** deletes the item from DB */
-  public deleteitem( item: Item ): Observable<unknown> {
+  public deleteItem( item: Item ): Observable<unknown> {
 
     return this.listService.listsCollectionRef$.pipe(
       take(1),
@@ -36,7 +36,7 @@ export class ItemService {
         else console.error(issue + ' |', err);
         const errorSnackbarRef = this.snackbar.open( issue, 'Retry', { duration: 3000, verticalPosition: 'bottom', panelClass: 'error' } );
         return errorSnackbarRef.onAction().pipe( 
-          tap( () => { this.deleteitem(item); } ),
+          tap( () => { this.deleteItem(item); } ),
         );
       } ),
       switchMap( () => {
