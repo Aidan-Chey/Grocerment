@@ -89,10 +89,6 @@ export class ItemService {
         .doc(id)
         .update(toSave) 
       ),
-      tap( () => { 
-        // Item editied successfully
-        this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 
-      } ),
       catchError( err => {
         // Failed to edit item
         const issue = 'Failed to edit item';

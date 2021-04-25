@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
 import { ItemService } from '@grocerment-app/services/item.service';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -21,6 +22,7 @@ export class ListNeedComponent implements OnChanges {
   constructor(
     private readonly itemService: ItemService,
     private readonly dialog: MatDialog,
+    private readonly snackbar: MatSnackBar,
   ) {
   }
 
@@ -52,7 +54,9 @@ export class ListNeedComponent implements OnChanges {
     
     this.itemService.editItem( item ).pipe(
       tap( res => { if (!!res) this.openEditDialog(item) } ),
-    ).subscribe(); 
+    ).subscribe( () => {
+      this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 
+    }); 
 
   }
 

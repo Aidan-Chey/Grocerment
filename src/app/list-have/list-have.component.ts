@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
 import { ItemService } from '@grocerment-app/services/item.service';
-import { tap } from 'rxjs/operators';
+import { finalize, switchMap, tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
 
 @Component({
@@ -17,6 +18,7 @@ export class ListHaveComponent {
   constructor(
     private readonly matDialog: MatDialog,
     private readonly itemService: ItemService,
+    private readonly snackbar: MatSnackBar,
   ) { }
 
   /** Tracks items by their ID */
@@ -42,7 +44,9 @@ export class ListHaveComponent {
     
     this.itemService.editItem( item ).pipe(
       tap( res => { if (!!res) this.openEditDialog(item) } ),
-    ).subscribe(); 
+    ).subscribe( () => {
+      this.snackbar.open( 'Item edited', undefined, { duration: 1000, verticalPosition: 'bottom' } ); 
+    } ); 
 
   }
 
@@ -53,6 +57,11 @@ export class ListHaveComponent {
 
     this.itemService.editItem( toSave ).pipe(
       tap( res => { if (!!res) this.toggleObtained(item) } ),
+      switchMap( () => this.snackbar.open( 'Item moved', 'Undo', { duration: 2000, verticalPosition: 'bottom' } ).onAction() ),
+      switchMap( () => { 
+        toSave.obtained = !toSave.obtained;
+        return this.itemService.editItem(toSave);
+      } ),
     ).subscribe();
 
   }
