@@ -94,13 +94,13 @@ export class ItemsListComponent implements OnInit {
           && !item.obtained 
         ),
         tap( item => {
-          const categoryIndex = categoriesMap.get(item.category);
-          if ( typeof categoryIndex === 'undefined' ) 
+          const categoryPosition = categoriesMap.get(item.category);
+          if ( typeof categoryPosition === 'undefined' ) 
             categoriesMap.set( item.category, output.push({
               name: item.category,
               items: [item],
             }) );
-          else output[categoryIndex].items.push(item);
+          else output[categoryPosition-1].items.push(item);
         } ),
         toArray(),
         map( () => output ),
