@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ItemsListComponent } from './items-list/items-list.component';
-import { ListHaveComponent } from './list-have/list-have.component';
-import { ListNeedComponent } from './list-need/list-need.component';
 import { SelectListComponent } from './select-list/select-list.component';
 
 const routes: Routes = [
@@ -23,13 +21,11 @@ const routes: Routes = [
   },
   {
     path: 'need',
-    component: ListNeedComponent,
-    data: { title: 'I Need...' },
+    redirectTo: 'items',
   },
   {
     path: 'have',
-    component: ListHaveComponent,
-    data: { title: 'I Have...' },
+    redirectTo: 'items',
   }
 ];
 
