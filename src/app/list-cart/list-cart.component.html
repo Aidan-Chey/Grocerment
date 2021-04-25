@@ -9,7 +9,7 @@
             <ul class="items">
                 <li class="item" *ngFor="let item of inputItems; trackBy: trackByItemID" tabindex="0">
                     <app-list-item [item]="item">
-                        <button mat-icon-button color="accent" (click)="removeFromCart(item)" type="button"
+                        <button mat-icon-button color="accent" (click)="removeCartItemEmitter.emit( item.id );" type="button"
                             matTooltip="Remove item from shopping cart">
                             <mat-icon svgIcon="checkbox-filled"></mat-icon>
                         </button>

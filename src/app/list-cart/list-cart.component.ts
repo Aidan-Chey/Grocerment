@@ -68,11 +68,6 @@ export class ListCartComponent implements OnInit {
       else this.clearCartEmitter.emit();
     } );
   }
-  
-  /** Removes item from shopping cart */
-  public removeFromCart( toRemove: Item ) {
-    this.removeCartItemEmitter.emit( toRemove.id );
-  }
 
   /** Tracks items by their ID */
   public trackByItemID(index:number, el:any): number {
