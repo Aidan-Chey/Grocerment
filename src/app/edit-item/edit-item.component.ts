@@ -5,7 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, combineLatest, EMPTY, from } from 'rxjs';
-import { catchError, filter, first, map, shareReplay, startWith, switchMap, toArray } from 'rxjs/operators';
+import { catchError, filter, first, map, shareReplay, startWith, switchMap, tap, toArray } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Item } from '../models/item.model';
 import { Measurement } from '../models/measurement.model';
@@ -75,8 +75,9 @@ export class EditItemComponent implements OnInit {
       const output = [] as string[];
       return from(items).pipe(
         filter( item => !output.includes( item.category ) ),
-        map( item => item.category ),
+        tap( item => { output.push(item.category) } ),
         toArray(),
+        map( () => output ),
       );
     } ),
     shareReplay(1),
@@ -87,7 +88,6 @@ export class EditItemComponent implements OnInit {
     this.categoryOptions$,
   ]).pipe(
     switchMap( ([value,options]) => {
-      if ( !value ) return of([]);
       return this.filterOptions( (value || ''), options || [] );
     } ),
     shareReplay(1),
