@@ -13,7 +13,7 @@
     </section>
     <section *ngIf="!!results.cart?.length" class="container-cart">
         <app-list-cart [items]="results.cart" (clearCart)="clearCart()"
-            (removeCartItem)="removeCartItem($any($event))"></app-list-cart>
+            (removeItem)="removeCartItem($event)"></app-list-cart>
     </section>
     <section *ngIf="!!results.have?.length" class="container-have">
         <h2>Things I Have</h2>
