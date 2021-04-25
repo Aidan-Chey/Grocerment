@@ -1,5 +1,5 @@
 <div>
-  <ng-container *ngIf="{ categories: (categories$ | async), categorizedItems: (itemsCatagorizedFiltered$ | async) } as results">
+  <ng-container *ngIf="{ categories: (categories$ | async), categorizedItems: (itemsCatagorized$ | async) } as results">
     <mat-accordion class="categories">
       <ng-container *ngFor="let category of results.categories">
         <ng-container *ngIf="!!results.categorizedItems">

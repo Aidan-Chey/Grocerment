@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmData, ConfirmDialog } from '@grocerment-app/confirm/confirm.dialog';
 import notEmpty from '@grocerment-app/globals/not-empty-filter';
 import { Item } from '@grocerment-app/models/item.model';
 import { ItemService } from '@grocerment-app/services/item.service';
+import { EMPTY } from 'rxjs';
 import { filter, first, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +14,9 @@ import { filter, first, switchMap } from 'rxjs/operators';
 })
 export class ListCartComponent implements OnInit {
 
-  @Input('items') inputItems: Item[] = [];
+  @Input('items') inputItems: Item[] | null = null;
+  @Output('clearCart') clearCartEmitter = new EventEmitter();
+  @Output('removeItem') removeCartItemEmitter = new EventEmitter<string>();
 
   constructor(
     private readonly dialog: MatDialog,
@@ -36,12 +39,14 @@ export class ListCartComponent implements OnInit {
       first(),
       filter( notEmpty ),
     ).subscribe( () => {
-      this.cartItemRefs$.next([]);
+      this.clearCartEmitter.emit();
     } );
   }
 
   /** Begins the checkout process for bulk editing the cart items */
   public checkout() {
+    if ( !this.inputItems ) return;
+
     const data = {
       title: 'Checkout Shopping Cart',
       content: 'Please confirm you wish to move the shopping cart items to your "I have" list',
@@ -52,21 +57,26 @@ export class ListCartComponent implements OnInit {
     this.dialog.open( ConfirmDialog, { data, maxHeight: '13em' } ).afterClosed().pipe(
       first(),
       filter( notEmpty ),
-      switchMap( () => this.cartItems$ ),
-      first(),
-      switchMap( items => this.itemService.batchEdit( items, { obtained: true } as Item ) ),
+      switchMap( () => {
+        if ( !this.inputItems ) return EMPTY;
+        return this.itemService.batchEdit( this.inputItems, { obtained: true } as Item );
+      } ),
     ).subscribe( res => {
       // Error occured and user opted to retry
       if ( !!res ) this.checkout();
       // Operation completed successfully
-      else this.cartItemRefs$.next([]);
+      else this.clearCartEmitter.emit();
     } );
   }
   
   /** Removes item from shopping cart */
   public removeFromCart( toRemove: Item ) {
-    const itemCart = this.cartItemRefs$.getValue();
-    this.cartItemRefs$.next( itemCart.filter( item => item !== toRemove.id ) );
+    this.removeCartItemEmitter.emit( toRemove.id );
+  }
+
+  /** Tracks items by their ID */
+  public trackByItemID(index:number, el:any): number {
+    return el.id;
   }
 
 }

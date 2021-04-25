@@ -28,7 +28,7 @@ export const editItemConfig = {
 })
 export class EditItemComponent implements OnInit, OnChanges {
 
-  @Input('item') itemData = {} as Item;
+  @Input('item') itemData: Item | null = null;
 
   /** Controls for an item to edit */
   public readonly itemGroup = this.fb.group({
@@ -131,8 +131,8 @@ export class EditItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges( changes: SimpleChanges ) {
-    if ( changes.hasOwnProperty('itemData') ) {
-      const { measurement, ...toPatch} = this.itemData;
+    if ( changes.hasOwnProperty('itemData') && !!changes.itemData.currentValue ) {
+      const { measurement, ...toPatch} = changes.itemData.currentValue;
       this.itemGroup.patchValue( toPatch );
   
       if ( !!measurement ) this.itemGroup.get('measurement')?.setValue(measurement.id);

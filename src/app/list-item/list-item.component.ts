@@ -13,7 +13,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ListItemComponent implements OnInit {
 
-  @Input() item = {} as Item;
+  @Input() item: Item | null = null;
 
   constructor(
     private readonly matDialog: MatDialog,

@@ -8,7 +8,7 @@ import { Item } from '../models/item.model';
 })
 export class ListHaveComponent {
 
-  @Input('items') inputItems: Item[] = [];
+  @Input('items') inputItems: Item[] | null = null;
 
   constructor(
   ) { }

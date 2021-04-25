@@ -16,8 +16,8 @@ export class GetMeasurementPipe implements PipeTransform {
     private readonly snackbar: MatSnackBar,
   ) {}
 
-  transform(value: DocumentReference<Measurement>): Observable<Measurement | undefined> {
-    if ( typeof(value) !== 'object' ) return of(undefined);
+  transform(value: DocumentReference<Measurement> | undefined | null): Observable<Measurement | undefined> {
+    if (!value || typeof(value) !== 'object' ) return of(undefined);
 
     return from(value.get()).pipe(
       catchError( err => {
