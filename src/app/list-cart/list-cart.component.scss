@@ -1,0 +1,20 @@
+
+.basket {
+    margin: 0.5em 0.2em;
+}
+
+mat-panel-description {
+    justify-content: flex-end;
+}
+
+ul.items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-actions {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
