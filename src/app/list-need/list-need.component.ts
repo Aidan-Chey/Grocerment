@@ -78,13 +78,13 @@ export class ListNeedComponent implements OnChanges {
 
   }
 
-  /** Moves item out of main list for later edit to toggle it's obtained state */
-  public moveToCart( toAdd: Item ) {
+  /** Tracks items by their ID */
+  public trackByItemID(index:number, el:any): string {
+    return el.id;
   }
 
-  /** Tracks items by their ID */
-  public trackByItemID(index:number, el:any): number {
-    return el.id;
+  public trackByName(index:number, el:any): string {
+    return el.name;
   }
 
 }
