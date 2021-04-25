@@ -29,6 +29,10 @@ div.item:not(:last-child) {
   margin-bottom: 0.3em;
 }
 
+div.item:hover:not(:disabled) {
+  cursor: pointer;
+}
+
 div.item:hover,
 div.item:focus {
   background-color: hsl(0 0% 100% / 0.05);
