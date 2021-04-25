@@ -30,7 +30,7 @@ export class ListCartComponent implements OnInit {
   public clearCart() {
     const data = {
       title: 'Clear Shopping Cart',
-      content: 'Please confirm you wish to clear the shopping cart',
+      content: 'Please confirm you wish to clear the shopping cart, moving all items back to the list of items you need',
       accept: 'Clear',
       decline: 'Cancel',
     } as ConfirmData;
@@ -49,7 +49,7 @@ export class ListCartComponent implements OnInit {
 
     const data = {
       title: 'Checkout Shopping Cart',
-      content: 'Please confirm you wish to move the shopping cart items to your "I have" list',
+      content: 'Please confirm you wish to move the shopping cart items to the list of things you have',
       accept: 'Checkout',
       decline: 'Cancel',
     } as ConfirmData;
