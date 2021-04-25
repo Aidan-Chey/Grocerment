@@ -97,9 +97,9 @@ export class ItemsListComponent implements OnInit {
           && !item.obtained 
         ),
         tap( item => {
-          const categoryPosition = categoriesMap.get(item.category);
+          const categoryPosition = categoriesMap.get(item.category?.toLowerCase());
           if ( typeof categoryPosition === 'undefined' ) 
-            categoriesMap.set( item.category, output.push({
+            categoriesMap.set( item.category?.toLowerCase(), output.push({
               name: item.category,
               items: [item],
             }) );

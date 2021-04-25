@@ -4,7 +4,7 @@
       <ng-container *ngFor="let categoriesEntry of results.categorizedItems; trackBy: trackByName">
         <mat-expansion-panel class="category">
           <mat-expansion-panel-header>
-            <mat-panel-title>{{categoriesEntry.name || '(No Category Set)'}}</mat-panel-title>
+            <mat-panel-title>{{(categoriesEntry.name || '(No Category Set)' | titlecase)}}</mat-panel-title>
             <mat-panel-description>{{categoriesEntry.items?.length || 0}}</mat-panel-description>
           </mat-expansion-panel-header>
           <ng-template matExpansionPanelContent>
