@@ -40,7 +40,7 @@ export class ItemsListComponent implements OnInit {
       this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
       return EMPTY;
     } ),
-    map( items => items.sort(this.compareFn) ),
+    map( items => items.sort(this.itemCompareFn) ),
     shareReplay(1),
   );
   
@@ -106,7 +106,7 @@ export class ItemsListComponent implements OnInit {
           else output[categoryPosition-1].items.push(item);
         } ),
         toArray(),
-        map( () => output ),
+        map( () => output.sort(this.categoryCompareFn) ),
       );
     }),
     shareReplay(1),
@@ -170,11 +170,24 @@ export class ItemsListComponent implements OnInit {
     this.componentDestruction$.next();
   }
 
-  /** Function to compare two objects by comparing their `name` property. */
-  private compareFn(a: Item, b: Item) {
-    if (a.name < b.name)
+  /** Function to compare two items by comparing their `name` property. */
+  private itemCompareFn(a: Item, b: Item) {
+    const aName = a.name?.toLowerCase();
+    const bName = b.name?.toLowerCase();
+    if (aName < bName)
       return -1;
-    if (a.name > b.name)
+    if (aName > bName)
+      return 1;
+    return 0;
+  };
+
+  /** Function */
+  private categoryCompareFn( a: { name: string, items: Item[] }, b: { name: string, items: Item[] } ) {
+    const aName = a.name?.toLowerCase();
+    const bName = b.name?.toLowerCase();
+    if (aName < bName)
+      return -1;
+    if (aName > bName)
       return 1;
     return 0;
   };
