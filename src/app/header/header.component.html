@@ -54,22 +54,13 @@
   </button>
   <ng-container *ngIf="(pagePath$ | async) as pagePath">
     <button mat-menu-item 
-      routerLink="have"
-      aria-label="Navigate to the page of items you have"
-      matTooltip="Items you already have"
-      [ngClass]="{ 'active': pagePath === 'have' }"
-    >
-      <mat-icon svgIcon="have"></mat-icon>
-      <span>I Have...</span>
-    </button>
-    <button mat-menu-item 
       routerLink="need" 
-      [ngClass]="{ 'active': pagePath === 'need' }"
-      aria-label="Navigate to the page of items you need"
-      matTooltip="Items you don't have and need"
+      [ngClass]="{ 'active': pagePath === 'items' }"
+      aria-label="Navigate to the page of items"
+      matTooltip="List of items"
     >
       <mat-icon svgIcon="cart"></mat-icon>
-      <span>I Need...</span>
+      <span>Items</span>
     </button>
   </ng-container>
 </mat-menu>
