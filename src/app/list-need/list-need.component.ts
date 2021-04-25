@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
@@ -15,6 +15,8 @@ import { Item } from '../models/item.model';
 export class ListNeedComponent implements OnChanges {
 
   @Input('items') inputItems: { name: string, items: Item[] }[] | null = null;
+  /** Moves item out of main list for later edit to toggle it's obtained state */
+  @Output() moveToCart = new EventEmitter<string>();
 
   private readonly componentDestruction$ = new Subject();
   public readonly itemsCatagorized$ = new BehaviorSubject<{ name: string, items: Item[] }[] | null>(null);

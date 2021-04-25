@@ -16,7 +16,7 @@
               >
                 <app-list-item [item]="item">
                   <button mat-icon-button
-                    (click)="moveToCart(item)"
+                    (click)="moveToCart.emit(item.id)"
                     color="accent"
                     type="button"
                     matTooltip="Move item to shopping cart"

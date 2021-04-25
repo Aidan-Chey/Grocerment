@@ -191,6 +191,20 @@ export class ItemsListComponent implements OnInit {
     } );
   }
 
+  public moveToCart( toMove: string ): void {
+    if ( !toMove ) return;
+    this.cartItemRefs$.pipe(
+      first(),
+    ).subscribe( refs => {
+      if ( !Array.isArray(refs) ) {
+        this.cartItemRefs$.next( [ toMove ] );
+      } else {
+        refs.push( toMove );
+        this.cartItemRefs$.next( refs );
+      }
+    } );
+  }
+
   /** Empties the cart of all items */
   public clearCart(): void {
     this.cartItemRefs$.next([]);
