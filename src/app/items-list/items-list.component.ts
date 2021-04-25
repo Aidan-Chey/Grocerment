@@ -9,6 +9,9 @@ import { environment } from 'src/environments/environment';
 import { FilterService } from '@grocerment-app/services/filter.service';
 import notEmpty from '@grocerment-app/globals/not-empty-filter';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
+import { ItemService } from '@grocerment-app/services/item.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-items-list',
@@ -127,8 +130,10 @@ export class ItemsListComponent implements OnInit {
   constructor(
     private readonly listService: ListService,
     private readonly snackbar: MatSnackBar,
-    private readonly filterService: FilterService,
+    public readonly filterService: FilterService,
     private readonly afAuth: AngularFireAuth,
+    private readonly itemService: ItemService,
+    private readonly dialog: MatDialog,
   ) {
     const basket = localStorage.getItem(this.cartitemsLabel);
     if ( !!basket && basket !== 'undefined' ) {
@@ -174,11 +179,6 @@ export class ItemsListComponent implements OnInit {
     return 0;
   };
 
-  /** Tracks items by their ID */
-  public trackByItemID(index:number, el:any): number {
-    return el.id;
-  }
-
   /** Attempts to remove an item's reference from the cart list */
   public removeCartItem( toRemove: string ): void {
     if ( !toRemove ) return;
@@ -194,6 +194,21 @@ export class ItemsListComponent implements OnInit {
   /** Empties the cart of all items */
   public clearCart(): void {
     this.cartItemRefs$.next([]);
+  }
+
+  public openCreateItemDialog() {
+    const data = {} as Item;
+
+    if ( !!this.filterService.filterTerm ) data.name = this.filterService.filterTerm;
+
+    const dialogConfig = {
+      ...editItemConfig,
+      height: 'auto',
+      data,
+    };
+    this.dialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
+      switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
+    ).subscribe();
   }
 
 }

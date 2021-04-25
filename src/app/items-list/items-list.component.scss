@@ -70,4 +70,21 @@ h2 {
 section {
   display: flex;
   flex-flow: column nowrap;
+
+  > button {
+    margin: auto
+  }
+}
+
+.container-noitems {
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: center;
+  
+  > div {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+  }
 }

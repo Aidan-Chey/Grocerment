@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
+import { Item } from '@grocerment-app/models/item.model';
 import { ItemService } from '@grocerment-app/services/item.service';
 import { EMPTY } from 'rxjs';
 import { map, shareReplay, filter, switchMap } from 'rxjs/operators';
@@ -79,9 +80,14 @@ export class HeaderComponent implements OnInit {
   }
 
   public openCreateItemDialog() {
+    const data = {} as Item;
+
+    if ( !!this.filterService.filterTerm ) data.name = this.filterService.filterTerm;
+
     const dialogConfig = {
       ...editItemConfig,
       height: 'auto',
+      data,
     };
     this.dialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
       switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
