@@ -200,7 +200,8 @@ export class ItemsListComponent implements OnInit {
     ).subscribe( refs => {
       if ( !Array.isArray(refs) ) return;
       const index = refs.findIndex( ref => ref === toRemove );
-      this.cartItemRefs$.next( refs.splice( index, 1 ) );
+      refs.splice( index, 1 );
+      this.cartItemRefs$.next( refs );
     } );
   }
 
