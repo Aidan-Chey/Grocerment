@@ -71,7 +71,11 @@ export class ItemsListComponent implements OnInit {
     switchMap( ([references,items]) => {
       if ( !Array.isArray(references) || !references.length || !Array.isArray(items) || !items.length ) return of([] as Item[]);
       return from(references).pipe(
-        map( ref => items.find( item => item.id === ref ) ),
+        map( ref => {
+          const foundItem = items.find( item => item.id === ref );
+          if ( !foundItem || !!foundItem.obtained ) this.removeCartItem(ref);
+          return foundItem;
+        } ),
         filter( notEmpty ),
         toArray(),
       ) as Observable<Item[]>;
