@@ -5,9 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
-import { filter, first, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, first, map, switchMap, takeUntil } from 'rxjs/operators';
 import { fromEvent, Subject } from 'rxjs';
 import notEmpty from 'src/app/globals/not-empty-filter';
+import * as qrcodeGenerator from 'qrcode-generator';
 
 @Component({
   selector: 'app-show-user-id',
@@ -21,6 +22,20 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('shareButton', { read: ElementRef }) shareButton?: ElementRef<HTMLButtonElement>;
 
+  public readonly qrCode$ = this.afAuth.user.pipe(
+    filter( notEmpty ),
+    map( user => {
+      const constructor = qrcodeGenerator(0,'M');
+      constructor.addData(user.uid);
+      constructor.make();
+      return constructor.createSvgTag({
+        cellSize: 2,
+        margin: 2,
+        scalable: true,
+      });
+    } ),
+  );
+
   constructor(
     public readonly afAuth: AngularFireAuth,
     private readonly clipboard: Clipboard,
@@ -30,7 +45,6 @@ export class ShowUserIDDialog implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    
   }
 
   ngAfterViewInit() {

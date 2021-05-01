@@ -1,4 +1,6 @@
-<div mat-dialog-content #test>{{(afAuth.user | async)?.uid}}</div>
+<div [innerHTML]="qrCode$ | async | safe: 'html'"></div>
+<p><small>List members can scan this QR Code to add you to their list</small></p>
+<p mat-dialog-content #test>{{(afAuth.user | async)?.uid}}</p>
 <div mat-dialog-actions align="end">
     <button mat-icon-button #shareButton
         cdkFocusInitial

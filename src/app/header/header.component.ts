@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
   public showUserID() {
     this.dialog.open( ShowUserIDDialog, {
       height: 'auto',
-      maxHeight: '8em',
+      maxHeight: '35em',
     });
   }
 
