@@ -43,6 +43,7 @@ import { ShowUserIDDialog } from './show-user-id/show-user-id.dialog';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ItemsListComponent } from './items-list/items-list.component';
 import { ListCartComponent } from './list-cart/list-cart.component';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ListCartComponent } from './list-cart/list-cart.component';
     ShowUserIDDialog,
     ItemsListComponent,
     ListCartComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,
