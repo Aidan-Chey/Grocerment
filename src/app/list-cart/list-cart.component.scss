@@ -8,9 +8,18 @@ mat-panel-description {
 }
 
 ul.items {
+    display: grid;
     list-style-type: none;
     padding: 0;
     margin: 0;
+
+    @media screen and (min-width: 25em) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (min-width: 50em) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
 
 .cart-actions {
