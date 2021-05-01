@@ -11,13 +11,12 @@ const routes: Routes = [
   },
   {
     path: 'items',
-    component: ItemsListComponent,
-    data: { title: 'Items' },
+    component: ItemsListComponent
   },
   {
     path: 'lists',
     component: SelectListComponent,
-    data: { title: 'Switch Lists' },
+    data: { title: 'Your Lists' },
   },
   {
     path: 'need',

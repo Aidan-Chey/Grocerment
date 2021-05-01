@@ -50,7 +50,7 @@
     matTooltip="Switch viewed list"
   >
     <mat-icon svgIcon="list"></mat-icon>
-    <span>{{(list$ | async)?.name || 'Default'}}</span>
+    <span>Your Lists</span>
   </button>
   <ng-container *ngIf="(pagePath$ | async) as pagePath">
     <button mat-menu-item 

@@ -5,7 +5,7 @@ import { ActivationEnd, Router, Event } from '@angular/router';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
 import { Item } from '@grocerment-app/models/item.model';
 import { ItemService } from '@grocerment-app/services/item.service';
-import { EMPTY } from 'rxjs';
+import { combineLatest, EMPTY } from 'rxjs';
 import { map, shareReplay, filter, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { ColorSchemeService } from '../services/color-scheme.service';
@@ -29,17 +29,20 @@ export class HeaderComponent implements OnInit {
     shareReplay(1),
   );
 
-  public readonly pageTitle$ = this.activeRouteSnapshot$.pipe(
-    map( event => event.snapshot?.data?.title as string || 'No page title set' ),
-    shareReplay(1),
-  );
-
   public readonly pagePath$ = this.activeRouteSnapshot$.pipe(
     map( event => event.snapshot?.routeConfig?.path ),
     shareReplay(1),
   );
 
   public readonly list$ = this.listService.activeListSubject.asObservable();
+
+  public readonly pageTitle$ = combineLatest([
+    this.activeRouteSnapshot$,
+    this.list$,
+  ]).pipe(
+    map( ([event,activeList]) => event.snapshot?.data?.title as string || activeList?.name || 'No page title set' ),
+    shareReplay(1),
+  );
 
   public readonly titleRoute$ = this.pageTitle$.pipe(
     map( title => {
