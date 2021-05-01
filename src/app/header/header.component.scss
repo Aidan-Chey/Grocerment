@@ -1,4 +1,4 @@
-:host{
+:host {
   position: relative;
 }
 
@@ -31,5 +31,9 @@ app-filter {
 }
 
 button[mat-menu-item].active {
-  display: none;
+  display: none !important;
+}
+
+.hidden {
+  display: none !important;
 }

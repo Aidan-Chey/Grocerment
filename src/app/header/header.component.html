@@ -1,69 +1,54 @@
-<mat-toolbar id="main-footer" role="heading">
-  <ng-container *ngIf="(afAuth.user | async); else noLoggedIn">
-    <h1 id="header-title">{{pageTitle$ | async}}</h1>
-    <span class="spacer"></span>
-    <button mat-stroked-button
-      *ngIf="!!(updateService.updateAvaliable$ | async)"
-      (click)="updateService.reloadApp()"
-    >Update</button>
-    <mat-icon svgIcon="disconnected"
-      *ngIf="!(onlineState.appOnline$ | async)"
-      matTooltip="Disconnected from the internet"
-    ></mat-icon>
-    <app-filter 
-      *ngIf="!!(filterService.filterable$ | async)" 
-      (filter)="filterService.filterTerm = $event"
-    ></app-filter>
-    <button mat-icon-button
-      aria-label="Add a new item, opening a dialog box"
-      (click)="openCreateItemDialog()"
-      matToolTip="New item"
-    >
-      <mat-icon svgIcon="plus"></mat-icon>
+<ng-container *ngIf="(pagePath$ | async) as pagePath">
+  <mat-toolbar id="main-footer" role="heading">
+    <ng-container *ngIf="(afAuth.user | async); else noLoggedIn">
+      <h1 id="header-title">{{pageTitle$ | async}}</h1>
+      <span class="spacer"></span>
+      <button mat-stroked-button *ngIf="!!(updateService.updateAvaliable$ | async)"
+        (click)="updateService.reloadApp()">Update</button>
+      <mat-icon svgIcon="disconnected" *ngIf="!(onlineState.appOnline$ | async)"
+        matTooltip="Disconnected from the internet"></mat-icon>
+      <app-filter *ngIf="!!(filterService.filterable$ | async)" (filter)="filterService.filterTerm = $event">
+      </app-filter>
+      <button mat-icon-button aria-label="Add a new item, opening a dialog box" (click)="openCreateItemDialog()"
+        matToolTip="New item" [ngClass]="{ 'hidden': pagePath !== 'items' }">
+        <mat-icon svgIcon="plus"></mat-icon>
+      </button>
+      <a mat-icon-button routerLink="/items" matTooltip="View active list items"
+        [ngClass]="{ 'hidden': pagePath === 'items' }"
+        style="display: flex;align-items: center;justify-content: center;">
+        <mat-icon svgIcon="cart"></mat-icon>
+      </a>
+      <button mat-icon-button id="header-menu" [matMenuTriggerFor]="menu"
+        aria-label="Opens an extra menu of actions and navigation" matTooltip="Navigation menu">
+        <mat-icon svgIcon="menu"></mat-icon>
+      </button>
+    </ng-container>
+  </mat-toolbar>
+  <mat-menu #menu="matMenu" yPosition="above">
+    <button mat-menu-item (click)="authService.signOut()">
+      <mat-icon svgIcon="person"></mat-icon>
+      <span>logout</span>
     </button>
-    <button mat-icon-button
-      id="header-menu" 
-      [matMenuTriggerFor]="menu" 
-      aria-label="Opens an extra menu of actions and navigation"
-      matTooltip="Navigation menu"
-    >
-      <mat-icon svgIcon="menu"></mat-icon>
+    <button mat-menu-item (click)="colorSchemeService.toggle()">
+      <mat-icon svgIcon="star"></mat-icon>
+      <span>Switch theme</span>
     </button>
-  </ng-container>
-</mat-toolbar>
-<mat-menu #menu="matMenu" yPosition="above">
-  <button mat-menu-item (click)="authService.signOut()">
-    <mat-icon svgIcon="person"></mat-icon>
-    <span>logout</span>
-  </button>
-  <button mat-menu-item (click)="colorSchemeService.toggle()">
-    <mat-icon svgIcon="star"></mat-icon>
-    <span>Switch theme</span>
-  </button>
-  <button mat-menu-item (click)="showUserID()" *ngIf="(afAuth.user | async)">
-    <mat-icon svgIcon="person"></mat-icon>
-    <span>Show user ID</span>
-  </button>
-  <button mat-menu-item 
-    routerLink="lists"
-    aria-label="Navigate to the page of lists you are apart of"
-    matTooltip="Switch viewed list"
-  >
-    <mat-icon svgIcon="list"></mat-icon>
-    <span>Your Lists</span>
-  </button>
-  <ng-container *ngIf="(pagePath$ | async) as pagePath">
-    <button mat-menu-item 
-      routerLink="need" 
-      [ngClass]="{ 'active': pagePath === 'items' }"
-      aria-label="Navigate to the page of items"
-      matTooltip="List of items"
-    >
+    <button mat-menu-item (click)="showUserID()" *ngIf="(afAuth.user | async)">
+      <mat-icon svgIcon="person"></mat-icon>
+      <span>Show user ID</span>
+    </button>
+    <button mat-menu-item routerLink="lists" aria-label="Navigate to the page of lists you are apart of"
+      matTooltip="Switch viewed list" [ngClass]="{ 'active': pagePath === 'lists' }">
+      <mat-icon svgIcon="list"></mat-icon>
+      <span>Your Lists</span>
+    </button>
+    <button mat-menu-item routerLink="need" [ngClass]="{ 'active': pagePath === 'items' }"
+      aria-label="Navigate to the page of items" matTooltip="List of items">
       <mat-icon svgIcon="cart"></mat-icon>
-      <span>Items</span>
+      <span>List Items</span>
     </button>
-  </ng-container>
-</mat-menu>
-<ng-template #noLoggedIn>
-  <span id="header-title">Please login to continue</span>
-</ng-template>
+  </mat-menu>
+  <ng-template #noLoggedIn>
+    <span id="header-title">Please login to continue</span>
+  </ng-template>
+</ng-container>
