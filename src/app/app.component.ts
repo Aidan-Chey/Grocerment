@@ -46,6 +46,7 @@ export class AppComponent implements AfterViewInit {
     this.iconRegistry.addSvgIcon( 'checkbox-empty', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-empty.svg') );
     this.iconRegistry.addSvgIcon( 'checkbox-filled', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/checkbox-filled.svg') );
     this.iconRegistry.addSvgIcon( 'disconnected', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/disconnected.svg') );
+    this.iconRegistry.addSvgIcon( 'camera', this.sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/camera.svg') );
 
     // Enable offline persistance of firestore data
     this.firebase.firestore().enablePersistence()
