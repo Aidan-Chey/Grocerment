@@ -6,7 +6,6 @@
         <div class="clickable"
             (click)="setActiveList(list)">
             <div class="name">{{list.name}}</div>
-            <div class="users" matTooltip="Number of users" *ngIf="!!list?.users && !list?.personal"> ({{list.users?.length}})</div>
         </div>
         <button mat-icon-button
             *ngIf="!!list?.personal"
@@ -41,7 +40,7 @@
                     matTooltip="Edit list's user who have access"
                 >
                     <mat-icon svgIcon="person"></mat-icon>
-                    <span>Users</span>
+                    <span>Users ({{list.users?.length}})</span>
                 </button>
                 <button mat-menu-item 
                     (click)="renameList(list)"
