@@ -33,7 +33,7 @@
             ],
             "styles": [
               "src/green-theme.scss",
-              "./node_modules/firebaseui/dist/firebaseui.css",
+              "node_modules/firebaseui/dist/firebaseui.css",
               "src/styles.scss"
             ],
             "scripts": []
