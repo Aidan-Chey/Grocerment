@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import * as Sentry from '@sentry/angular';
 import { renameConfig, RenameDialog } from './rename/rename.dialog';
 import { usersConfig, UsersDialog } from './users/users.dialog';
+import { Router } from '@angular/router';
 
 export const selectListConfig = {
 	minWidth: '5em',
@@ -47,7 +48,11 @@ export class SelectListComponent implements OnInit, AfterViewInit {
 
   // Updates active list
   setActiveList( list: List ) {
-	if ( !!list ) this.listService.activeListSubject.next(list);
+	if ( !list || this.listService.activeList === list ) return;
+	this.listService.activeListSubject.next(list);
+	this.snackbar.open( `'${list.name}' is now active`, 'View Items', { duration: 2000, verticalPosition: 'bottom' } ).afterDismissed().subscribe( () => {
+		this.router.navigateByUrl('/items');
+	} );
   }
 
   /** Delete a list */

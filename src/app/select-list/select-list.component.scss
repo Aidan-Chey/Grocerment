@@ -3,10 +3,21 @@ mat-list-item.active {
 }
 
 mat-list-item .name {
-	flex: 1 1 auto;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+mat-list-item .clickable {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex: 1 1 auto;
+	height: 100%;
+}
+
+mat-list-item:not(.active) .clickable:hover {
+	cursor: pointer;
 }
 
 :host {

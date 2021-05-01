@@ -3,8 +3,11 @@
         role="listitem" 
         [ngClass]="{ 'active': (listService.activeListSubject | async)?.id === list.id }"
     >
-        <span class="name">{{list.name}}</span>
-        <span class="users" matTooltip="Number of users" *ngIf="!!list?.users && !list?.personal"> ({{list.users?.length}})</span>
+        <div class="clickable"
+            (click)="setActiveList(list)">
+            <div class="name">{{list.name}}</div>
+            <div class="users" matTooltip="Number of users" *ngIf="!!list?.users && !list?.personal"> ({{list.users?.length}})</div>
+        </div>
         <button mat-icon-button
             *ngIf="!!list?.personal"
             
