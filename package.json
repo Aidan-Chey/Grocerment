@@ -28,6 +28,7 @@
     "@sentry/angular": "^6.3.5",
     "firebase": "^8.4.3",
     "firebaseui": "^4.8.0",
+    "jsqr": "^1.4.0",
     "qrcode-generator": "^1.4.4",
     "rxjs": "^6.6.7",
     "tslib": "^2.0.0",
