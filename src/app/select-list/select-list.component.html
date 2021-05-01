@@ -13,7 +13,7 @@
             color="accent" 
             aria-label="Clear active list and only view personal list"
             matTooltip="View personal items"
-            (click)="listService.activeListSubject.next(list)"
+            (click)="setActiveList(list)"
         >
             <mat-icon svgIcon="star"></mat-icon>
         </button>

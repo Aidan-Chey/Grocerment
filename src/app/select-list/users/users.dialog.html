@@ -1,3 +1,4 @@
+<video #preview id="preview" [ngClass]="{ 'hidden': !showVideoElement }" style="max-width: 80vw; max-height: 10em;object-fit: scale-down;"></video>
 <form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content>
         <mat-form-field
@@ -17,9 +18,14 @@
                 aria-label="Removes user from access to list"
                 (click)="usersArray.removeAt(i)"
                 type="button"
-            >
-                <mat-icon class="rotate-45" svgIcon="plus"></mat-icon>
-            </button>
+            ><mat-icon class="rotate-45" svgIcon="plus"></mat-icon></button>
+            <button mat-icon-button
+                matSuffix 
+                *ngIf="hasCamera$ | async"
+                matTooltip="Scan QR Code"
+                (click)="scanCode(i)"
+                type="button"
+            ><mat-icon svgIcon="camera"></mat-icon></button>
         </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions align="end">

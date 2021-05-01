@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, filter, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
-import { EMPTY, of, } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { List } from '../models/list.model';
 import { ListService } from '../services/list.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,7 +24,7 @@ export const selectListConfig = {
   templateUrl: './select-list.component.html',
   styleUrls: ['./select-list.component.scss']
 })
-export class SelectListComponent implements OnInit, AfterViewInit {
+export class SelectListComponent {
 
   public readonly lists$ = this.listService.listsCollectionRef$.pipe(
 	switchMap( ref => ref.valueChanges({idField: 'id'}) ),
@@ -34,23 +34,25 @@ export class SelectListComponent implements OnInit, AfterViewInit {
   constructor(
 	private readonly snackbar: MatSnackBar,
 	public readonly listService: ListService,
+	private readonly router: Router,
 	public readonly dialog: MatDialog,
   ) {
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit() {
-	
+    if ( !!navigator?.mediaDevices ) {
+		navigator.mediaDevices.enumerateDevices().then( devices => {
+			devices.forEach( device => {
+				console.log(device);
+			} );
+		} ).catch( err => {
+			console.error(err.name + ": " + err.message);
+		} );
+    }
   }
 
   // Updates active list
   setActiveList( list: List ) {
 	if ( !list || this.listService.activeList === list ) return;
 	this.listService.activeListSubject.next(list);
-	this.snackbar.open( `'${list.name}' is now active`, 'View Items', { duration: 2000, verticalPosition: 'bottom' } ).afterDismissed().subscribe( () => {
+	this.snackbar.open( `'${list.name}' is now active`, 'View Items', { duration: 2000, verticalPosition: 'bottom' } ).onAction().subscribe( () => {
 		this.router.navigateByUrl('/items');
 	} );
   }
