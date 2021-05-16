@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, merge } from 'rxjs';
-import { map, shareReplay, startWith, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
