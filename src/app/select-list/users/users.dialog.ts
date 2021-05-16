@@ -67,7 +67,7 @@ export class UsersDialog implements OnInit, OnDestroy, AfterViewInit {
   addUser() {
     this.usersArray.push( new FormControl(null) );
     setTimeout(() => {
-      console.log(this.usersList?.last.nativeElement.focus());
+      this.usersList?.last.nativeElement.focus();
     }, 0);
   }
 

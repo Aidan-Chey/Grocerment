@@ -12,7 +12,6 @@ export class OnlineStateService {
     fromEvent(window, 'online').pipe(map(() => true)),
   ).pipe(
     startWith( navigator.onLine ),
-    tap( state => {console.log(state)} ),
     shareReplay(1),
   );
 

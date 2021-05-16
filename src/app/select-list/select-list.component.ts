@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { catchError, filter, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { List } from '../models/list.model';
 import { ListService } from '../services/list.service';
@@ -37,17 +37,7 @@ export class SelectListComponent {
 	public readonly listService: ListService,
 	private readonly router: Router,
 	public readonly dialog: MatDialog,
-  ) {
-    if ( !!navigator?.mediaDevices ) {
-		navigator.mediaDevices.enumerateDevices().then( devices => {
-			devices.forEach( device => {
-				console.log(device);
-			} );
-		} ).catch( err => {
-			console.error(err.name + ": " + err.message);
-		} );
-    }
-  }
+  ) {}
 
   // Updates active list
   setActiveList( list: List ) {
