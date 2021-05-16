@@ -1,5 +1,5 @@
 <ng-container *ngIf="inputItems as items">
-  <cdk-virtual-scroll-viewport itemSize="40" minBufferPx="200" maxBufferPx="400">
+  <cdk-virtual-scroll-viewport itemSize="50" minBufferPx="500" maxBufferPx="1000">
     <div
       class="item"
       *cdkVirtualFor="let item of items; trackBy: trackByItemID"
