@@ -28,6 +28,7 @@ export class SelectListComponent {
 
   public readonly lists$ = this.listService.listsCollectionRef$.pipe(
 	switchMap( ref => ref.valueChanges({idField: 'id'}) ),
+	map( lists => lists.sort(listsSorter) ),
 	shareReplay(1),
   );
 
@@ -146,4 +147,15 @@ export class SelectListComponent {
     return el.id;
   }
 
+}
+
+/** Sorts an array of lists */
+function listsSorter( a:List, b: List ): -1|0|1 {
+	// Sorts the personal list at the top 
+	if ( !a.personal && !!b.personal ) return 1;
+	if ( !!a.personal && !b.personal ) return -1
+	// Sorts alphabetiacally by name
+	if ( a.name > b.name ) return 1;
+	if ( a.name < b.name ) return -1
+	return 0;
 }
