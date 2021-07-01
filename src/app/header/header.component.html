@@ -10,7 +10,7 @@
       <app-filter *ngIf="!!(filterService.filterable$ | async)" (filter)="filterService.filterTerm = $event">
       </app-filter>
       <button mat-icon-button aria-label="Add a new item, opening a dialog box" (click)="openCreateItemDialog()"
-        matToolTip="New item" [ngClass]="{ 'hidden': pagePath !== 'items' }">
+        matTooltip="New item" [ngClass]="{ 'hidden': pagePath !== 'items' }">
         <mat-icon svgIcon="plus"></mat-icon>
       </button>
       <a mat-icon-button routerLink="/items" matTooltip="View active list items"
