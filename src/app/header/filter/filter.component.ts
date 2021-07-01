@@ -39,7 +39,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.filterOpen = true;
     setTimeout( () => {
       if( !!this.filterInputRef ) this.filterInputRef.nativeElement.focus();
-    }, 250 );
+    }, 100 );
   }
 
   public onBlur() {

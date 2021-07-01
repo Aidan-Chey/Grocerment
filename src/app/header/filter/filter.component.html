@@ -9,7 +9,8 @@
 
 <mat-form-field #fieldField 
   appearance="legacy" 
-  *ngIf="!!filterOpen" 
+  [ngClass]="{ 'hidden': !filterOpen }" 
+  [attr.aria-hidden]="!filterOpen"
   floatLabel="never"
 >
   <input matInput 
