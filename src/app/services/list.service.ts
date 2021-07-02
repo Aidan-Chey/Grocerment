@@ -30,11 +30,14 @@ export class ListService {
   );
 
   /** list of items from the store */
-  public readonly items$ = this.listsCollectionRef$.pipe( // Get logged in user UID
+  public readonly items$ = combineLatest([
+    this.listsCollectionRef$,
+    this.activeListSubject.asObservable(),
+  ]).pipe( // Get logged in user UID
     auditTime(50),
     // Use UID to get their items
-    switchMap( ref => ref
-      .doc(this.activeList?.id)
+    switchMap( ([ref,activeList]) => ref
+      .doc(activeList?.id)
       .collection<Item>('items')
       .valueChanges({idField: 'id'}) 
     ),
