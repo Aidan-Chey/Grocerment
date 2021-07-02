@@ -35,8 +35,6 @@ export class SpoonacularApiService {
   /** Fetches a list of receipies from spoonacular's API depeding on supplied ingredients */
   fetchRecipiesByIngredients( params: RecipieByIngredientsParams ): Observable<FetchedRecipieByIngredients[]> {
 
-    console.log(params);
-
     const url = new URL( '/recipes/findByIngredients', this.baseUrl );
     if ( !Array.isArray(params.ingredients) ) throw Error('No ingredients to search recipies with');
 
