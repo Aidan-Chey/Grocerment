@@ -1,0 +1,58 @@
+:host {
+    display: flex;
+    flex-flow: row wrap;
+
+    ol, ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .recipie {
+        flex: 1 1 20em;
+        margin: 0.5em;
+
+        // > div:first-child {
+        //     display: flex;
+        //     flex-flow: row nowrap;
+        //     grid-column-start: 1;
+        //     grid-column-end: 3;
+        //     background-repeat: no-repeat;
+    
+        //     > img {
+        //         aspect-ratio: auto;
+        //         max-height: 150px;
+        //         width: 150px;
+        //         border: 1px solid black;
+        //     }
+        // }        
+
+        mat-card-content {
+            display: flex;
+            flex-flow: row nowrap;
+
+            div {
+                flex: 1 0 auto;
+            }
+
+            > div:first-child {
+                margin-right: 0.3em;
+            } 
+        }
+    }
+
+    .ingredient {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+
+        img {
+            aspect-ratio: auto;
+            max-height: 80px;
+            width: 50px;
+            background-color: white;
+            border: 1px solid black;
+            margin-right: 0.2em;
+        }
+    }
+}

@@ -47,6 +47,10 @@
       <mat-icon svgIcon="cart"></mat-icon>
       <span>List Items</span>
     </button>
+    <button mat-menu-item routerLink="recipies" [ngClass]="{ 'active': pagePath === 'recipies' }"
+      aria-label="Navigate to the recipies page" matTooltip="Get recipe suggestions">
+      <span>Recipies</span>
+    </button>
   </mat-menu>
   <ng-template #noLoggedIn>
     <span id="header-title">Please login to continue</span>
