@@ -24,29 +24,9 @@ export class ItemsListComponent implements OnInit {
   /** localstorage key the cart items are stored under */
   private readonly cartitemsLabel = 'basket';
 
-  /** list of items from the store */
-  private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe( // Get logged in user UID
-    auditTime(50),
-    // Use UID to get their items
-    switchMap( ref => ref
-      .doc(this.listService.activeList?.id)
-      .collection<Item>('items')
-      .valueChanges({idField: 'id'}) 
-    ),
-    catchError( err => {
-      const issue = 'Failed to retrieve items';
-      if ( environment.production ) Sentry.captureException(err);
-      else console.error(issue + ' |', err);
-      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
-      return EMPTY;
-    } ),
-    map( items => items.sort(this.itemCompareFn) ),
-    shareReplay(1),
-  );
-  
   /** Items the user has */
   public readonly itemsHave$ = combineLatest([
-    this.itemsStore$,
+    this.listService.items$,
     this.filterService.filterTerm$,
   ]).pipe(
     debounceTime(50),
@@ -66,7 +46,7 @@ export class ItemsListComponent implements OnInit {
   /** Observable of the list of items in the cart */
   public readonly cartItems$ = combineLatest([
     this.cartItemRefs$,
-    this.itemsStore$,
+    this.listService.items$,
   ]).pipe(
     switchMap( ([references,items]) => {
       if ( !Array.isArray(references) || !references.length || !Array.isArray(items) || !items.length ) return of([] as Item[]);
@@ -85,7 +65,7 @@ export class ItemsListComponent implements OnInit {
   
   /** Items the user needs */
   public readonly itemsNeed$: Observable<{ name: string, items: Item[] }[]> = combineLatest([
-    this.itemsStore$,
+    this.listService.items$,
     this.cartItems$,
     this.filterService.filterTerm$,
   ]).pipe(
@@ -120,7 +100,7 @@ export class ItemsListComponent implements OnInit {
   public readonly editItemRef$ = new BehaviorSubject<number|null>(null);
   /** Observable of the item being edited */
   public readonly edititem$ = combineLatest([
-    this.itemsStore$,
+    this.listService.items$,
     this.editItemRef$,
   ]).pipe(
     map( ([items,edit]) => {
@@ -156,7 +136,7 @@ export class ItemsListComponent implements OnInit {
   ngOnInit(): void {
 
     // Indicates to the header that a list is filterable
-    this.itemsStore$.subscribe( items => {
+    this.listService.items$.subscribe( items => {
       this.filterService.filterable = (Array.isArray(items) && !!items.length);
     } );
 
@@ -173,17 +153,6 @@ export class ItemsListComponent implements OnInit {
     this.filterService.filterable = false;
     this.componentDestruction$.next();
   }
-
-  /** Function to compare two items by comparing their `name` property. */
-  private itemCompareFn(a: Item, b: Item) {
-    const aName = a.name?.toLowerCase();
-    const bName = b.name?.toLowerCase();
-    if (aName < bName)
-      return -1;
-    if (aName > bName)
-      return 1;
-    return 0;
-  };
 
   /** Function */
   private categoryCompareFn( a: { name: string, items: Item[] }, b: { name: string, items: Item[] } ) {

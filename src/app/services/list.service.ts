@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/angular';
 import { auditTime, catchError, filter, first, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import notEmpty from 'src/app/globals/not-empty-filter';
+import { Item } from '@grocerment-app/models/item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,35 @@ export class ListService {
 
   public readonly activeListSubject = new BehaviorSubject<List | undefined>(undefined);
   public get activeList() { return this.activeListSubject.getValue(); }
-  
+  /** Reference to fireStore list collections */
   public readonly listsCollectionRef$ = this.afAuth.user.pipe(
     filter( notEmpty ),
     map( user => this.firestore.collection<List>('lists', ref => ref.where('users','array-contains',user.uid)) ),
     shareReplay(1),
   );
+  /** list of avaliable lists to pick from */
   public readonly lists$ = this.listsCollectionRef$.pipe(
     switchMap( ref => ref.valueChanges({idField: 'id'}) ),
+    shareReplay(1),
+  );
+
+  /** list of items from the store */
+  public readonly items$ = this.listsCollectionRef$.pipe( // Get logged in user UID
+    auditTime(50),
+    // Use UID to get their items
+    switchMap( ref => ref
+      .doc(this.activeList?.id)
+      .collection<Item>('items')
+      .valueChanges({idField: 'id'}) 
+    ),
+    catchError( err => {
+      const issue = 'Failed to retrieve items';
+      if ( environment.production ) Sentry.captureException(err);
+      else console.error(issue + ' |', err);
+      this.snackbar.open( issue, 'Dismiss', { duration: 3000, verticalPosition: 'bottom' } );
+      return EMPTY;
+    } ),
+    map( items => items.sort(this.itemCompareFn) ),
     shareReplay(1),
   );
 
@@ -127,5 +149,16 @@ export class ListService {
       this.snackbar.open( 'List created', undefined, { duration: 1000, verticalPosition: 'bottom' } );
     } );
   }
+
+  /** Function to compare two items by comparing their `name` property. */
+  private itemCompareFn(a: Item, b: Item) {
+    const aName = a.name?.toLowerCase();
+    const bName = b.name?.toLowerCase();
+    if (aName < bName)
+      return -1;
+    if (aName > bName)
+      return 1;
+    return 0;
+  };
 
 }
