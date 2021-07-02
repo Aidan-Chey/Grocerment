@@ -2,7 +2,10 @@
 <div class="basket" *ngIf="!!inputItems?.length">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            <mat-panel-title>Shopping Cart</mat-panel-title>
+            <mat-panel-title>
+                <mat-icon svgIcon="cart"></mat-icon>
+                <span>Shopping Cart</span>
+            </mat-panel-title>
             <mat-panel-description>{{inputItems?.length || 0}}</mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
