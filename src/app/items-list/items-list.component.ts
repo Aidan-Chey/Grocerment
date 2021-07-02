@@ -136,7 +136,9 @@ export class ItemsListComponent implements OnInit {
   ngOnInit(): void {
 
     // Indicates to the header that a list is filterable
-    this.listService.items$.subscribe( items => {
+    this.listService.items$.pipe(
+      takeUntil(this.componentDestruction$),
+    ).subscribe( items => {
       this.filterService.filterable = (Array.isArray(items) && !!items.length);
     } );
 
