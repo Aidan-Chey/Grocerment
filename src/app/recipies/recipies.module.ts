@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RecipiesRoutingModule } from './recipies-routing.module';
 import { RecipiesComponent } from './recipies.component';
-import {MatCardModule} from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import {MatCardModule} from '@angular/material/card';
   imports: [
     CommonModule,
     RecipiesRoutingModule,
-    MatCardModule,
+    MatExpansionModule,
   ]
 })
 export class RecipiesModule { }

@@ -1,28 +1,34 @@
-<mat-card *ngFor="let recipe of (recipies$ | async)" class="recipie">
-    <mat-card-header>
-        <img mat-card-avatar [attr.src]="recipe.image" alt="Photo of the {{recipe.title}">
-        <mat-card-title>{{recipe.title}}</mat-card-title>
-        <mat-card-subtitle>{{recipe.likes}} Likes</mat-card-subtitle>
-    </mat-card-header>
-    <!-- <img mat-card-image [attr.src]="recipe.image" alt="Photo of the {{recipe.title}"> -->
-    <mat-card-content>
-        <div>
-            <b>{{recipe.usedIngredientCount}} Used Ingredients</b>
-            <ul>
-                <li *ngFor="let ingredient of recipe.usedIngredients" class="ingredient">
-                    <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
-                    <span>{{ingredient.name}}</span>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <b>{{recipe.missedIngredientCount}} Missing Ingredients</b>
-            <ul>
-                <li *ngFor="let ingredient of recipe.missedIngredients" class="ingredient">
-                    <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
-                    <span>{{ingredient.name}}</span>
-                </li>
-            </ul>
-        </div>
-    </mat-card-content>
-</mat-card>
+<div *ngFor="let recipe of (recipies$ | async)" class="recipie">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <img mat-card-avatar [attr.src]="recipe.image" alt="Photo of the {{recipe.title}">
+                <span>{{recipe.title}}</span>
+            </mat-panel-title>
+            <mat-panel-description>{{recipe.likes}} Likes</mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- <img mat-card-image [attr.src]="recipe.image" alt="Photo of the {{recipe.title}"> -->
+        <ng-template matExpansionPanelContent>
+            <div class="ingredients">
+                <div>
+                    <b>{{recipe.usedIngredientCount}} Used Ingredients</b>
+                    <ul>
+                        <li *ngFor="let ingredient of recipe.usedIngredients" class="ingredient">
+                            <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
+                            <span>{{ingredient.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <b>{{recipe.missedIngredientCount}} Missing Ingredients</b>
+                    <ul>
+                        <li *ngFor="let ingredient of recipe.missedIngredients" class="ingredient">
+                            <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
+                            <span>{{ingredient.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </ng-template>
+    </mat-expansion-panel>
+</div>
