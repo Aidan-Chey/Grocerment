@@ -17,7 +17,7 @@ export class RecipeDetailsDialog implements OnInit {
   ngOnInit(): void {
   }
 
-  goTorecipe( url: string ): void {
+  goToRecipe( url: string ): void {
     window.open(url);
   }
 

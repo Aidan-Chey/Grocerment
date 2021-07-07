@@ -8,6 +8,9 @@ import { RecipesService } from './recipes.service';
 import { SpoonacularApiService } from './spoonacular-api.service';
 import { RecipeDetailsDialog } from './recipe-details/recipe-details.dialog';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [
@@ -19,6 +22,8 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
     recipesRoutingModule,
     MatExpansionModule,
     MatDialogModule,
+    MatButtonModule,
+    MatChipsModule,
   ],
   providers: [
     RecipesService,
