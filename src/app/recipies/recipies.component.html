@@ -12,23 +12,27 @@
             <div class="ingredients">
                 <div>
                     <b>{{recipe.usedIngredientCount}} Used Ingredients</b>
-                    <ul>
-                        <li *ngFor="let ingredient of recipe.usedIngredients" class="ingredient">
-                            <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
-                            <span>{{ingredient.name}}</span>
-                        </li>
-                    </ul>
+                    <ng-container *ngFor="let ingredient of recipe.usedIngredients">
+                        <ng-container *ngTemplateOutlet="ingredientTemplate; context: ingredient"></ng-container>
+                    </ng-container>
                 </div>
                 <div>
                     <b>{{recipe.missedIngredientCount}} Missing Ingredients</b>
-                    <ul>
-                        <li *ngFor="let ingredient of recipe.missedIngredients" class="ingredient">
-                            <img [attr.src]="ingredient.image" alt="Image of a {{ingredient.name}}">
-                            <span>{{ingredient.name}}</span>
-                        </li>
-                    </ul>
+                    <ng-container *ngFor="let ingredient of recipe.missedIngredients">
+                        <ng-container *ngTemplateOutlet="ingredientTemplate; context: ingredient"></ng-container>
+                    </ng-container>
                 </div>
             </div>
         </ng-template>
     </mat-expansion-panel>
 </div>
+
+<ng-template #ingredientTemplate let-name="name" let-image="image" let-amount="amount" let-unit="unitShort">
+    <div class="ingredient">
+        <img [attr.src]="image" alt="Image of a {{name}}">
+        <div>
+            <div>{{name}}</div>
+            <div class="amount">{{amount}}<span *ngIf="!!unit"> {{unit}}</span></div>
+        </div>
+    </div>
+</ng-template>
