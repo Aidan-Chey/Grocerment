@@ -26,7 +26,7 @@ const routes: Routes = [
     path: 'have',
     redirectTo: 'items',
   },
-  { path: 'recipies', loadChildren: () => import('./recipies/recipies.module').then(m => m.RecipiesModule) }
+  { path: 'recipes', loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule) }
 ];
 
 @NgModule({

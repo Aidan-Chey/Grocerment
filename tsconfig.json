@@ -10,6 +10,7 @@
       "@grocerment-globals/*": ["src/app/globals/*"],
       "@grocerment-services/*": ["src/app/services/*"],
       "@grocerment-pipes/*": ["src/app/pipes/*"],
+      "@grocerment-recipes/*": ["src/app/recipes/*"],
       "@grocerment-models/*": ["src/app/models/*"],
     },
     "forceConsistentCasingInFileNames": true,
