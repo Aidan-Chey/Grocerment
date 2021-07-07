@@ -5,10 +5,10 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
-import { AuthService } from './services/auth.service';
-import { ColorSchemeService } from './services/color-scheme.service';
+import { AuthService } from '@grocerment-services/auth.service';
+import { ColorSchemeService } from '@grocerment-services/color-scheme.service';
 import * as Sentry from "@sentry/angular";
-import { environment } from 'src/environments/environment';
+import { environment } from '@grocerment-environment';
 
 @Component({
   selector: 'app-root',

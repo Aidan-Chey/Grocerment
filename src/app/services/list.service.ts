@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, combineLatest, EMPTY, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { List } from '../models/list.model';
+import { environment } from '@grocerment-environment';
+import { List } from '@grocerment-models/list.model';
 import * as Sentry from '@sentry/angular';
 import { auditTime, catchError, filter, first, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import notEmpty from 'src/app/globals/not-empty-filter';
-import { Item } from '@grocerment-app/models/item.model';
+import { Item } from '@grocerment-models/item.model';
 
 @Injectable({
   providedIn: 'root'

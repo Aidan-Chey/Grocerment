@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
-import { ItemService } from '@grocerment-app/services/item.service';
-import { finalize, switchMap, tap } from 'rxjs/operators';
-import { Item } from '../models/item.model';
+import { ItemService } from '@grocerment-services/item.service';
+import {  switchMap, tap } from 'rxjs/operators';
+import { Item } from '@grocerment-models/item.model';
 
 @Component({
   selector: 'app-list-have',

@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Item } from '@grocerment-app/models/item.model';
-import { ListService } from '@grocerment-app/services/list.service';
+import { Item } from '@grocerment-models/item.model';
+import { ListService } from '@grocerment-services/list.service';
 import { BehaviorSubject, combineLatest, EMPTY, from, Observable, of, Subject } from 'rxjs';
-import { auditTime, catchError, debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
-import * as Sentry from "@sentry/angular";
-import { environment } from 'src/environments/environment';
-import { FilterService } from '@grocerment-app/services/filter.service';
-import notEmpty from '@grocerment-app/globals/not-empty-filter';
+import { debounceTime, filter, first, map, shareReplay, switchMap, takeUntil, tap, toArray } from 'rxjs/operators';
+import { FilterService } from '@grocerment-services/filter.service';
+import notEmpty from '@grocerment-globals/not-empty-filter';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
-import { ItemService } from '@grocerment-app/services/item.service';
+import { ItemService } from '@grocerment-services/item.service';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({

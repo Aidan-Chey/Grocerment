@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Item } from '../models/item.model';
-import { ListService } from './list.service';
+import { environment } from '@grocerment-environment';
+import { Item } from '@grocerment-models/item.model';
+import { ListService } from '@grocerment-services/list.service';
 import * as Sentry from '@sentry/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import firebase from 'firebase/app';

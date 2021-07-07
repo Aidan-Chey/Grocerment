@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
+import { environment } from '@grocerment-environment';
 import * as Sentry from '@sentry/angular';
 import { filter, first, map, switchMap, takeUntil } from 'rxjs/operators';
 import { fromEvent, Subject } from 'rxjs';

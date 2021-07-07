@@ -3,8 +3,8 @@ import { DocumentReference } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, from, of, EMPTY } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Measurement } from '../models/measurement.model';
+import { environment } from '@grocerment-environment';
+import { Measurement } from '@grocerment-models/measurement.model';
 import * as Sentry from "@sentry/angular";
 
 @Pipe({

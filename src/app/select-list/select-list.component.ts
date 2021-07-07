@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { catchError, filter, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { List } from '../models/list.model';
-import { ListService } from '../services/list.service';
+import { List } from '@grocerment-models/list.model';
+import { ListService } from '@grocerment-services/list.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmData, ConfirmDialog } from '../confirm/confirm.dialog';
-import { environment } from 'src/environments/environment';
+import { ConfirmData, ConfirmDialog } from '@grocerment-app/confirm/confirm.dialog';
+import { environment } from '@grocerment-environment';
 import * as Sentry from '@sentry/angular';
-import { renameConfig, RenameDialog } from './rename/rename.dialog';
-import { usersConfig, UsersDialog } from './users/users.dialog';
+import { renameConfig, RenameDialog } from '@grocerment-app/select-list/rename/rename.dialog';
+import { usersConfig, UsersDialog } from '@grocerment-app/select-list/users/users.dialog';
 import { Router } from '@angular/router';
 
 export const selectListConfig = {

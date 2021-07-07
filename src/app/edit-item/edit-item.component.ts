@@ -6,12 +6,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, combineLatest, EMPTY, from } from 'rxjs';
 import { catchError, filter, first, map, shareReplay, startWith, switchMap, tap, toArray } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Item } from '../models/item.model';
-import { Measurement } from '../models/measurement.model';
+import { environment } from '@grocerment-environment';
+import { Item } from '@grocerment-models/item.model';
+import { Measurement } from '@grocerment-models/measurement.model';
 import * as Sentry from '@sentry/angular';
-import { ListService } from '../services/list.service';
-import notEmpty from 'src/app/globals/not-empty-filter';
+import { ListService } from '@grocerment-services/list.service';
+import notEmpty from '@grocerment-globals/not-empty-filter';
 
 export const editItemConfig = {
   minWidth: '5em',
