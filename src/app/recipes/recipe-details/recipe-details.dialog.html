@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <mat-chip-list aria-label="Recipie Info">
+    <mat-chip><label>Serves:</label><span>{{data.servings}}</span></mat-chip>
+    <mat-chip><label>Ready In:</label><span>{{data.readyInMinutes}} minutes</span></mat-chip>
+    <mat-chip><label>Source:</label><a [attr.href]="data.sourceUrl">{{data.sourceName}}</a></mat-chip>
+    <mat-chip><label>Likes:</label><span>{{data.aggregateLikes}}</span></mat-chip>
+    <mat-chip><label>Health Score:</label><span>{{data.healthScore}}</span></mat-chip>
+    <mat-chip><label>Spoonacular Score:</label><span>{{data.spoonacularScore}}</span></mat-chip>
+  </mat-chip-list>
+  <h2>Ingredients</h2>
+  <table>
+    <tr *ngFor="let ingredient of data.extendedIngredients" class="ingredient">
+      <td>{{ingredient.name}}</td>
+      <td>-</td>
+      <td>{{ingredient.measures.metric.amount}} {{ingredient.measures.metric.unitLong}}<ng-container
+          *ngIf="!!ingredient.consitency"> ({{ingredient.consitency}})</ng-container>
+      </td>
+    </tr>
+  </table>
+  <h2>Instructions</h2>
+  <p>{{data.instructions}}</p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" mat-dialog-close (click)="goToRecipe(data.sourceUrl)" cdkFocusInitial>Go To recipe</button>
+</div>

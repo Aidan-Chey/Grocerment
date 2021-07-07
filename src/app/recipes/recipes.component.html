@@ -1,0 +1,39 @@
+<div *ngFor="let recipe of (recipes$ | async)" class="recipe">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <img mat-card-avatar [attr.src]="recipe.image" alt="Photo of the {{recipe.title}">
+                <span>{{recipe.title}}</span>
+            </mat-panel-title>
+            <mat-panel-description>{{recipe.likes}} Likes</mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- <img mat-card-image [attr.src]="recipe.image" alt="Photo of the {{recipe.title}"> -->
+        <ng-template matExpansionPanelContent>
+            <div class="ingredients">
+                <div>
+                    <b>{{recipe.usedIngredientCount}} Used Ingredients</b>
+                    <ng-container *ngFor="let ingredient of recipe.usedIngredients">
+                        <ng-container *ngTemplateOutlet="ingredientTemplate; context: ingredient"></ng-container>
+                    </ng-container>
+                </div>
+                <div>
+                    <b>{{recipe.missedIngredientCount}} Missing Ingredients</b>
+                    <ng-container *ngFor="let ingredient of recipe.missedIngredients">
+                        <ng-container *ngTemplateOutlet="ingredientTemplate; context: ingredient"></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <button mat-raised-button color="primary" (click)="RecipesService.showRecipe(recipe.id)">View recipe</button>
+        </ng-template>
+    </mat-expansion-panel>
+</div>
+
+<ng-template #ingredientTemplate let-name="name" let-image="image" let-amount="amount" let-unit="unitShort">
+    <div class="ingredient">
+        <img [attr.src]="image" alt="Image of a {{name}}">
+        <div>
+            <div>{{name}}</div>
+            <div class="amount">{{amount}}<span *ngIf="!!unit"> {{unit}}</span></div>
+        </div>
+    </div>
+</ng-template>

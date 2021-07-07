@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
-import { ItemService } from '@grocerment-app/services/item.service';
+import { ItemService } from '@grocerment-services/item.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Item } from '../models/item.model';
+import { Item } from '@grocerment-models/item.model';
 
 @Component({
   selector: 'app-list-need',

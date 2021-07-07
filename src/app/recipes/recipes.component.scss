@@ -1,0 +1,100 @@
+:host {
+    display: flex;
+    flex-flow: row wrap;
+
+    ol, ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .recipe {
+        flex: 1 1 20em;
+        margin: 0.3em;
+
+        mat-expansion-panel-header {
+            position: relative;
+            box-sizing: border-box;
+            color: hsl(0, 0%, 95%);
+            
+            img {
+                aspect-ratio: 104/77;
+                position: absolute;
+                left: 0;
+                width: 100%;
+                filter: brightness(60%);
+            }
+        }
+        mat-expansion-panel-header:focus {
+            border-color: #620080b5;
+            border-style: groove;
+        }
+
+
+        mat-panel-title {
+            font-weight: bolder;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            color: inherit;
+
+            span {
+                z-index: 2;
+            }
+        }
+
+        mat-panel-description {
+            color: inherit;
+            z-index: 2;
+            align-items: center;
+            white-space: nowrap;
+            justify-content: flex-end;
+        }
+
+        // > div:first-child {
+        //     display: flex;
+        //     flex-flow: row nowrap;
+        //     grid-column-start: 1;
+        //     grid-column-end: 3;
+        //     background-repeat: no-repeat;
+    
+        //     > img {
+        //         aspect-ratio: auto;
+        //         max-height: 150px;
+        //         width: 150px;
+        //         border: 1px solid black;
+        //     }
+        // }     
+        
+        mat-expansion-panel-header {
+            overflow: hidden;
+        }
+
+        .ingredients {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 0.3em;
+        }
+    }
+
+    .ingredient {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        text-transform: capitalize;
+
+        img {
+            aspect-ratio: auto;
+            max-height: 80px;
+            width: 50px;
+            background-color: white;
+            border: 1px solid black;
+            margin-right: 0.2em;
+        }
+
+        .amount {
+            font-size: small;
+            opacity: 70%;
+        }
+    }
+}

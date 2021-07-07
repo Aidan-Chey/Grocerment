@@ -3,17 +3,17 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivationEnd, Router, Event } from '@angular/router';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
-import { Item } from '@grocerment-app/models/item.model';
-import { ItemService } from '@grocerment-app/services/item.service';
+import { Item } from '@grocerment-models/item.model';
+import { ItemService } from '@grocerment-services/item.service';
 import { combineLatest, EMPTY } from 'rxjs';
 import { map, shareReplay, filter, switchMap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
-import { ColorSchemeService } from '../services/color-scheme.service';
-import { FilterService } from '../services/filter.service';
-import { ListService } from '../services/list.service';
-import { OnlineStateService } from '../services/online-state.service';
-import { ServiceWorkerService } from '../services/service-worker.service';
-import { ShowUserIDDialog } from '../show-user-id/show-user-id.dialog';
+import { AuthService } from '@grocerment-services/auth.service';
+import { ColorSchemeService } from '@grocerment-services/color-scheme.service';
+import { FilterService } from '@grocerment-services/filter.service';
+import { ListService } from '@grocerment-services/list.service';
+import { OnlineStateService } from '@grocerment-services/online-state.service';
+import { ServiceWorkerService } from '@grocerment-services/service-worker.service';
+import { ShowUserIDDialog } from '@grocerment-app/show-user-id/show-user-id.dialog';
 
 @Component({
   selector: 'app-header',

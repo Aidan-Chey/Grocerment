@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmData, ConfirmDialog } from '@grocerment-app/confirm/confirm.dialog';
-import notEmpty from '@grocerment-app/globals/not-empty-filter';
-import { Item } from '@grocerment-app/models/item.model';
-import { ItemService } from '@grocerment-app/services/item.service';
+import { Item } from '@grocerment-models/item.model';
+import { ItemService } from '@grocerment-services/item.service';
 import { EMPTY } from 'rxjs';
 import { filter, first, switchMap } from 'rxjs/operators';
 

@@ -5,10 +5,13 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "paths": {
+      "@grocerment-environment": ["src/environments/environment"],
       "@grocerment-app/*": ["src/app/*"],
       "@grocerment-globals/*": ["src/app/globals/*"],
       "@grocerment-services/*": ["src/app/services/*"],
       "@grocerment-pipes/*": ["src/app/pipes/*"],
+      "@grocerment-recipes/*": ["src/app/recipes/*"],
+      "@grocerment-models/*": ["src/app/models/*"],
     },
     "forceConsistentCasingInFileNames": true,
     "strict": true,
