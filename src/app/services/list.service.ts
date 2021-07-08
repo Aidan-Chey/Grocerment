@@ -153,10 +153,18 @@ export class ListService {
     } );
   }
 
-  /** Function to compare two items by comparing their `name` property. */
+  /** Function to compare two items by comparing their 'favourite', then 'name' properties. */
   private itemCompareFn(a: Item, b: Item) {
-    const aName = a.name?.toLowerCase();
-    const bName = b.name?.toLowerCase();
+    // Compare favourite property
+    const aFavourite = a.favourite || false,
+      bFavourite = b.favourite || false;
+    if (aFavourite > bFavourite)
+      return -1;
+    if (aFavourite < bFavourite)
+      return 1;
+    // Compare favourite property
+    const aName = a.name?.toLowerCase() || '',
+      bName = b.name?.toLowerCase() || '';
     if (aName < bName)
       return -1;
     if (aName > bName)
