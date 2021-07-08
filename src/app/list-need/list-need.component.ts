@@ -1,18 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edit-item.component';
 import { ItemService } from '@grocerment-services/item.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { Item } from '@grocerment-models/item.model';
+import { FilterService } from '@grocerment-app/services/filter.service';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-list-need',
   templateUrl: './list-need.component.html',
   styleUrls: ['./list-need.component.scss']
 })
-export class ListNeedComponent implements OnChanges {
+export class ListNeedComponent implements OnChanges, AfterViewInit {
+
+  @ViewChild(MatAccordion) accordion: MatAccordion | null = null;
 
   @Input('items') inputItems: { name: string, items: Item[] }[] | null = null;
   /** Moves item out of main list for later edit to toggle it's obtained state */
@@ -23,6 +27,7 @@ export class ListNeedComponent implements OnChanges {
 
   constructor(
     private readonly itemService: ItemService,
+    public readonly filterService: FilterService,
     private readonly dialog: MatDialog,
     private readonly snackbar: MatSnackBar,
   ) {
@@ -32,6 +37,30 @@ export class ListNeedComponent implements OnChanges {
     if ( changes.hasOwnProperty('inputItems') ) {
       this.itemsCatagorized$.next(changes.inputItems.currentValue);
     }
+  }
+
+  ngAfterViewInit() {
+    // Follows the filter state, opening and closing categories if being filtered
+    this.filterService.filterTerm$.pipe(
+      takeUntil(this.componentDestruction$),
+      distinctUntilChanged(),
+    ).subscribe( term => {
+      // Check for filtering term
+      if ( !!term )  {
+        // Open all categories
+        setTimeout( () => {
+          if ( !this.accordion ) return;
+          this.accordion.multi = true;
+          this.accordion.openAll();
+        } );
+      } else {
+        setTimeout( () => {
+          if ( !this.accordion ) return;
+          this.accordion.closeAll();
+          this.accordion.multi = false;
+        } );
+      }
+    } );
   }
 
   ngOnDestroy() {
