@@ -47,6 +47,10 @@
       <mat-icon svgIcon="cart"></mat-icon>
       <span>List Items</span>
     </button>
+    <button mat-menu-item *ngIf="!!(filterService.filterable$ | async)"
+      matTooltip="Adds all your favoured items to your shopping list" (click)="addFavourites()">
+      <span>Add All Favourites</span>
+    </button>
     <button mat-menu-item routerLink="recipes" [ngClass]="{ 'active': pagePath === 'recipes' }"
       aria-label="Navigate to the recipes page" matTooltip="Get recipe suggestions">
       <span>Recipes</span>
