@@ -18,7 +18,7 @@ export const editItemConfig = {
   width: '95vw',
   height: 'auto',
   maxWidth: '50em',
-  maxHeight: '37em',
+  maxHeight: '40em',
 };
 
 @Component({
@@ -36,6 +36,7 @@ export class EditItemComponent implements OnInit {
     estimated: false,
     quantity: 1,
     obtained: false,
+    favourite: false,
   } as Item);
   /** List of items already created for reference */
   private readonly itemsStore$ = this.listService.listsCollectionRef$.pipe(
