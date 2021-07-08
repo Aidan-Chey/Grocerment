@@ -6,7 +6,7 @@ import { EditItemComponent, editItemConfig } from '@grocerment-app/edit-item/edi
 import { Item } from '@grocerment-models/item.model';
 import { ItemService } from '@grocerment-services/item.service';
 import { combineLatest, EMPTY } from 'rxjs';
-import { map, shareReplay, filter, switchMap } from 'rxjs/operators';
+import { map, shareReplay, filter, switchMap, first } from 'rxjs/operators';
 import { AuthService } from '@grocerment-services/auth.service';
 import { ColorSchemeService } from '@grocerment-services/color-scheme.service';
 import { FilterService } from '@grocerment-services/filter.service';
@@ -95,6 +95,24 @@ export class HeaderComponent implements OnInit {
     this.dialog.open(EditItemComponent, dialogConfig).afterClosed().pipe(
       switchMap( item => !!item ? this.itemService.createItem( item ) : EMPTY ),
     ).subscribe();
+  }
+
+  /** Marks all favoured items as not obtained, adding them to the shopping list */
+  public addFavourites(): void {
+
+    this.listService.items$.pipe(
+      first(),
+      switchMap( items => {
+        const favourites = items.filter( item => !!item.favourite )
+
+        return this.itemService.batchEdit(favourites, { obtained: false } as Item );
+      } ),
+    ).subscribe( res => {
+      // Error occured and user opted to retry
+      if ( !!res ) this.addFavourites();
+    } );
+    
+
   }
 
 }
