@@ -20,4 +20,6 @@ export interface Item {
   quantity: number
   /** Whether the item is already possessed or not */
   obtained: boolean
+  /** Whether the item is a favorite in the lit and is frequently used */
+  favourite: boolean
 }
