@@ -9,6 +9,7 @@
         </div>
     </section>
     <section *ngIf="!!results.need?.length" class="container-need">
+        <h2>Shopping List</h2>
         <app-list-need [items]="results.need" (moveToCart)="moveToCart($event)"></app-list-need>
     </section>
     <section *ngIf="!!results.cart?.length" class="container-cart">
