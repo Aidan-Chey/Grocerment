@@ -1,5 +1,10 @@
 <ng-content></ng-content>
-<div class="name">{{item?.name || '(No item name)'}}</div>
+<div class="name">
+    <span>{{item?.name || '(No item name)'}}</span>
+    <ng-container *ngIf="!!item?.favourite">
+        <span matTooltip="Favoured">*</span>
+    </ng-container>
+</div>
 <div *ngIf="!!item?.measurement && !!item?.amount">
     <span *ngIf="!!item?.estimated">~</span>
     <span>{{item?.amount}}</span>
